@@ -1,4 +1,4 @@
-package com.flipkart.fdp.ml.export;
+package com.flipkart.fdp.ml.modelinfo.export;
 
 import com.flipkart.fdp.ml.modelinfo.ModelInfo;
 import com.google.gson.Gson;
