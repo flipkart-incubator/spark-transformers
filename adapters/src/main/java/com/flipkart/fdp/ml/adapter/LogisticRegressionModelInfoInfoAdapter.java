@@ -1,9 +1,14 @@
-package com.flipkart.fdp.ml.modelinfo.adapter;
+package com.flipkart.fdp.ml.adapter;
 
 import com.flipkart.fdp.ml.modelinfo.LogisticRegressionModelInfo;
 import org.apache.spark.mllib.classification.LogisticRegressionModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+/**
+ * Transforms Spark's LogisticRegressionModel in MlLib to  {@link com.flipkart.fdp.ml.modelinfo.LogisticRegressionModelInfo} object
+ * that can be exported
+ */
 
 public class LogisticRegressionModelInfoInfoAdapter
         implements ModelInfoAdapter<LogisticRegressionModel, LogisticRegressionModelInfo> {

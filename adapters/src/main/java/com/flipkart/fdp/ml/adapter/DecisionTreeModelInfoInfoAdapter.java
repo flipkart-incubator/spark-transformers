@@ -1,4 +1,4 @@
-package com.flipkart.fdp.ml.modelinfo.adapter;
+package com.flipkart.fdp.ml.adapter;
 
 import com.flipkart.fdp.ml.modelinfo.DecisionTreeModelInfo;
 import com.flipkart.fdp.ml.modelinfo.DecisionTreeModelInfo.DecisionNode;

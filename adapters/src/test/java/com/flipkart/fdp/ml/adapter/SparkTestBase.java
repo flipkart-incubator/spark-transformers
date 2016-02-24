@@ -1,4 +1,4 @@
-package com.flipkart.mlapi;
+package com.flipkart.fdp.ml.adapter;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.SparkContext;

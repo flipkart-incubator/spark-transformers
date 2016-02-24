@@ -1,5 +1,11 @@
 *.class
+models-info/target/
+adapters/target/
+#intellij specific files
 .idea/
+*.iml
+*.ipr
+*.iws
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 

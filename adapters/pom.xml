@@ -12,7 +12,6 @@
     </parent>
 
     <artifactId>adapters</artifactId>
-    <version>${project.parent.version}</version>
     <packaging>jar</packaging>
 
     <name>Spark Model Adapters</name>

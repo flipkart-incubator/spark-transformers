@@ -1,4 +1,4 @@
-package com.flipkart.fdp.ml.modelinfo.adapter;
+package com.flipkart.fdp.ml.adapter;
 
 import com.flipkart.fdp.ml.modelinfo.DecisionTreeModelInfo;
 import com.flipkart.fdp.ml.modelinfo.RandomForestModelInfo;
@@ -7,9 +7,9 @@ import org.apache.spark.mllib.tree.model.DecisionTreeModel;
 import org.apache.spark.mllib.tree.model.RandomForestModel;
 
 public class RandomForestModelInfoInfoAdapter
-        implements ModelInfoAdapter<RandomForestModel, RandomForestModelInfo> {
+        implements com.flipkart.fdp.ml.adapter.ModelInfoAdapter<RandomForestModel, RandomForestModelInfo> {
 
-    private DecisionTreeModelInfoInfoAdapter bridge = new DecisionTreeModelInfoInfoAdapter();
+    private com.flipkart.fdp.ml.adapter.DecisionTreeModelInfoInfoAdapter bridge = new com.flipkart.fdp.ml.adapter.DecisionTreeModelInfoInfoAdapter();
 
     private RandomForestModelInfo visitForest(RandomForestModel randomForestModel) {
         RandomForestModelInfo randomForestModelInfo = new RandomForestModelInfo();
