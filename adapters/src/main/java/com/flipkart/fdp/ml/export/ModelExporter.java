@@ -3,13 +3,28 @@ package com.flipkart.fdp.ml.export;
 import com.flipkart.fdp.ml.modelinfo.ModelInfo;
 import com.google.gson.Gson;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * Created by akshay.us on 2/19/16.
- */
+ * Exports a {@link ModelInfo} object into byte[].
+ * The serialization format currently being used is json
+ * */
 public class ModelExporter {
     private static final Gson gson = new Gson();
 
+
+    /**
+     * Exports a {@link ModelInfo} object into byte[].
+     * The serialization format currently being used is json
+     *
+     * @return byte[]
+     * @param modelInfo model info to be exported of type {@link ModelInfo}
+     * */
     public static byte[] export(ModelInfo modelInfo) {
-        return gson.toJson(modelInfo).getBytes();
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("_class", modelInfo.getClass().getCanonicalName());
+        map.put("_model_info", gson.toJson(modelInfo));
+        return gson.toJson(map).getBytes();
     }
 }

@@ -9,13 +9,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-public class RandomForestFTransformer implements Transformer {
-    private static final Logger LOG = LoggerFactory.getLogger(RandomForestFTransformer.class);
+/**
+ * Transforms input/ predicts for a Random Forest model representation
+ * captured by  {@link com.flipkart.fdp.ml.modelinfo.RandomForestModelInfo}.
+ * */
+public class RandomForestTransformer implements Transformer {
+    private static final Logger LOG = LoggerFactory.getLogger(RandomForestTransformer.class);
     private final RandomForestModelInfo forest;
     private final List<Transformer> subTransformers;
 
-    public RandomForestFTransformer(RandomForestModelInfo forest) {
+    public RandomForestTransformer(RandomForestModelInfo forest) {
         this.forest = forest;
         this.subTransformers = new ArrayList<>(forest.trees.size());
         for (DecisionTreeModelInfo tree : forest.trees) {

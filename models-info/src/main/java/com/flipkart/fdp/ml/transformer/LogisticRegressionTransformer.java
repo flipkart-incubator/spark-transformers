@@ -3,7 +3,10 @@ package com.flipkart.fdp.ml.transformer;
 import com.flipkart.fdp.ml.modelinfo.LogisticRegressionModelInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+/**
+ * Transforms input/ predicts for a Logistic Regression model representation
+ * captured by  {@link com.flipkart.fdp.ml.modelinfo.LogisticRegressionModelInfo}.
+ * */
 public class LogisticRegressionTransformer implements Transformer {
     private static final Logger LOG = LoggerFactory.getLogger(LogisticRegressionTransformer.class);
     private LogisticRegressionModelInfo model;

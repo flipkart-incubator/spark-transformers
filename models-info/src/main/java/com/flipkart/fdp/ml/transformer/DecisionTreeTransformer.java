@@ -5,6 +5,10 @@ import com.flipkart.fdp.ml.modelinfo.DecisionTreeModelInfo.DecisionNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Transforms input/ predicts for a Decision Tree model representation
+ * captured by  {@link com.flipkart.fdp.ml.modelinfo.DecisionTreeModelInfo}.
+ * */
 public class DecisionTreeTransformer implements Transformer {
     private static final Logger LOG = LoggerFactory.getLogger(DecisionTreeTransformer.class);
 

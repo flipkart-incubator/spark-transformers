@@ -5,7 +5,10 @@ import com.flipkart.fdp.ml.modelinfo.RandomForestModelInfo;
 import org.apache.spark.mllib.tree.configuration.Algo;
 import org.apache.spark.mllib.tree.model.DecisionTreeModel;
 import org.apache.spark.mllib.tree.model.RandomForestModel;
-
+/**
+ * Transforms Spark's {@link RandomForestModel} in MlLib to  {@link com.flipkart.fdp.ml.modelinfo.RandomForestModelInfo} object
+ * that can be exported through {@link com.flipkart.fdp.ml.SparkModelExporter}
+ * */
 public class RandomForestModelInfoInfoAdapter
         implements com.flipkart.fdp.ml.adapter.ModelInfoAdapter<RandomForestModel, RandomForestModelInfo> {
 

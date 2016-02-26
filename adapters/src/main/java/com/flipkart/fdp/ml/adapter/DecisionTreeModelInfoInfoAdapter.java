@@ -13,6 +13,10 @@ import scala.collection.JavaConversions;
 import java.util.List;
 import java.util.Stack;
 
+/**
+ * Transforms Spark's {@link DecisionTreeModel} in MlLib to  {@link com.flipkart.fdp.ml.modelinfo.DecisionTreeModelInfo} object
+ * that can be exported through {@link com.flipkart.fdp.ml.SparkModelExporter}
+ * */
 public class DecisionTreeModelInfoInfoAdapter
         implements ModelInfoAdapter<DecisionTreeModel, DecisionTreeModelInfo> {
     private static final Logger LOG =

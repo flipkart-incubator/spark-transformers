@@ -28,8 +28,10 @@ public class LogisticRegressionExporterTest extends SparkTestBase {
         //Export this model
         byte[] exportedModel = SparkModelExporter.export(lrmodel);
 
+        System.out.println(new String(exportedModel));
+
         //Import it back
-        LogisticRegressionModelInfo importedModel = (LogisticRegressionModelInfo)ModelImporter.importModelInfo(exportedModel, LogisticRegressionModelInfo.class);
+        LogisticRegressionModelInfo importedModel = (LogisticRegressionModelInfo)ModelImporter.importModelInfo(exportedModel);
 
         //check if they are exactly equal with respect to their fields
         //it maybe edge cases eg. order of elements in the list is changed

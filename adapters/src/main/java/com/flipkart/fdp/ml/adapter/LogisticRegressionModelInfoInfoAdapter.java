@@ -6,9 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Transforms Spark's LogisticRegressionModel in MlLib to  {@link com.flipkart.fdp.ml.modelinfo.LogisticRegressionModelInfo} object
- * that can be exported
- */
+ * Transforms Spark's {@link LogisticRegressionModel} in MlLib to  {@link com.flipkart.fdp.ml.modelinfo.LogisticRegressionModelInfo} object
+ * that can be exported through {@link com.flipkart.fdp.ml.SparkModelExporter}
+ * */
 
 public class LogisticRegressionModelInfoInfoAdapter
         implements ModelInfoAdapter<LogisticRegressionModel, LogisticRegressionModelInfo> {

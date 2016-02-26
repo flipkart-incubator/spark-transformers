@@ -2,7 +2,6 @@ package com.flipkart.fdp.ml.adapter;
 
 import com.flipkart.fdp.ml.SparkModelExporter;
 import com.flipkart.fdp.ml.importer.ModelImporter;
-import com.flipkart.fdp.ml.modelinfo.LogisticRegressionModelInfo;
 import com.flipkart.fdp.ml.transformer.Transformer;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.mllib.classification.LogisticRegressionModel;
@@ -33,7 +32,7 @@ public class LogisticRegressionBridgeTest extends SparkTestBase {
         byte[] exportedModel = SparkModelExporter.export(lrmodel);
 
         //Import and get Transformer
-        Transformer transformer = ModelImporter.importTransormer(exportedModel, LogisticRegressionModelInfo.class);
+        Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);
 
         //validate predictions
         lrmodel.clearThreshold();
