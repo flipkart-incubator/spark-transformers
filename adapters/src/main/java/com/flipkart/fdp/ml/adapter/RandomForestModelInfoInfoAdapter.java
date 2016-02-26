@@ -22,14 +22,14 @@ public class RandomForestModelInfoInfoAdapter
 
         DecisionTreeModel[] decisionTreeModels = randomForestModel.trees();
         for (DecisionTreeModel i : decisionTreeModels) {
-            DecisionTreeModelInfo tree = bridge.transform(i);
+            DecisionTreeModelInfo tree = bridge.getModelInfo(i);
             randomForestModelInfo.trees.add(tree);
         }
         return randomForestModelInfo;
     }
 
     @Override
-    public RandomForestModelInfo transform(RandomForestModel from) {
+    public RandomForestModelInfo getModelInfo(RandomForestModel from) {
         RandomForestModelInfo randomForestModelInfoInfo = visitForest(from);
         return randomForestModelInfoInfo;
     }

@@ -52,7 +52,7 @@ public class DecisionTreeModelInfoInfoAdapter
         }
     }
 
-    public DecisionTreeModelInfo transform(DecisionTreeModel decisionTreeModel) {
+    public DecisionTreeModelInfo getModelInfo(DecisionTreeModel decisionTreeModel) {
         DecisionTreeModelInfo treeInfo = new DecisionTreeModelInfo();
         Node node = decisionTreeModel.topNode();
         treeInfo.root = node.id();

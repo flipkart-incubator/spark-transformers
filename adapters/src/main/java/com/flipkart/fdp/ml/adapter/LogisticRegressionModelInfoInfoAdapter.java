@@ -16,7 +16,7 @@ public class LogisticRegressionModelInfoInfoAdapter
             LoggerFactory.getLogger(LogisticRegressionModelInfoInfoAdapter.class);
 
     @Override
-    public LogisticRegressionModelInfo transform(LogisticRegressionModel sparkLRModel) {
+    public LogisticRegressionModelInfo getModelInfo(LogisticRegressionModel sparkLRModel) {
         LogisticRegressionModelInfo logisticRegressionModelInfo = new LogisticRegressionModelInfo();
         logisticRegressionModelInfo.weights = sparkLRModel.weights().toArray();
         logisticRegressionModelInfo.intercept = sparkLRModel.intercept();

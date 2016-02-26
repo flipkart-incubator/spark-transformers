@@ -9,7 +9,7 @@ import com.google.gson.Gson;
 public class ModelExporter {
     private static final Gson gson = new Gson();
 
-    public static String export(ModelInfo modelInfo) {
-        return gson.toJson(modelInfo);
+    public static byte[] export(ModelInfo modelInfo) {
+        return gson.toJson(modelInfo).getBytes();
     }
 }

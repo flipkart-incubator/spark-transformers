@@ -1,7 +1,9 @@
 package com.flipkart.fdp.ml.adapter;
 
+import com.flipkart.fdp.ml.SparkModelExporter;
+import com.flipkart.fdp.ml.importer.ModelImporter;
 import com.flipkart.fdp.ml.modelinfo.LogisticRegressionModelInfo;
-import com.flipkart.fdp.ml.predictors.LogisticRegressionPredictor;
+import com.flipkart.fdp.ml.transformer.Transformer;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.mllib.classification.LogisticRegressionModel;
 import org.apache.spark.mllib.classification.LogisticRegressionWithSGD;
@@ -17,26 +19,29 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by akshay.us on 2/24/16.
  */
-public class LogisticRegressionBridgeTest extends SparkTestBase{
+public class LogisticRegressionBridgeTest extends SparkTestBase {
 
     @Test
     public void testLogisticRegression() {
         String datapath = "src/test/resources/binary_classification_test.libsvm";
         JavaRDD<LabeledPoint> data = MLUtils.loadLibSVMFile(sc.sc(), datapath).toJavaRDD();
-        LogisticRegressionModel lrmodel = new LogisticRegressionWithSGD().run(data.rdd());
-        LogisticRegressionModelInfoInfoAdapter logisticRegressionBridgeIn =
-                new LogisticRegressionModelInfoInfoAdapter();
 
-        LogisticRegressionModelInfo logisticRegressionModelInfo =
-                logisticRegressionBridgeIn.transform(lrmodel);
-        LogisticRegressionPredictor predictor =
-                new LogisticRegressionPredictor(logisticRegressionModelInfo);
+        //Train model in spark
+        LogisticRegressionModel lrmodel = new LogisticRegressionWithSGD().run(data.rdd());
+
+        //Export this model
+        byte[] exportedModel = SparkModelExporter.export(lrmodel);
+
+        //Import and get Transformer
+        Transformer transformer = ModelImporter.importTransormer(exportedModel, LogisticRegressionModelInfo.class);
+
+        //validate predictions
         lrmodel.clearThreshold();
         List<LabeledPoint> testPoints = data.collect();
         for (LabeledPoint i : testPoints) {
             Vector v = i.features();
             double actual = lrmodel.predict(v);
-            double predicted = predictor.predict(v.toArray());
+            double predicted = transformer.transform(v.toArray());
             System.out.println(actual + "  -- " + predicted);
             assertEquals(actual, predicted, 0.01);
         }

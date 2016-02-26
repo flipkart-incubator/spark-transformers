@@ -1,5 +1,8 @@
 package com.flipkart.fdp.ml.modelinfo;
 
+import com.flipkart.fdp.ml.transformer.DecisionTreeTransformer;
+import com.flipkart.fdp.ml.transformer.Transformer;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -12,6 +15,12 @@ public class DecisionTreeModelInfo implements ModelInfo {
     public DecisionTreeModelInfo() {
 
     }
+
+    @Override
+    public Transformer getTransformer() {
+        return new DecisionTreeTransformer(this);
+    }
+
 
     public static class DecisionNode {
         public int id;

@@ -1,16 +1,16 @@
-package com.flipkart.fdp.ml.predictors;
+package com.flipkart.fdp.ml.transformer;
 
 import com.flipkart.fdp.ml.modelinfo.DecisionTreeModelInfo;
 import com.flipkart.fdp.ml.modelinfo.DecisionTreeModelInfo.DecisionNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DecisionTreePredictor implements Predictor<DecisionTreeModelInfo> {
-    private static final Logger LOG = LoggerFactory.getLogger(DecisionTreePredictor.class);
+public class DecisionTreeTransformer implements Transformer {
+    private static final Logger LOG = LoggerFactory.getLogger(DecisionTreeTransformer.class);
 
     private final DecisionTreeModelInfo tree;
 
-    public DecisionTreePredictor(DecisionTreeModelInfo tree) {
+    public DecisionTreeTransformer(DecisionTreeModelInfo tree) {
         this.tree = tree;
     }
 
@@ -35,7 +35,7 @@ public class DecisionTreePredictor implements Predictor<DecisionTreeModelInfo> {
         }
     }
 
-    public double predict(double[] input) {
+    public double transform(double[] input) {
         DecisionNode node = tree.nodeInfo.get(tree.root);
         return predict(node, input);
     }

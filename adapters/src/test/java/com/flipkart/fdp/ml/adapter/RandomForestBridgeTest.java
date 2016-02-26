@@ -1,7 +1,7 @@
 package com.flipkart.fdp.ml.adapter;
 
 import com.flipkart.fdp.ml.modelinfo.RandomForestModelInfo;
-import com.flipkart.fdp.ml.predictors.RandomForestFPredictor;
+import com.flipkart.fdp.ml.transformer.RandomForestFTransformer;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.mllib.linalg.Vector;
 import org.apache.spark.mllib.regression.LabeledPoint;
@@ -37,13 +37,13 @@ public class RandomForestBridgeTest extends SparkTestBase {
 
         RandomForestModelInfoInfoAdapter randomForestBridgeIn =
                 new RandomForestModelInfoInfoAdapter();
-        RandomForestModelInfo rfModel = randomForestBridgeIn.transform(model);
-        RandomForestFPredictor randomForestFPredictor = new RandomForestFPredictor(rfModel);
+        RandomForestModelInfo rfModel = randomForestBridgeIn.getModelInfo(model);
+        RandomForestFTransformer randomForestFPredictor = new RandomForestFTransformer(rfModel);
         List<LabeledPoint> testPoints = data.take(10);
         for (LabeledPoint i : testPoints) {
             Vector v = i.features();
             double actual = model.predict(v);
-            double predicted = randomForestFPredictor.predict(v.toArray());
+            double predicted = randomForestFPredictor.transform(v.toArray());
             System.out.println(actual + "  -- " + predicted);
             assertEquals(actual, predicted, 0.01);
         }
@@ -65,14 +65,14 @@ public class RandomForestBridgeTest extends SparkTestBase {
 
         RandomForestModelInfoInfoAdapter randomForestBridgeIn =
                 new RandomForestModelInfoInfoAdapter();
-        RandomForestModelInfo rfModel = randomForestBridgeIn.transform(model);
-        RandomForestFPredictor randomForestFPredictor = new RandomForestFPredictor(rfModel);
+        RandomForestModelInfo rfModel = randomForestBridgeIn.getModelInfo(model);
+        RandomForestFTransformer randomForestFPredictor = new RandomForestFTransformer(rfModel);
 
         List<LabeledPoint> testPoints = data.collect();
         for (LabeledPoint i : testPoints) {
             Vector v = i.features();
             double actual = model.predict(v);
-            double predicted = randomForestFPredictor.predict(v.toArray());
+            double predicted = randomForestFPredictor.transform(v.toArray());
             System.out.println(actual + "  -- " + predicted);
             assertEquals(actual, predicted, 0.01);
         }

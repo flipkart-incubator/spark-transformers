@@ -1,5 +1,7 @@
 package com.flipkart.fdp.ml.importer;
 
+import com.flipkart.fdp.ml.modelinfo.ModelInfo;
+import com.flipkart.fdp.ml.transformer.Transformer;
 import com.google.gson.Gson;
 
 /**
@@ -8,8 +10,11 @@ import com.google.gson.Gson;
 public class ModelImporter {
     private static final Gson gson = new Gson();
 
-    //cannot name it import as it is a reserved keyword in java
-    public static<T> T importModel(String serializedModelInfo, Class<T> modelinfo) {
-        return gson.fromJson(serializedModelInfo, modelinfo);
+    public static Transformer importTransormer(byte[] serializedModelInfo, Class<? extends ModelInfo> modelinfo) {
+        return importModelInfo(serializedModelInfo, modelinfo).getTransformer();
+    }
+
+    public static ModelInfo importModelInfo(byte[] serializedModelInfo, Class<? extends ModelInfo> modelinfo) {
+        return gson.fromJson(new String(serializedModelInfo), modelinfo);
     }
 }

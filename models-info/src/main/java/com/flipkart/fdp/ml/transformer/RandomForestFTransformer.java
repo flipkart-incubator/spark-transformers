@@ -1,4 +1,4 @@
-package com.flipkart.fdp.ml.predictors;
+package com.flipkart.fdp.ml.transformer;
 
 import com.flipkart.fdp.ml.modelinfo.DecisionTreeModelInfo;
 import com.flipkart.fdp.ml.modelinfo.RandomForestModelInfo;
@@ -10,22 +10,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RandomForestFPredictor implements Predictor<RandomForestModelInfo> {
-    private static final Logger LOG = LoggerFactory.getLogger(RandomForestFPredictor.class);
+public class RandomForestFTransformer implements Transformer {
+    private static final Logger LOG = LoggerFactory.getLogger(RandomForestFTransformer.class);
     private final RandomForestModelInfo forest;
-    private final List<Predictor<DecisionTreeModelInfo>> subPredictors;
+    private final List<Transformer> subTransformers;
 
-    public RandomForestFPredictor(RandomForestModelInfo forest) {
+    public RandomForestFTransformer(RandomForestModelInfo forest) {
         this.forest = forest;
-        this.subPredictors = new ArrayList<>(forest.trees.size());
+        this.subTransformers = new ArrayList<>(forest.trees.size());
         for (DecisionTreeModelInfo tree : forest.trees) {
-            subPredictors.add(new DecisionTreePredictor(tree));
+            subTransformers.add(new DecisionTreeTransformer(tree));
         }
     }
 
-    public double predict(double[] input) {
+    public double transform(double[] input) {
         return predictForest(input);
     }
+
+
 
     private double predictForest(double[] input) {
         if (forest.algorithm.equals("Classification")) {
@@ -37,16 +39,16 @@ public class RandomForestFPredictor implements Predictor<RandomForestModelInfo> 
 
     private double regression(double[] input) {
         double total = 0;
-        for (Predictor<DecisionTreeModelInfo> i : subPredictors) {
-            total += i.predict(input);
+        for (Transformer i : subTransformers) {
+            total += i.transform(input);
         }
-        return total / subPredictors.size();
+        return total / subTransformers.size();
     }
 
     private double classify(double[] input) {
         Map<Double, Integer> votes = new HashMap<Double, Integer>();
-        for (Predictor<DecisionTreeModelInfo> i : subPredictors) {
-            double label = i.predict(input);
+        for (Transformer i : subTransformers) {
+            double label = i.transform(input);
 
             Integer existingCount = votes.get(label);
             if (existingCount == null) {
