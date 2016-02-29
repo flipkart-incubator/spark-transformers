@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Imports byte[] representing a model into corresponding {@link ModelInfo} object.
  * The serialization format currently being used is json
- * */
+ */
 public class ModelImporter {
     private static final Gson gson = new Gson();
 
@@ -19,9 +19,9 @@ public class ModelImporter {
      * Imports byte[] representing a model into corresponding {@link ModelInfo} object
      * and returns the transformer for this model.
      *
-     * @return transformer for the imported model of type {@link Transformer}
      * @param serializedModelInfo byte[] representing the serialized data
-     * */
+     * @return transformer for the imported model of type {@link Transformer}
+     */
     public static Transformer importAndGetTransformer(byte[] serializedModelInfo) {
         return importModelInfo(serializedModelInfo).getTransformer();
     }
@@ -30,18 +30,19 @@ public class ModelImporter {
      * Imports byte[] representing a model into corresponding {@link ModelInfo} object.
      * The serialization format currently being used is json
      *
-     * @return model info imported of type {@link ModelInfo}
      * @param serializedModelInfo byte[] representing the serialized data
-     * */
+     * @return model info imported of type {@link ModelInfo}
+     */
     public static ModelInfo importModelInfo(byte[] serializedModelInfo) {
         String data = new String(serializedModelInfo);
-        Map<String, String> map = gson.fromJson(data, new TypeToken<Map<String, String>>(){}.getType());
+        Map<String, String> map = gson.fromJson(data, new TypeToken<Map<String, String>>() {
+        }.getType());
         Class modelClass = null;
         try {
             modelClass = Class.forName(map.get("_class"));
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        return (ModelInfo)gson.fromJson(map.get("_model_info"), modelClass);
+        return (ModelInfo) gson.fromJson(map.get("_model_info"), modelClass);
     }
 }

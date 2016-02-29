@@ -1,6 +1,6 @@
 package com.flipkart.fdp.ml.adapter;
 
-import com.flipkart.fdp.ml.SparkModelExporter;
+import com.flipkart.fdp.ml.export.ModelExporter;
 import com.flipkart.fdp.ml.importer.ModelImporter;
 import com.flipkart.fdp.ml.transformer.Transformer;
 import org.apache.spark.api.java.JavaRDD;
@@ -15,9 +15,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by akshay.us on 2/24/16.
- */
 public class LogisticRegressionBridgeTest extends SparkTestBase {
 
     @Test
@@ -29,7 +26,7 @@ public class LogisticRegressionBridgeTest extends SparkTestBase {
         LogisticRegressionModel lrmodel = new LogisticRegressionWithSGD().run(data.rdd());
 
         //Export this model
-        byte[] exportedModel = SparkModelExporter.export(lrmodel);
+        byte[] exportedModel = ModelExporter.export(lrmodel);
 
         //Import and get Transformer
         Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);
@@ -41,7 +38,7 @@ public class LogisticRegressionBridgeTest extends SparkTestBase {
             Vector v = i.features();
             double actual = lrmodel.predict(v);
             double predicted = transformer.transform(v.toArray());
-            System.out.println(actual + "  -- " + predicted);
+            //System.out.println(actual + "  -- " + predicted);
             assertEquals(actual, predicted, 0.01);
         }
     }

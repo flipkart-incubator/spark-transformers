@@ -1,6 +1,5 @@
 package com.flipkart.fdp.ml.export;
 
-import com.flipkart.fdp.ml.SparkModelExporter;
 import com.flipkart.fdp.ml.adapter.SparkTestBase;
 import com.flipkart.fdp.ml.importer.ModelImporter;
 import com.flipkart.fdp.ml.modelinfo.LogisticRegressionModelInfo;
@@ -26,20 +25,20 @@ public class LogisticRegressionExporterTest extends SparkTestBase {
         LogisticRegressionModel lrmodel = new LogisticRegressionWithSGD().run(data.rdd());
 
         //Export this model
-        byte[] exportedModel = SparkModelExporter.export(lrmodel);
+        byte[] exportedModel = ModelExporter.export(lrmodel);
 
         System.out.println(new String(exportedModel));
 
         //Import it back
-        LogisticRegressionModelInfo importedModel = (LogisticRegressionModelInfo)ModelImporter.importModelInfo(exportedModel);
+        LogisticRegressionModelInfo importedModel = (LogisticRegressionModelInfo) ModelImporter.importModelInfo(exportedModel);
 
         //check if they are exactly equal with respect to their fields
         //it maybe edge cases eg. order of elements in the list is changed
-        assertEquals(lrmodel.intercept(), importedModel.intercept, 0.01);
-        assertEquals(lrmodel.numClasses(), importedModel.numClasses, 0.01);
-        assertEquals(lrmodel.numFeatures(), importedModel.numFeatures, 0.01);
-        for (int i = 0; i < importedModel.numFeatures; i++)
-            assertEquals(lrmodel.weights().toArray()[i], importedModel.weights[i], 0.01);
+        assertEquals(lrmodel.intercept(), importedModel.getIntercept(), 0.01);
+        assertEquals(lrmodel.numClasses(), importedModel.getNumClasses(), 0.01);
+        assertEquals(lrmodel.numFeatures(), importedModel.getNumFeatures(), 0.01);
+        for (int i = 0; i < importedModel.getNumFeatures(); i++)
+            assertEquals(lrmodel.weights().toArray()[i], importedModel.getWeights()[i], 0.01);
 
     }
 }

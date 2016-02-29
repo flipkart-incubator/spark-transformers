@@ -9,19 +9,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 /**
  * Transforms input/ predicts for a Random Forest model representation
  * captured by  {@link com.flipkart.fdp.ml.modelinfo.RandomForestModelInfo}.
- * */
+ */
 public class RandomForestTransformer implements Transformer {
     private static final Logger LOG = LoggerFactory.getLogger(RandomForestTransformer.class);
+    private static final String ALGO_CLASSIFICATION = "Classification";
+    private static final String ALGO_REGRESSION = "Regression";
     private final RandomForestModelInfo forest;
     private final List<Transformer> subTransformers;
 
     public RandomForestTransformer(RandomForestModelInfo forest) {
         this.forest = forest;
-        this.subTransformers = new ArrayList<>(forest.trees.size());
-        for (DecisionTreeModelInfo tree : forest.trees) {
+        this.subTransformers = new ArrayList<>(forest.getTrees().size());
+        for (DecisionTreeModelInfo tree : forest.getTrees()) {
             subTransformers.add(new DecisionTreeTransformer(tree));
         }
     }
@@ -31,12 +34,13 @@ public class RandomForestTransformer implements Transformer {
     }
 
 
-
     private double predictForest(double[] input) {
-        if (forest.algorithm.equals("Classification")) {
+        if (ALGO_CLASSIFICATION.equals(forest.getAlgorithm())) {
             return classify(input);
-        } else {
+        } else if (ALGO_REGRESSION.equals(forest.getAlgorithm())) {
             return regression(input);
+        } else {
+            throw new UnsupportedOperationException("operation not supported for algo:" + forest.getAlgorithm());
         }
     }
 

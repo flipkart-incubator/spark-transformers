@@ -8,10 +8,10 @@ import org.slf4j.LoggerFactory;
 /**
  * Transforms input/ predicts for a Decision Tree model representation
  * captured by  {@link com.flipkart.fdp.ml.modelinfo.DecisionTreeModelInfo}.
- * */
+ */
 public class DecisionTreeTransformer implements Transformer {
     private static final Logger LOG = LoggerFactory.getLogger(DecisionTreeTransformer.class);
-
+    private static final String CONTINUOUS_FEATURE = "Continuous";
     private final DecisionTreeModelInfo tree;
 
     public DecisionTreeTransformer(DecisionTreeModelInfo tree) {
@@ -19,28 +19,28 @@ public class DecisionTreeTransformer implements Transformer {
     }
 
     private boolean visitLeft(DecisionNode node, double val) {
-        return node.featureType.equals("Continuous") ?
-                val <= node.threshold :
-                node.categories.contains(val);
+        return CONTINUOUS_FEATURE.equals(node.getFeatureType()) ?
+                val <= node.getThreshold() :
+                node.getCategories().contains(val);
     }
 
     private double predict(DecisionNode node, double[] input) {
-        if (node.isLeaf)
-            return node.predict;
-        else {
-            boolean visitLeft = visitLeft(node, input[node.feature]);
+        if (node.isLeaf()) {
+            return node.getPredict();
+        } else {
+            boolean visitLeft = visitLeft(node, input[node.getFeature()]);
             if (visitLeft) {
-                DecisionNode leftChild = tree.nodeInfo.get(tree.leftChildMap.get(node.id));
+                DecisionNode leftChild = tree.getNodeInfo().get(tree.getLeftChildMap().get(node.getId()));
                 return predict(leftChild, input);
             } else {
-                DecisionNode rightChild = tree.nodeInfo.get(tree.rightChildMap.get(node.id));
+                DecisionNode rightChild = tree.getNodeInfo().get(tree.getRightChildMap().get(node.getId()));
                 return predict(rightChild, input);
             }
         }
     }
 
     public double transform(double[] input) {
-        DecisionNode node = tree.nodeInfo.get(tree.root);
+        DecisionNode node = tree.getNodeInfo().get(tree.getRoot());
         return predict(node, input);
     }
 }

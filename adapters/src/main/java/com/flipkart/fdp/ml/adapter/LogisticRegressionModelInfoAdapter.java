@@ -1,27 +1,24 @@
 package com.flipkart.fdp.ml.adapter;
 
 import com.flipkart.fdp.ml.modelinfo.LogisticRegressionModelInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.spark.mllib.classification.LogisticRegressionModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Transforms Spark's {@link LogisticRegressionModel} in MlLib to  {@link com.flipkart.fdp.ml.modelinfo.LogisticRegressionModelInfo} object
- * that can be exported through {@link com.flipkart.fdp.ml.SparkModelExporter}
- * */
-
-public class LogisticRegressionModelInfoInfoAdapter
+ * that can be exported through {@link com.flipkart.fdp.ml.export.ModelExporter}
+ */
+@Slf4j
+public class LogisticRegressionModelInfoAdapter
         implements ModelInfoAdapter<LogisticRegressionModel, LogisticRegressionModelInfo> {
-    private static final Logger LOG =
-            LoggerFactory.getLogger(LogisticRegressionModelInfoInfoAdapter.class);
 
     @Override
     public LogisticRegressionModelInfo getModelInfo(LogisticRegressionModel sparkLRModel) {
         LogisticRegressionModelInfo logisticRegressionModelInfo = new LogisticRegressionModelInfo();
-        logisticRegressionModelInfo.weights = sparkLRModel.weights().toArray();
-        logisticRegressionModelInfo.intercept = sparkLRModel.intercept();
-        logisticRegressionModelInfo.numClasses = sparkLRModel.numClasses();
-        logisticRegressionModelInfo.numFeatures = sparkLRModel.numFeatures();
+        logisticRegressionModelInfo.setWeights(sparkLRModel.weights().toArray());
+        logisticRegressionModelInfo.setIntercept(sparkLRModel.intercept());
+        logisticRegressionModelInfo.setNumClasses(sparkLRModel.numClasses());
+        logisticRegressionModelInfo.setNumFeatures(sparkLRModel.numFeatures());
         return logisticRegressionModelInfo;
     }
 

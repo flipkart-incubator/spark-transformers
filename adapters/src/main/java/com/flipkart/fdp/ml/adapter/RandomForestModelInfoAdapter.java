@@ -2,39 +2,34 @@ package com.flipkart.fdp.ml.adapter;
 
 import com.flipkart.fdp.ml.modelinfo.DecisionTreeModelInfo;
 import com.flipkart.fdp.ml.modelinfo.RandomForestModelInfo;
-import org.apache.spark.mllib.tree.configuration.Algo;
 import org.apache.spark.mllib.tree.model.DecisionTreeModel;
 import org.apache.spark.mllib.tree.model.RandomForestModel;
+
 /**
  * Transforms Spark's {@link RandomForestModel} in MlLib to  {@link com.flipkart.fdp.ml.modelinfo.RandomForestModelInfo} object
- * that can be exported through {@link com.flipkart.fdp.ml.SparkModelExporter}
- * */
-public class RandomForestModelInfoInfoAdapter
-        implements com.flipkart.fdp.ml.adapter.ModelInfoAdapter<RandomForestModel, RandomForestModelInfo> {
+ * that can be exported through {@link com.flipkart.fdp.ml.export.ModelExporter}
+ */
+public class RandomForestModelInfoAdapter
+        implements ModelInfoAdapter<RandomForestModel, RandomForestModelInfo> {
 
-    private com.flipkart.fdp.ml.adapter.DecisionTreeModelInfoInfoAdapter bridge = new com.flipkart.fdp.ml.adapter.DecisionTreeModelInfoInfoAdapter();
+    private DecisionTreeModelInfoAdapter bridge = new DecisionTreeModelInfoAdapter();
 
     private RandomForestModelInfo visitForest(RandomForestModel randomForestModel) {
         RandomForestModelInfo randomForestModelInfo = new RandomForestModelInfo();
-        if (randomForestModel.algo().equals(Algo.Classification())) {
-            randomForestModelInfo.algorithm = "Classification";
-        }
-        if (randomForestModel.algo().equals(Algo.Regression())) {
-            randomForestModelInfo.algorithm = "Regression";
-        }
+
+        randomForestModelInfo.setAlgorithm(randomForestModel.algo().toString());
 
         DecisionTreeModel[] decisionTreeModels = randomForestModel.trees();
         for (DecisionTreeModel i : decisionTreeModels) {
             DecisionTreeModelInfo tree = bridge.getModelInfo(i);
-            randomForestModelInfo.trees.add(tree);
+            randomForestModelInfo.getTrees().add(tree);
         }
         return randomForestModelInfo;
     }
 
     @Override
     public RandomForestModelInfo getModelInfo(RandomForestModel from) {
-        RandomForestModelInfo randomForestModelInfoInfo = visitForest(from);
-        return randomForestModelInfoInfo;
+        return visitForest(from);
     }
 
     @Override

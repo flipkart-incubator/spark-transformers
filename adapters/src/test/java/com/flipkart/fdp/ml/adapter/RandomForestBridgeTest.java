@@ -1,6 +1,6 @@
 package com.flipkart.fdp.ml.adapter;
 
-import com.flipkart.fdp.ml.SparkModelExporter;
+import com.flipkart.fdp.ml.export.ModelExporter;
 import com.flipkart.fdp.ml.importer.ModelImporter;
 import com.flipkart.fdp.ml.transformer.Transformer;
 import org.apache.spark.api.java.JavaRDD;
@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 public class RandomForestBridgeTest extends SparkTestBase {
 
     @Test
-    public void testRandomForestBridgeClassification() throws IOException{
+    public void testRandomForestBridgeClassification() throws IOException {
         Integer numClasses = 7;
         HashMap<Integer, Integer> categoricalFeaturesInfo = new HashMap<Integer, Integer>();
         Integer numTrees = 3;
@@ -40,7 +40,7 @@ public class RandomForestBridgeTest extends SparkTestBase {
                         featureSubsetStrategy, impurity, maxDepth, maxBins, seed);
 
         //Export this model
-        byte[] exportedModel = SparkModelExporter.export(sparkModel);
+        byte[] exportedModel = ModelExporter.export(sparkModel);
 
         //Import and get Transformer
         Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);
@@ -73,7 +73,7 @@ public class RandomForestBridgeTest extends SparkTestBase {
                         impurity, maxDepth, maxBins, seed);
 
         //Export this model
-        byte[] exportedModel = SparkModelExporter.export(sparkModel);
+        byte[] exportedModel = ModelExporter.export(sparkModel);
 
         //Import and get Transformer
         Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);
@@ -84,7 +84,7 @@ public class RandomForestBridgeTest extends SparkTestBase {
             Vector v = i.features();
             double actual = sparkModel.predict(v);
             double predicted = transformer.transform(v.toArray());
-            System.out.println(actual + "  -- " + predicted);
+            //System.out.println(actual + "  -- " + predicted);
             assertEquals(actual, predicted, 0.01);
         }
     }
