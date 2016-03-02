@@ -39,10 +39,10 @@ public class ModelImporter {
         }.getType());
         Class modelClass = null;
         try {
-            modelClass = Class.forName(map.get("_class"));
+            modelClass = Class.forName(map.get(SerializationConstants.TYPE_IDENTIFIER));
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        return (ModelInfo) gson.fromJson(map.get("_model_info"), modelClass);
+        return (ModelInfo) gson.fromJson(map.get(SerializationConstants.MODEL_INFO_IDENTIFIER), modelClass);
     }
 }

@@ -1,9 +1,6 @@
 package com.flipkart.fdp.ml;
 
-import com.flipkart.fdp.ml.adapter.DecisionTreeModelInfoAdapter;
-import com.flipkart.fdp.ml.adapter.LogisticRegressionModelInfoAdapter;
-import com.flipkart.fdp.ml.adapter.ModelInfoAdapter;
-import com.flipkart.fdp.ml.adapter.RandomForestModelInfoAdapter;
+import com.flipkart.fdp.ml.adapter.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +19,8 @@ public class ModelInfoAdapterFactory {
         register(new LogisticRegressionModelInfoAdapter());
         register(new DecisionTreeModelInfoAdapter());
         register(new RandomForestModelInfoAdapter());
+        register(new StringIndexerModelInfoAdapter());
+        register(new HashingTFModelInfoAdapter());
     }
 
     private static void register(ModelInfoAdapter adapter) {

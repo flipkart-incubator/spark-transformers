@@ -19,6 +19,7 @@ public class LogisticRegressionBridgeTest extends SparkTestBase {
 
     @Test
     public void testLogisticRegression() {
+        //prepare data
         String datapath = "src/test/resources/binary_classification_test.libsvm";
         JavaRDD<LabeledPoint> data = MLUtils.loadLibSVMFile(sc.sc(), datapath).toJavaRDD();
 

@@ -11,7 +11,6 @@ import org.apache.spark.mllib.tree.model.RandomForestModel;
 import org.apache.spark.mllib.util.MLUtils;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 public class RandomForestBridgeTest extends SparkTestBase {
 
     @Test
-    public void testRandomForestBridgeClassification() throws IOException {
+    public void testRandomForestBridgeClassification() {
         Integer numClasses = 7;
         HashMap<Integer, Integer> categoricalFeaturesInfo = new HashMap<Integer, Integer>();
         Integer numTrees = 3;
@@ -30,6 +29,7 @@ public class RandomForestBridgeTest extends SparkTestBase {
         Integer maxBins = 32;
         Integer seed = 12345;
 
+        //prepare data
         String datapath = "src/test/resources/classification_test.libsvm";
         JavaRDD<LabeledPoint> data = MLUtils.loadLibSVMFile(sc.sc(), datapath).toJavaRDD();
 
@@ -57,13 +57,15 @@ public class RandomForestBridgeTest extends SparkTestBase {
     }
 
     @Test
-    public void testRFRegression() throws ClassNotFoundException {
+    public void testRFRegression() {
         String datapath = "src/test/resources/regression_test.libsvm";
         testRegressor("variance", 3, 4, 32, "auto", 12345, datapath);
     }
 
     private void testRegressor(String impurity, int numTrees, int maxDepth, int maxBins,
-                               String featureSubsetStrategy, int seed, String datapath) throws ClassNotFoundException {
+                               String featureSubsetStrategy, int seed, String datapath) {
+
+        //prepare data
         HashMap<Integer, Integer> categoricalFeaturesInfo = new HashMap<Integer, Integer>();
         JavaRDD<LabeledPoint> data = MLUtils.loadLibSVMFile(sc.sc(), datapath).toJavaRDD();
 

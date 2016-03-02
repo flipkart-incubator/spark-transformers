@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
  */
 public class LogisticRegressionTransformer implements Transformer {
     private static final Logger LOG = LoggerFactory.getLogger(LogisticRegressionTransformer.class);
-    private LogisticRegressionModelInfo model;
+    private final LogisticRegressionModelInfo model;
 
     public LogisticRegressionTransformer(LogisticRegressionModelInfo model) {
         this.model = model;
