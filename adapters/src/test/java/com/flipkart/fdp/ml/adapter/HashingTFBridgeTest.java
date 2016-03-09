@@ -23,7 +23,7 @@ import static org.junit.Assert.assertArrayEquals;
 /**
  * Created by akshay.us on 3/8/16.
  */
-public class HashingTFBridgeTest extends SparkTestBase{
+public class HashingTFBridgeTest extends SparkTestBase {
 
     @Test
     public void testHashingTF() {
@@ -58,14 +58,14 @@ public class HashingTFBridgeTest extends SparkTestBase{
         //Import and get Transformer
         Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);
         //TODO: fix the transformer interface for this use case
-        HashingTFTransformer hashingTFTransformer= (HashingTFTransformer)transformer;
+        HashingTFTransformer hashingTFTransformer = (HashingTFTransformer) transformer;
 
         //compare predictions
         Row[] sparkOutput = sparkModel.transform(wordsData).orderBy("id").select("id", "sentence", "words", "rawFeatures").collect();
-        for(Row row : sparkOutput) {
-            String [] words = ((String)row.get(1)).toLowerCase().split(" ");
-            double [] transformedOp = hashingTFTransformer.transform(words);
-            double [] sparkOp = ((Vector)row.get(3)).toArray();
+        for (Row row : sparkOutput) {
+            String[] words = ((String) row.get(1)).toLowerCase().split(" ");
+            double[] transformedOp = hashingTFTransformer.transform(words);
+            double[] sparkOp = ((Vector) row.get(3)).toArray();
             assertArrayEquals(transformedOp, sparkOp, 0.01);
         }
     }

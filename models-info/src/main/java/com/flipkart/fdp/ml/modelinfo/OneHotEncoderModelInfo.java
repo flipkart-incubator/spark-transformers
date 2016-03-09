@@ -1,19 +1,24 @@
 package com.flipkart.fdp.ml.modelinfo;
 
+import com.flipkart.fdp.ml.transformer.OneHotEncoderTransformer;
 import com.flipkart.fdp.ml.transformer.Transformer;
 import lombok.Data;
 
 /**
- * Created by akshay.us on 3/3/16.
+ * Represents information for a one hot encoder model
  */
 @Data
 public class OneHotEncoderModelInfo implements ModelInfo {
 
-    private boolean shouldDropLast;
+    //default value for should drop last is true
+    private boolean shouldDropLast = true;
     private int numTypes;
 
+    /**
+     * @return an corresponding {@link OneHotEncoderTransformer} for this model info
+     */
     @Override
     public Transformer getTransformer() {
-        return null;
+        return new OneHotEncoderTransformer(this);
     }
 }

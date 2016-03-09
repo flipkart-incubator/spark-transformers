@@ -14,21 +14,21 @@ public class DecisionTreeTransformer implements Transformer {
     private static final String CONTINUOUS_FEATURE = "Continuous";
     private final DecisionTreeModelInfo tree;
 
-    public DecisionTreeTransformer(DecisionTreeModelInfo tree) {
+    public DecisionTreeTransformer(final DecisionTreeModelInfo tree) {
         this.tree = tree;
     }
 
-    private boolean visitLeft(DecisionNode node, double val) {
+    private boolean visitLeft(final DecisionNode node, final double val) {
         return CONTINUOUS_FEATURE.equals(node.getFeatureType()) ?
                 val <= node.getThreshold() :
                 node.getCategories().contains(val);
     }
 
-    private double predict(DecisionNode node, double[] input) {
+    private double predict(final DecisionNode node, final double[] input) {
         if (node.isLeaf()) {
             return node.getPredict();
         } else {
-            boolean visitLeft = visitLeft(node, input[node.getFeature()]);
+            final boolean visitLeft = visitLeft(node, input[node.getFeature()]);
             if (visitLeft) {
                 DecisionNode leftChild = tree.getNodeInfo().get(tree.getLeftChildMap().get(node.getId()));
                 return predict(leftChild, input);
@@ -39,8 +39,8 @@ public class DecisionTreeTransformer implements Transformer {
         }
     }
 
-    public double transform(double[] input) {
-        DecisionNode node = tree.getNodeInfo().get(tree.getRoot());
+    public double transform(final double[] input) {
+        final DecisionNode node = tree.getNodeInfo().get(tree.getRoot());
         return predict(node, input);
     }
 }

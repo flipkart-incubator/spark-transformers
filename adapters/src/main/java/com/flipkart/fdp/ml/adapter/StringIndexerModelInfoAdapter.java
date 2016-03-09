@@ -7,18 +7,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by akshay.us on 3/2/16.
+ * Transforms Spark's {@link StringIndexerModel} in MlLib to  {@link com.flipkart.fdp.ml.modelinfo.StringIndexerModelInfo} object
+ * that can be exported through {@link com.flipkart.fdp.ml.export.ModelExporter}
  */
 public class StringIndexerModelInfoAdapter implements ModelInfoAdapter<StringIndexerModel, StringIndexerModelInfo> {
 
     @Override
-    public StringIndexerModelInfo getModelInfo(StringIndexerModel from) {
-        String[] labels = from.labels();
-        Map<String, Double> labelToIndex = new HashMap<String, Double>();
-        for( int i =0; i < labels.length; i++) {
-            labelToIndex.put(labels[i], (double)i);
+    public StringIndexerModelInfo getModelInfo(final StringIndexerModel from) {
+        final String[] labels = from.labels();
+        final Map<String, Double> labelToIndex = new HashMap<String, Double>();
+        for (int i = 0; i < labels.length; i++) {
+            labelToIndex.put(labels[i], (double) i);
         }
-        StringIndexerModelInfo modelInfo = new StringIndexerModelInfo();
+        final StringIndexerModelInfo modelInfo = new StringIndexerModelInfo();
         modelInfo.setLabelToIndex(labelToIndex);
         return modelInfo;
     }

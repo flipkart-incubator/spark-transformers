@@ -12,14 +12,14 @@ import org.apache.spark.mllib.tree.model.RandomForestModel;
 public class RandomForestModelInfoAdapter
         implements ModelInfoAdapter<RandomForestModel, RandomForestModelInfo> {
 
-    private DecisionTreeModelInfoAdapter bridge = new DecisionTreeModelInfoAdapter();
+    private final DecisionTreeModelInfoAdapter bridge = new DecisionTreeModelInfoAdapter();
 
-    private RandomForestModelInfo visitForest(RandomForestModel randomForestModel) {
-        RandomForestModelInfo randomForestModelInfo = new RandomForestModelInfo();
+    private RandomForestModelInfo visitForest(final RandomForestModel randomForestModel) {
+        final RandomForestModelInfo randomForestModelInfo = new RandomForestModelInfo();
 
         randomForestModelInfo.setAlgorithm(randomForestModel.algo().toString());
 
-        DecisionTreeModel[] decisionTreeModels = randomForestModel.trees();
+        final DecisionTreeModel[] decisionTreeModels = randomForestModel.trees();
         for (DecisionTreeModel i : decisionTreeModels) {
             DecisionTreeModelInfo tree = bridge.getModelInfo(i);
             randomForestModelInfo.getTrees().add(tree);

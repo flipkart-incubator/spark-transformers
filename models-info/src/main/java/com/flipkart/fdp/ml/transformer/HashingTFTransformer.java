@@ -5,24 +5,25 @@ import com.flipkart.fdp.ml.modelinfo.HashingTFModelInfo;
 import java.util.Arrays;
 
 /**
- * Created by akshay.us on 3/4/16.
+ * Transforms input/ predicts for a HashingTF model representation
+ * captured by  {@link com.flipkart.fdp.ml.modelinfo.HashingTFModelInfo}.
  */
 public class HashingTFTransformer implements Transformer {
 
-    private HashingTFModelInfo modelInfo;
+    private final HashingTFModelInfo modelInfo;
 
-    public HashingTFTransformer(HashingTFModelInfo modelInfo) {
+    public HashingTFTransformer(final HashingTFModelInfo modelInfo) {
         this.modelInfo = modelInfo;
     }
 
-    public double[] transform(String [] terms) {
-        double [] encoding = new double[modelInfo.getNumFeatures()];
+    public double[] transform(final String[] terms) {
+        final double[] encoding = new double[modelInfo.getNumFeatures()];
         Arrays.fill(encoding, 0.0);
 
-        for(String term : terms) {
+        for (final String term : terms) {
             int index = term.hashCode() % modelInfo.getNumFeatures();
             //care for negative values
-            if(index < 0) {
+            if (index < 0) {
                 index += modelInfo.getNumFeatures();
             }
             encoding[index] += 1.0;
@@ -30,6 +31,7 @@ public class HashingTFTransformer implements Transformer {
         return encoding;
     }
 
+    //TODO: what finalise on the Transformer interface
     @Override
     public double transform(double[] input) {
         return 0;

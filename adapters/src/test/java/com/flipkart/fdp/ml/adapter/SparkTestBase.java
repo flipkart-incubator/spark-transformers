@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Base class for test that need to create and use a spark context.
- * */
+ */
 public class SparkTestBase {
     private static final Logger LOG = LoggerFactory.getLogger(SparkTestBase.class);
     protected JavaSparkContext sc;

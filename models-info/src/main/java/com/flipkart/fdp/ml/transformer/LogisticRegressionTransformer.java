@@ -12,11 +12,11 @@ public class LogisticRegressionTransformer implements Transformer {
     private static final Logger LOG = LoggerFactory.getLogger(LogisticRegressionTransformer.class);
     private final LogisticRegressionModelInfo model;
 
-    public LogisticRegressionTransformer(LogisticRegressionModelInfo model) {
+    public LogisticRegressionTransformer(final LogisticRegressionModelInfo model) {
         this.model = model;
     }
 
-    public double transform(double[] input) {
+    public double transform(final double[] input) {
         double dotProduct = 0.0;
         for (int i = 0; i < input.length; i++) {
             dotProduct += input[i] * model.getWeights()[i];

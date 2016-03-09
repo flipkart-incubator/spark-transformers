@@ -5,12 +5,15 @@ import com.flipkart.fdp.ml.transformer.Transformer;
 import lombok.Data;
 
 /**
- * Created by akshay.us on 3/4/16.
+ * Represents information for a HashingTF model
  */
 @Data
 public class HashingTFModelInfo implements ModelInfo {
     private int numFeatures;
 
+    /**
+     * @return an corresponding {@link HashingTFTransformer} for this model info
+     */
     @Override
     public Transformer getTransformer() {
         return new HashingTFTransformer(this);

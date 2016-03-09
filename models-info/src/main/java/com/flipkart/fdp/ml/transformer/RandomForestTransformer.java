@@ -21,7 +21,7 @@ public class RandomForestTransformer implements Transformer {
     private final RandomForestModelInfo forest;
     private final List<Transformer> subTransformers;
 
-    public RandomForestTransformer(RandomForestModelInfo forest) {
+    public RandomForestTransformer(final RandomForestModelInfo forest) {
         this.forest = forest;
         this.subTransformers = new ArrayList<>(forest.getTrees().size());
         for (DecisionTreeModelInfo tree : forest.getTrees()) {
@@ -29,12 +29,12 @@ public class RandomForestTransformer implements Transformer {
         }
     }
 
-    public double transform(double[] input) {
+    public double transform(final double[] input) {
         return predictForest(input);
     }
 
 
-    private double predictForest(double[] input) {
+    private double predictForest(final double[] input) {
         if (ALGO_CLASSIFICATION.equals(forest.getAlgorithm())) {
             return classify(input);
         } else if (ALGO_REGRESSION.equals(forest.getAlgorithm())) {
@@ -44,7 +44,7 @@ public class RandomForestTransformer implements Transformer {
         }
     }
 
-    private double regression(double[] input) {
+    private double regression(final double[] input) {
         double total = 0;
         for (Transformer i : subTransformers) {
             total += i.transform(input);
@@ -52,7 +52,7 @@ public class RandomForestTransformer implements Transformer {
         return total / subTransformers.size();
     }
 
-    private double classify(double[] input) {
+    private double classify(final double[] input) {
         Map<Double, Integer> votes = new HashMap<Double, Integer>();
         for (Transformer i : subTransformers) {
             double label = i.transform(input);

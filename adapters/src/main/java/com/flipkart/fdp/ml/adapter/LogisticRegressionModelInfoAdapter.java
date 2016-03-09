@@ -13,8 +13,8 @@ public class LogisticRegressionModelInfoAdapter
         implements ModelInfoAdapter<LogisticRegressionModel, LogisticRegressionModelInfo> {
 
     @Override
-    public LogisticRegressionModelInfo getModelInfo(LogisticRegressionModel sparkLRModel) {
-        LogisticRegressionModelInfo logisticRegressionModelInfo = new LogisticRegressionModelInfo();
+    public LogisticRegressionModelInfo getModelInfo(final LogisticRegressionModel sparkLRModel) {
+        final LogisticRegressionModelInfo logisticRegressionModelInfo = new LogisticRegressionModelInfo();
         logisticRegressionModelInfo.setWeights(sparkLRModel.weights().toArray());
         logisticRegressionModelInfo.setIntercept(sparkLRModel.intercept());
         logisticRegressionModelInfo.setNumClasses(sparkLRModel.numClasses());

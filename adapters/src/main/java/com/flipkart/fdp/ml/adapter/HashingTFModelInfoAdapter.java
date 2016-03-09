@@ -4,12 +4,13 @@ import com.flipkart.fdp.ml.modelinfo.HashingTFModelInfo;
 import org.apache.spark.ml.feature.HashingTF;
 
 /**
- * Created by akshay.us on 3/4/16.
+ * Transforms Spark's {@link HashingTF} in MlLib to  {@link com.flipkart.fdp.ml.modelinfo.HashingTFModelInfo} object
+ * that can be exported through {@link com.flipkart.fdp.ml.export.ModelExporter}
  */
 public class HashingTFModelInfoAdapter implements ModelInfoAdapter<HashingTF, HashingTFModelInfo> {
     @Override
-    public HashingTFModelInfo getModelInfo(HashingTF from) {
-        HashingTFModelInfo modelInfo = new HashingTFModelInfo();
+    public HashingTFModelInfo getModelInfo(final HashingTF from) {
+        final HashingTFModelInfo modelInfo = new HashingTFModelInfo();
         modelInfo.setNumFeatures(from.getNumFeatures());
         return modelInfo;
     }

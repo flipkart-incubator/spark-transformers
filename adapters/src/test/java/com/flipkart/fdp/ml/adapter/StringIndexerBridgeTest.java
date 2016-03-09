@@ -28,7 +28,7 @@ public class StringIndexerBridgeTest extends SparkTestBase {
     public void testStringIndexer() {
 
         //prepare data
-        StructType schema = createStructType(new StructField[] {
+        StructType schema = createStructType(new StructField[]{
                 createStructField("id", IntegerType, false),
                 createStructField("label", StringType, false)
         });
@@ -47,17 +47,19 @@ public class StringIndexerBridgeTest extends SparkTestBase {
         //Import and get Transformer
         Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);
         //TODO: fix the transformer interface for this use case
-        StringIndexerTransformer stringIndexerTransformer= (StringIndexerTransformer)transformer;
+        StringIndexerTransformer stringIndexerTransformer = (StringIndexerTransformer) transformer;
 
         //compare predictions
         Row[] sparkOutput = model.transform(dataset).orderBy("id").select("id", "label", "labelIndex").collect();
-        for(Row row : sparkOutput) {
-            assertEquals(stringIndexerTransformer.transform((String)row.get(1)), (double)row.get(2), 0.01);
+        for (Row row : sparkOutput) {
+            assertEquals(stringIndexerTransformer.transform((String) row.get(1)), (double) row.get(2), 0.01);
         }
 
     }
 
-    /** An alias for RowFactory.create. */
+    /**
+     * An alias for RowFactory.create.
+     */
     private Row cr(Object... values) {
         return RowFactory.create(values);
     }
