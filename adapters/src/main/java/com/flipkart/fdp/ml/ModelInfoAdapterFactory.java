@@ -21,6 +21,7 @@ public class ModelInfoAdapterFactory {
         register(new RandomForestModelInfoAdapter());
         register(new StringIndexerModelInfoAdapter());
         register(new HashingTFModelInfoAdapter());
+        register(new OneHotEncoderModelInfoAdapter());
     }
 
     private static void register(ModelInfoAdapter adapter) {

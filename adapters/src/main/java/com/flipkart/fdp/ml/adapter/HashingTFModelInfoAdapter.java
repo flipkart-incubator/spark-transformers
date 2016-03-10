@@ -2,6 +2,7 @@ package com.flipkart.fdp.ml.adapter;
 
 import com.flipkart.fdp.ml.modelinfo.HashingTFModelInfo;
 import org.apache.spark.ml.feature.HashingTF;
+import org.apache.spark.sql.DataFrame;
 
 /**
  * Transforms Spark's {@link HashingTF} in MlLib to  {@link com.flipkart.fdp.ml.modelinfo.HashingTFModelInfo} object
@@ -9,7 +10,7 @@ import org.apache.spark.ml.feature.HashingTF;
  */
 public class HashingTFModelInfoAdapter implements ModelInfoAdapter<HashingTF, HashingTFModelInfo> {
     @Override
-    public HashingTFModelInfo getModelInfo(final HashingTF from) {
+    public HashingTFModelInfo getModelInfo(final HashingTF from, DataFrame df) {
         final HashingTFModelInfo modelInfo = new HashingTFModelInfo();
         modelInfo.setNumFeatures(from.getNumFeatures());
         return modelInfo;

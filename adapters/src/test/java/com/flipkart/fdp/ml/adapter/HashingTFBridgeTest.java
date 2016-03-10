@@ -52,7 +52,7 @@ public class HashingTFBridgeTest extends SparkTestBase {
                 .setNumFeatures(numFeatures);
 
         //Export this model
-        byte[] exportedModel = ModelExporter.export(sparkModel);
+        byte[] exportedModel = ModelExporter.export(sparkModel, sentenceData);
 
         //Import and get Transformer
         Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);

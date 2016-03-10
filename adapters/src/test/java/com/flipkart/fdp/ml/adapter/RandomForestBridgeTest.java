@@ -34,14 +34,13 @@ public class RandomForestBridgeTest extends SparkTestBase {
         String datapath = "src/test/resources/classification_test.libsvm";
         JavaRDD<LabeledPoint> data = MLUtils.loadLibSVMFile(sc.sc(), datapath).toJavaRDD();
 
-
         //Train model in scala
         RandomForestModel sparkModel = RandomForest
                 .trainClassifier(data, numClasses, categoricalFeaturesInfo, numTrees,
                         featureSubsetStrategy, impurity, maxDepth, maxBins, seed);
 
         //Export this model
-        byte[] exportedModel = ModelExporter.export(sparkModel);
+        byte[] exportedModel = ModelExporter.export(sparkModel, sqlContext.createDataFrame(data, null));
 
         //Import and get Transformer
         Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);
@@ -76,7 +75,7 @@ public class RandomForestBridgeTest extends SparkTestBase {
                         impurity, maxDepth, maxBins, seed);
 
         //Export this model
-        byte[] exportedModel = ModelExporter.export(sparkModel);
+        byte[] exportedModel = ModelExporter.export(sparkModel, null);
 
         //Import and get Transformer
         Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);

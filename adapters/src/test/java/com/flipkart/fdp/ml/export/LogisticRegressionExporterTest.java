@@ -25,7 +25,7 @@ public class LogisticRegressionExporterTest extends SparkTestBase {
         LogisticRegressionModel lrmodel = new LogisticRegressionWithSGD().run(data.rdd());
 
         //Export this model
-        byte[] exportedModel = ModelExporter.export(lrmodel);
+        byte[] exportedModel = ModelExporter.export(lrmodel, null);
 
         System.out.println(new String(exportedModel));
 

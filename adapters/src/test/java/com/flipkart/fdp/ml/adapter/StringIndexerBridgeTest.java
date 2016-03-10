@@ -42,7 +42,7 @@ public class StringIndexerBridgeTest extends SparkTestBase {
                 .setOutputCol("labelIndex").fit(dataset);
 
         //Export this model
-        byte[] exportedModel = ModelExporter.export(model);
+        byte[] exportedModel = ModelExporter.export(model, dataset);
 
         //Import and get Transformer
         Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);
