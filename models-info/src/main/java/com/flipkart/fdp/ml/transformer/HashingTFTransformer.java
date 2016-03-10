@@ -16,7 +16,7 @@ public class HashingTFTransformer implements Transformer {
         this.modelInfo = modelInfo;
     }
 
-    public double[] transform(final String[] terms) {
+    public double[] predict(final String[] terms) {
         final double[] encoding = new double[modelInfo.getNumFeatures()];
         Arrays.fill(encoding, 0.0);
 
@@ -31,9 +31,9 @@ public class HashingTFTransformer implements Transformer {
         return encoding;
     }
 
-    //TODO: what finalise on the Transformer interface
     @Override
-    public double transform(double[] input) {
-        return 0;
+    public Object transform(Object[] input) {
+        return predict((String [])input);
     }
+
 }

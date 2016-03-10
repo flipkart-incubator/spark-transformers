@@ -3,6 +3,7 @@ package com.flipkart.fdp.ml.adapter;
 import com.flipkart.fdp.ml.export.ModelExporter;
 import com.flipkart.fdp.ml.importer.ModelImporter;
 import com.flipkart.fdp.ml.transformer.Transformer;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.mllib.classification.LogisticRegressionModel;
 import org.apache.spark.mllib.classification.LogisticRegressionWithSGD;
@@ -38,7 +39,7 @@ public class LogisticRegressionBridgeTest extends SparkTestBase {
         for (LabeledPoint i : testPoints) {
             Vector v = i.features();
             double actual = lrmodel.predict(v);
-            double predicted = transformer.transform(v.toArray());
+            double predicted = (double) transformer.transform(ArrayUtils.toObject(v.toArray()));
             //System.out.println(actual + "  -- " + predicted);
             assertEquals(actual, predicted, 0.01);
         }

@@ -14,7 +14,7 @@ public class StringIndexerTransformer implements Transformer {
         this.modelInfo = modelInfo;
     }
 
-    public double transform(final String s) {
+    public double predict(final String s) {
         final Double index = modelInfo.getLabelToIndex().get(s);
         if (null == index) {
             throw new RuntimeException("Unseen label :" + s);
@@ -22,9 +22,11 @@ public class StringIndexerTransformer implements Transformer {
         return index;
     }
 
-    //TODO: what finalise on the Transformer interface
     @Override
-    public double transform(double[] input) {
-        throw new UnsupportedOperationException("transform on double values is not supported by StringIndexer");
+    public Object transform(Object[] input) {
+        if(input.length > 1) {
+            throw new IllegalArgumentException("StringIndexerTransformer does not support arrays of length more than 1");
+        }
+        return predict((String)input[0]);
     }
 }

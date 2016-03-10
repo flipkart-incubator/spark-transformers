@@ -16,7 +16,7 @@ public class OneHotEncoderTransformer implements Transformer {
         this.modelInfo = modelInfo;
     }
 
-    public double[] transform(final double input) {
+    public double[] predict(final double input) {
         final double encoding[];
         if (modelInfo.isShouldDropLast()) {
             encoding = new double[modelInfo.getNumTypes() - 1];
@@ -32,9 +32,11 @@ public class OneHotEncoderTransformer implements Transformer {
         return encoding;
     }
 
-    //TODO: what finalise on the Transformer interface
     @Override
-    public double transform(double[] input) {
-        return 0;
+    public Object transform(Object[] input) {
+        if(input.length > 1) {
+            throw new IllegalArgumentException("OneHotEncoderTransformer does not support arrays of length more than 1");
+        }
+        return predict((Double)input[0]);
     }
 }

@@ -2,6 +2,7 @@ package com.flipkart.fdp.ml.transformer;
 
 import com.flipkart.fdp.ml.modelinfo.DecisionTreeModelInfo;
 import com.flipkart.fdp.ml.modelinfo.DecisionTreeModelInfo.DecisionNode;
+import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,8 +40,14 @@ public class DecisionTreeTransformer implements Transformer {
         }
     }
 
-    public double transform(final double[] input) {
+    public double predict(final double[] input) {
         final DecisionNode node = tree.getNodeInfo().get(tree.getRoot());
         return predict(node, input);
     }
+
+    @Override
+    public Object transform(Object[] input) {
+        return predict(ArrayUtils.toPrimitive((Double [])input));
+    }
+
 }

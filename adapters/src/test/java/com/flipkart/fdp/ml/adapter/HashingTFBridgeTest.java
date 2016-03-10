@@ -2,7 +2,6 @@ package com.flipkart.fdp.ml.adapter;
 
 import com.flipkart.fdp.ml.export.ModelExporter;
 import com.flipkart.fdp.ml.importer.ModelImporter;
-import com.flipkart.fdp.ml.transformer.HashingTFTransformer;
 import com.flipkart.fdp.ml.transformer.Transformer;
 import org.apache.spark.ml.feature.HashingTF;
 import org.apache.spark.ml.feature.Tokenizer;
@@ -57,14 +56,12 @@ public class HashingTFBridgeTest extends SparkTestBase {
 
         //Import and get Transformer
         Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);
-        //TODO: fix the transformer interface for this use case
-        HashingTFTransformer hashingTFTransformer = (HashingTFTransformer) transformer;
 
         //compare predictions
         Row[] sparkOutput = sparkModel.transform(wordsData).orderBy("id").select("id", "sentence", "words", "rawFeatures").collect();
         for (Row row : sparkOutput) {
             String[] words = ((String) row.get(1)).toLowerCase().split(" ");
-            double[] transformedOp = hashingTFTransformer.transform(words);
+            double[] transformedOp = (double[]) transformer.transform(words);
             double[] sparkOp = ((Vector) row.get(3)).toArray();
             assertArrayEquals(transformedOp, sparkOp, 0.01);
         }

@@ -52,7 +52,8 @@ public class StringIndexerBridgeTest extends SparkTestBase {
         //compare predictions
         Row[] sparkOutput = model.transform(dataset).orderBy("id").select("id", "label", "labelIndex").collect();
         for (Row row : sparkOutput) {
-            assertEquals(stringIndexerTransformer.transform((String) row.get(1)), (double) row.get(2), 0.01);
+            double indexerOutput = (double)stringIndexerTransformer.transform(new String []{ (String)row.get(1) });
+            assertEquals(indexerOutput, (double) row.get(2), 0.01);
         }
 
     }

@@ -2,6 +2,7 @@ package com.flipkart.fdp.ml.transformer;
 
 import com.flipkart.fdp.ml.modelinfo.DecisionTreeModelInfo;
 import com.flipkart.fdp.ml.modelinfo.RandomForestModelInfo;
+import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,8 +30,13 @@ public class RandomForestTransformer implements Transformer {
         }
     }
 
-    public double transform(final double[] input) {
+    public double predict(final double[] input) {
         return predictForest(input);
+    }
+
+    @Override
+    public Object transform(Object[] input) {
+        return predict(ArrayUtils.toPrimitive((Double [])input));
     }
 
 
@@ -47,7 +53,7 @@ public class RandomForestTransformer implements Transformer {
     private double regression(final double[] input) {
         double total = 0;
         for (Transformer i : subTransformers) {
-            total += i.transform(input);
+            total += (double)i.transform(ArrayUtils.toObject(input));
         }
         return total / subTransformers.size();
     }
@@ -55,7 +61,7 @@ public class RandomForestTransformer implements Transformer {
     private double classify(final double[] input) {
         Map<Double, Integer> votes = new HashMap<Double, Integer>();
         for (Transformer i : subTransformers) {
-            double label = i.transform(input);
+            double label = (double)i.transform(ArrayUtils.toObject(input));
 
             Integer existingCount = votes.get(label);
             if (existingCount == null) {
