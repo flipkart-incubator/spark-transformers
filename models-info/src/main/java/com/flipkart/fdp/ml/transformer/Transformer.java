@@ -10,5 +10,5 @@ public interface Transformer {
      * @param input values as a array of double for the transformation
      * @return prediction / transformed input
      */
-    double transform(double[] input);
+    Object transform(Object[] input);
 }

@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.spark.mllib.tree.model.DecisionTreeModel;
 import org.apache.spark.mllib.tree.model.Node;
 import org.apache.spark.mllib.tree.model.Split;
+import org.apache.spark.sql.DataFrame;
 
 import java.util.Stack;
 
@@ -17,12 +18,12 @@ import java.util.Stack;
 public class DecisionTreeModelInfoAdapter
         implements ModelInfoAdapter<DecisionTreeModel, DecisionTreeModelInfo> {
 
-    private void visit(Node node, Stack<Node> nodesToVisit, DecisionTreeModelInfo treeInfo) {
-        DecisionNode nodeInfo = new DecisionNode();
+    private void visit(final Node node, final Stack<Node> nodesToVisit, final DecisionTreeModelInfo treeInfo) {
+        final DecisionNode nodeInfo = new DecisionNode();
         nodeInfo.setId(node.id());
         nodeInfo.setLeaf(node.isLeaf());
         if (node.split().nonEmpty()) {
-            Split split = node.split().get();
+            final Split split = node.split().get();
             nodeInfo.setFeature(split.feature());
             nodeInfo.setThreshold(split.threshold());
             nodeInfo.setFeatureType(split.featureType().toString());
@@ -31,22 +32,22 @@ public class DecisionTreeModelInfoAdapter
         nodeInfo.setProbability(node.predict().prob());
         treeInfo.getNodeInfo().put(node.id(), nodeInfo);
         if (node.rightNode().nonEmpty()) {
-            Node right = node.rightNode().get();
+            final Node right = node.rightNode().get();
             treeInfo.getRightChildMap().put(node.id(), right.id());
             nodesToVisit.push(right);
         }
         if (node.leftNode().nonEmpty()) {
-            Node left = node.leftNode().get();
+            final Node left = node.leftNode().get();
             treeInfo.getLeftChildMap().put(node.id(), left.id());
             nodesToVisit.push(left);
         }
     }
 
-    public DecisionTreeModelInfo getModelInfo(DecisionTreeModel decisionTreeModel) {
-        DecisionTreeModelInfo treeInfo = new DecisionTreeModelInfo();
-        Node node = decisionTreeModel.topNode();
+    public DecisionTreeModelInfo getModelInfo(final DecisionTreeModel decisionTreeModel, DataFrame df) {
+        final DecisionTreeModelInfo treeInfo = new DecisionTreeModelInfo();
+        final Node node = decisionTreeModel.topNode();
         treeInfo.setRoot(node.id());
-        Stack<Node> nodesToVisit = new Stack<>();
+        final Stack<Node> nodesToVisit = new Stack<>();
         nodesToVisit.push(node);
         while (!nodesToVisit.empty()) {
             Node curr = nodesToVisit.pop();

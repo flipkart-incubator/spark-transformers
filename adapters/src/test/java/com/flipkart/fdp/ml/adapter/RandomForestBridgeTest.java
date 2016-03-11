@@ -3,6 +3,7 @@ package com.flipkart.fdp.ml.adapter;
 import com.flipkart.fdp.ml.export.ModelExporter;
 import com.flipkart.fdp.ml.importer.ModelImporter;
 import com.flipkart.fdp.ml.transformer.Transformer;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.mllib.linalg.Vector;
 import org.apache.spark.mllib.regression.LabeledPoint;
@@ -11,7 +12,6 @@ import org.apache.spark.mllib.tree.model.RandomForestModel;
 import org.apache.spark.mllib.util.MLUtils;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 public class RandomForestBridgeTest extends SparkTestBase {
 
     @Test
-    public void testRandomForestBridgeClassification() throws IOException {
+    public void testRandomForestBridgeClassification() {
         Integer numClasses = 7;
         HashMap<Integer, Integer> categoricalFeaturesInfo = new HashMap<Integer, Integer>();
         Integer numTrees = 3;
@@ -30,9 +30,9 @@ public class RandomForestBridgeTest extends SparkTestBase {
         Integer maxBins = 32;
         Integer seed = 12345;
 
+        //prepare data
         String datapath = "src/test/resources/classification_test.libsvm";
         JavaRDD<LabeledPoint> data = MLUtils.loadLibSVMFile(sc.sc(), datapath).toJavaRDD();
-
 
         //Train model in scala
         RandomForestModel sparkModel = RandomForest
@@ -40,7 +40,7 @@ public class RandomForestBridgeTest extends SparkTestBase {
                         featureSubsetStrategy, impurity, maxDepth, maxBins, seed);
 
         //Export this model
-        byte[] exportedModel = ModelExporter.export(sparkModel);
+        byte[] exportedModel = ModelExporter.export(sparkModel, sqlContext.createDataFrame(data, null));
 
         //Import and get Transformer
         Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);
@@ -50,20 +50,22 @@ public class RandomForestBridgeTest extends SparkTestBase {
         for (LabeledPoint i : testPoints) {
             Vector v = i.features();
             double actual = sparkModel.predict(v);
-            double predicted = transformer.transform(v.toArray());
+            double predicted = (double) transformer.transform(ArrayUtils.toObject(v.toArray()));
             System.out.println(actual + "  -- " + predicted);
             assertEquals(actual, predicted, 0.01);
         }
     }
 
     @Test
-    public void testRFRegression() throws ClassNotFoundException {
+    public void testRFRegression() {
         String datapath = "src/test/resources/regression_test.libsvm";
         testRegressor("variance", 3, 4, 32, "auto", 12345, datapath);
     }
 
     private void testRegressor(String impurity, int numTrees, int maxDepth, int maxBins,
-                               String featureSubsetStrategy, int seed, String datapath) throws ClassNotFoundException {
+                               String featureSubsetStrategy, int seed, String datapath) {
+
+        //prepare data
         HashMap<Integer, Integer> categoricalFeaturesInfo = new HashMap<Integer, Integer>();
         JavaRDD<LabeledPoint> data = MLUtils.loadLibSVMFile(sc.sc(), datapath).toJavaRDD();
 
@@ -73,7 +75,7 @@ public class RandomForestBridgeTest extends SparkTestBase {
                         impurity, maxDepth, maxBins, seed);
 
         //Export this model
-        byte[] exportedModel = ModelExporter.export(sparkModel);
+        byte[] exportedModel = ModelExporter.export(sparkModel, null);
 
         //Import and get Transformer
         Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);
@@ -83,7 +85,7 @@ public class RandomForestBridgeTest extends SparkTestBase {
         for (LabeledPoint i : testPoints) {
             Vector v = i.features();
             double actual = sparkModel.predict(v);
-            double predicted = transformer.transform(v.toArray());
+            double predicted = (double) transformer.transform(ArrayUtils.toObject(v.toArray()));
             //System.out.println(actual + "  -- " + predicted);
             assertEquals(actual, predicted, 0.01);
         }
