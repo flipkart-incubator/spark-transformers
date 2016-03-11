@@ -40,7 +40,7 @@ public class RandomForestBridgeTest extends SparkTestBase {
                         featureSubsetStrategy, impurity, maxDepth, maxBins, seed);
 
         //Export this model
-        byte[] exportedModel = ModelExporter.export(sparkModel, sqlContext.createDataFrame(data, null));
+        byte[] exportedModel = ModelExporter.export(sparkModel, null);
 
         //Import and get Transformer
         Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);
