@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 public class SparkTestBase {
     private static final Logger LOG = LoggerFactory.getLogger(SparkTestBase.class);
     protected JavaSparkContext sc;
-    SQLContext sqlContext;
+    protected SQLContext sqlContext;
 
     @Before
     public void setup() {

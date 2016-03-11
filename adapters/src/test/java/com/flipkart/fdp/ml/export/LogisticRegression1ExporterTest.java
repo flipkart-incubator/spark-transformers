@@ -3,29 +3,27 @@ package com.flipkart.fdp.ml.export;
 import com.flipkart.fdp.ml.adapter.SparkTestBase;
 import com.flipkart.fdp.ml.importer.ModelImporter;
 import com.flipkart.fdp.ml.modelinfo.LogisticRegressionModelInfo;
-import org.apache.spark.api.java.JavaRDD;
-import org.apache.spark.mllib.classification.LogisticRegressionModel;
-import org.apache.spark.mllib.classification.LogisticRegressionWithSGD;
-import org.apache.spark.mllib.regression.LabeledPoint;
-import org.apache.spark.mllib.util.MLUtils;
+import org.apache.spark.ml.classification.LogisticRegression;
+import org.apache.spark.ml.classification.LogisticRegressionModel;
+import org.apache.spark.sql.DataFrame;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
 
-;
-
-public class LogisticRegressionExporterTest extends SparkTestBase {
+public class LogisticRegression1ExporterTest extends SparkTestBase {
 
     @Test
     public void shouldExportAndImportCorrectly() {
+        //prepare data
         String datapath = "src/test/resources/binary_classification_test.libsvm";
-        JavaRDD<LabeledPoint> data = MLUtils.loadLibSVMFile(sc.sc(), datapath).toJavaRDD();
+
+        DataFrame trainingData = sqlContext.read().format("libsvm").load(datapath);
 
         //Train model in spark
-        LogisticRegressionModel lrmodel = new LogisticRegressionWithSGD().run(data.rdd());
+        LogisticRegressionModel lrmodel = new LogisticRegression().fit(trainingData);
 
         //Export this model
-        byte[] exportedModel = ModelExporter.export(lrmodel, null);
+        byte[] exportedModel = ModelExporter.export(lrmodel, trainingData);
 
         //Import it back
         LogisticRegressionModelInfo importedModel = (LogisticRegressionModelInfo) ModelImporter.importModelInfo(exportedModel);
