@@ -39,7 +39,7 @@ public class LogisticRegression1BridgeTest extends SparkTestBase {
         for (LabeledPoint i : testPoints) {
             Vector v = i.features();
             double actual = lrmodel.predict(v);
-            double predicted = ((double)transformer.transform(ArrayUtils.toObject(v.toArray())) > lrmodel.getThreshold()? 1.0 : 0.0 );
+            double predicted = ((double)transformer.transform(ArrayUtils.toObject(v.toArray()))[0] > lrmodel.getThreshold()? 1.0 : 0.0 );
             assertEquals(actual, predicted, 0.01);
         }
     }

@@ -46,8 +46,8 @@ public class DecisionTreeTransformer implements Transformer {
     }
 
     @Override
-    public Object transform(Object[] input) {
-        return predict(ArrayUtils.toPrimitive((Double [])input));
+    public Object[] transform(Object[] input) {
+        return new Double[] { predict(ArrayUtils.toPrimitive((Double [])input)) };
     }
 
 }

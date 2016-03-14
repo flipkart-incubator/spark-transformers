@@ -35,8 +35,8 @@ public class RandomForestTransformer implements Transformer {
     }
 
     @Override
-    public Object transform(Object[] input) {
-        return predict(ArrayUtils.toPrimitive((Double [])input));
+    public Object[] transform(Object[] input) {
+        return new Double[] { predict(ArrayUtils.toPrimitive((Double [])input)) };
     }
 
 
@@ -53,7 +53,7 @@ public class RandomForestTransformer implements Transformer {
     private double regression(final double[] input) {
         double total = 0;
         for (Transformer i : subTransformers) {
-            total += (double)i.transform(ArrayUtils.toObject(input));
+            total += (double)i.transform(ArrayUtils.toObject(input))[0];
         }
         return total / subTransformers.size();
     }
@@ -61,7 +61,7 @@ public class RandomForestTransformer implements Transformer {
     private double classify(final double[] input) {
         Map<Double, Integer> votes = new HashMap<Double, Integer>();
         for (Transformer i : subTransformers) {
-            double label = (double)i.transform(ArrayUtils.toObject(input));
+            double label = (double)i.transform(ArrayUtils.toObject(input))[0];
 
             Integer existingCount = votes.get(label);
             if (existingCount == null) {

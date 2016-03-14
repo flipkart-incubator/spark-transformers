@@ -5,8 +5,8 @@
 
 
     <parent>
-        <artifactId>fk-ml-lib</artifactId>
         <groupId>com.flipkart.fdp.ml</groupId>
+        <artifactId>spark-transformers</artifactId>
         <version>1.0-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
@@ -14,13 +14,7 @@
     <artifactId>models-info</artifactId>
     <version>${project.parent.version}</version>
     <packaging>jar</packaging>
-
-    <name>Custom Models</name>
-    <url>http://maven.apache.org</url>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+    <name>Custom Models and transformers</name>
 
     <dependencies>
         <dependency>

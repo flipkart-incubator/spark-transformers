@@ -2,13 +2,11 @@ package com.flipkart.fdp.ml.adapter;
 
 import com.flipkart.fdp.ml.export.ModelExporter;
 import com.flipkart.fdp.ml.importer.ModelImporter;
-import com.flipkart.fdp.ml.transformer.StringIndexerTransformer;
 import com.flipkart.fdp.ml.transformer.Transformer;
 import org.apache.spark.ml.feature.StringIndexer;
 import org.apache.spark.ml.feature.StringIndexerModel;
 import org.apache.spark.sql.DataFrame;
 import org.apache.spark.sql.Row;
-import org.apache.spark.sql.RowFactory;
 import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
 import org.junit.Test;
@@ -46,22 +44,13 @@ public class StringIndexerBridgeTest extends SparkTestBase {
 
         //Import and get Transformer
         Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);
-        //TODO: fix the transformer interface for this use case
-        StringIndexerTransformer stringIndexerTransformer = (StringIndexerTransformer) transformer;
 
         //compare predictions
         Row[] sparkOutput = model.transform(dataset).orderBy("id").select("id", "label", "labelIndex").collect();
         for (Row row : sparkOutput) {
-            double indexerOutput = (double)stringIndexerTransformer.transform(new String []{ (String)row.get(1) });
+            double indexerOutput = (double)transformer.transform(new String []{ (String)row.get(1) })[0];
             assertEquals(indexerOutput, (double) row.get(2), 0.01);
         }
 
-    }
-
-    /**
-     * An alias for RowFactory.create.
-     */
-    private Row cr(Object... values) {
-        return RowFactory.create(values);
     }
 }

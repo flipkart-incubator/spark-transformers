@@ -23,6 +23,12 @@ public class ModelInfoAdapterFactory {
         register(new StringIndexerModelInfoAdapter());
         register(new HashingTFModelInfoAdapter());
         register(new OneHotEncoderModelInfoAdapter());
+        register(new RegexTokenizerModelInfoAdapter());
+        register(new CountVectorizerModelInfoAdapter());
+        register(new StandardScalerModelInfoAdapter());
+        register(new MinMaxScalerModelInfoAdapter());
+        register(new BucketizerModelInfoAdapter());
+
     }
 
     private static void register(ModelInfoAdapter adapter) {

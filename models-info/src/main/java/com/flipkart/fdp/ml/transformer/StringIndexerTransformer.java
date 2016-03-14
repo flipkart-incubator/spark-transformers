@@ -23,10 +23,10 @@ public class StringIndexerTransformer implements Transformer {
     }
 
     @Override
-    public Object transform(Object[] input) {
+    public Object[] transform(Object[] input) {
         if(input.length > 1) {
             throw new IllegalArgumentException("StringIndexerTransformer does not support arrays of length more than 1");
         }
-        return predict((String)input[0]);
+        return new Double[] {predict((String)input[0])};
     }
 }

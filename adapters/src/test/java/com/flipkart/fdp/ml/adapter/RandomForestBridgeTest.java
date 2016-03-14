@@ -50,7 +50,7 @@ public class RandomForestBridgeTest extends SparkTestBase {
         for (LabeledPoint i : testPoints) {
             Vector v = i.features();
             double actual = sparkModel.predict(v);
-            double predicted = (double) transformer.transform(ArrayUtils.toObject(v.toArray()));
+            double predicted = (double) transformer.transform(ArrayUtils.toObject(v.toArray()))[0];
             System.out.println(actual + "  -- " + predicted);
             assertEquals(actual, predicted, 0.01);
         }
@@ -85,7 +85,7 @@ public class RandomForestBridgeTest extends SparkTestBase {
         for (LabeledPoint i : testPoints) {
             Vector v = i.features();
             double actual = sparkModel.predict(v);
-            double predicted = (double) transformer.transform(ArrayUtils.toObject(v.toArray()));
+            double predicted = (double) transformer.transform(ArrayUtils.toObject(v.toArray()))[0];
             //System.out.println(actual + "  -- " + predicted);
             assertEquals(actual, predicted, 0.01);
         }

@@ -7,8 +7,8 @@ package com.flipkart.fdp.ml.transformer;
 public interface Transformer {
 
     /**
-     * @param input values as a array of double for the transformation
+     * @param input values as a array of Object for the transformation
      * @return prediction / transformed input
      */
-    Object transform(Object[] input);
+    Object[] transform(Object[] input);
 }

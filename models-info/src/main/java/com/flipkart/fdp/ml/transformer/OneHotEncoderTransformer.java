@@ -1,6 +1,7 @@
 package com.flipkart.fdp.ml.transformer;
 
 import com.flipkart.fdp.ml.modelinfo.OneHotEncoderModelInfo;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Arrays;
 
@@ -31,10 +32,10 @@ public class OneHotEncoderTransformer implements Transformer {
     }
 
     @Override
-    public Object transform(Object[] input) {
+    public Object[] transform(Object[] input) {
         if (input.length > 1) {
             throw new IllegalArgumentException("OneHotEncoderTransformer does not support arrays of length more than 1");
         }
-        return predict((Double) input[0]);
+        return ArrayUtils.toObject(predict((Double) input[0]));
     }
 }

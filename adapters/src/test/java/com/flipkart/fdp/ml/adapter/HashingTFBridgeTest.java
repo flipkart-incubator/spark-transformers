@@ -3,6 +3,7 @@ package com.flipkart.fdp.ml.adapter;
 import com.flipkart.fdp.ml.export.ModelExporter;
 import com.flipkart.fdp.ml.importer.ModelImporter;
 import com.flipkart.fdp.ml.transformer.Transformer;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.spark.ml.feature.HashingTF;
 import org.apache.spark.ml.feature.Tokenizer;
 import org.apache.spark.mllib.linalg.Vector;
@@ -61,7 +62,7 @@ public class HashingTFBridgeTest extends SparkTestBase {
         Row[] sparkOutput = sparkModel.transform(wordsData).orderBy("id").select("id", "sentence", "words", "rawFeatures").collect();
         for (Row row : sparkOutput) {
             String[] words = ((String) row.get(1)).toLowerCase().split(" ");
-            double[] transformedOp = (double[]) transformer.transform(words);
+            double[] transformedOp = ArrayUtils.toPrimitive((Double[])transformer.transform(words));
             double[] sparkOp = ((Vector) row.get(3)).toArray();
             assertArrayEquals(transformedOp, sparkOp, 0.01);
         }
