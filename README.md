@@ -1,9 +1,27 @@
-## spark-transformers
-Library for exporting spark models in Java ecosystem.
+<img src="https://github.com/Flipkart/spark-transformers/blob/master/spark-transformers-logo.png">
 
-Goal of this library is to :
+## Spark-Transformers: Library for exporting spark models in Java ecosystem.
+
+## Full Documentation
+
+See the [Wiki](https://github.com/Flipkart/spark-transformers/wiki) for full documentation, examples, operational details and other information.
+
+## Communication
+
+- Google Group: [Fdp-Ml-Dev](fdp-ml-dev@flipkart.com)
+- [GitHub Issues](https://github.com/Flipkart/spark-transformers/issues)
+
+
+## What does it do?
+
 * Provide a way to export Spark models/transformations into a custom format which can be imported back into a java object.
 * Provide a way to do model predictions in java ecosystem.
 
-Visit the wiki for details on usage and developer guide.
-https://github.com/Flipkart/spark-transformers/wiki
+
+## Bugs and Feedback
+
+For bugs, questions and discussions please use the [Github Issues](https://github.com/Flipkart/spark-transformers/issue).
+
+ 
+## LICENSE
+Spark-Transformers is licensed under : The Apache Software License, Version 2.0. Here is a copy of the license (http://www.apache.org/licenses/LICENSE-2.0.txt)
