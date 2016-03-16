@@ -3,7 +3,6 @@ package com.flipkart.fdp.ml.adapter;
 import com.flipkart.fdp.ml.export.ModelExporter;
 import com.flipkart.fdp.ml.importer.ModelImporter;
 import com.flipkart.fdp.ml.transformer.Transformer;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.ml.feature.OneHotEncoder;
 import org.apache.spark.ml.feature.StringIndexer;
@@ -19,6 +18,8 @@ import org.apache.spark.sql.types.StructType;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.assertArrayEquals;
 
@@ -61,7 +62,12 @@ public class OneHotEncoderBridgeTest extends SparkTestBase {
         //compare predictions
         Row[] sparkOutput = sparkModel.transform(indexed).orderBy("id").select("id", "categoryIndex", "categoryVec").collect();
         for (Row row : sparkOutput) {
-            double[] transformedOp = ArrayUtils.toPrimitive((Double []) transformer.transform(new Object[]{row.get(1)}));
+
+            Map<String, Object> data = new HashMap<String, Object>();
+            data.put("input",row.getDouble(1));
+            transformer.transform(data);
+            double[] transformedOp = (double []) data.get("output");
+
             double[] sparkOp = ((Vector) row.get(2)).toArray();
             assertArrayEquals(transformedOp, sparkOp, 0.01);
         }

@@ -1,14 +1,15 @@
 package com.flipkart.fdp.ml.transformer;
 
 import com.flipkart.fdp.ml.modelinfo.MinMaxScalerModelInfo;
-import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.Map;
 
 /**
  * Transforms input/ predicts for a MinMaxScaler model representation
  * captured by  {@link com.flipkart.fdp.ml.modelinfo.MinMaxScalerModelInfo}.
  */
 
-public class MinMaxScalerTransformer implements Transformer {
+public class MinMaxScalerTransformer extends TransformerBase {
     private final MinMaxScalerModelInfo modelInfo;
 
     public MinMaxScalerTransformer(final MinMaxScalerModelInfo modelInfo) {
@@ -40,7 +41,8 @@ public class MinMaxScalerTransformer implements Transformer {
     }
 
     @Override
-    public Object[] transform(Object[] input) {
-        return ArrayUtils.toObject(predict(ArrayUtils.toPrimitive((Double [])input)));
+    public void transform(Map<String, Object> input) {
+        double inp[] = (double[]) input.get(getInputKey());
+        input.put(getOutputKey(), predict(inp));
     }
 }

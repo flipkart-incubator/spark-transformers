@@ -3,7 +3,6 @@ package com.flipkart.fdp.ml.adapter;
 import com.flipkart.fdp.ml.export.ModelExporter;
 import com.flipkart.fdp.ml.importer.ModelImporter;
 import com.flipkart.fdp.ml.transformer.Transformer;
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.spark.ml.feature.StandardScaler;
 import org.apache.spark.ml.feature.StandardScalerModel;
 import org.apache.spark.mllib.linalg.Vector;
@@ -14,7 +13,9 @@ import org.apache.spark.sql.Row;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertArrayEquals;
 
@@ -112,10 +113,12 @@ public class StandardScalerBridgeTest extends SparkTestBase {
     private void assertCorrectness(Row[] sparkOutput, double[][] expected, Transformer transformer) {
         for( int i = 0 ; i < 2; i++) {
             double[] input = ((Vector) sparkOutput[i].get(0)).toArray();
-            double[] transformedOp = ArrayUtils.toPrimitive(
-                    (Double[])transformer.transform(
-                            ArrayUtils.toObject(input))
-            );
+
+            Map<String, Object> data = new HashMap<String, Object>();
+            data.put("input",input);
+            transformer.transform(data);
+            double[] transformedOp = (double []) data.get("output");
+
             double[] sparkOp = ((Vector) sparkOutput[i].get(1)).toArray();
             assertArrayEquals(transformedOp, sparkOp, 0.01);
             assertArrayEquals(transformedOp, expected[i], 0.01);

@@ -2,15 +2,16 @@ package com.flipkart.fdp.ml.transformer;
 
 import com.flipkart.fdp.ml.modelinfo.DecisionTreeModelInfo;
 import com.flipkart.fdp.ml.modelinfo.DecisionTreeModelInfo.DecisionNode;
-import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 /**
  * Transforms input/ predicts for a Decision Tree model representation
  * captured by  {@link com.flipkart.fdp.ml.modelinfo.DecisionTreeModelInfo}.
  */
-public class DecisionTreeTransformer implements Transformer {
+public class DecisionTreeTransformer extends TransformerBase {
     private static final Logger LOG = LoggerFactory.getLogger(DecisionTreeTransformer.class);
     private static final String CONTINUOUS_FEATURE = "Continuous";
     private final DecisionTreeModelInfo tree;
@@ -46,8 +47,9 @@ public class DecisionTreeTransformer implements Transformer {
     }
 
     @Override
-    public Object[] transform(Object[] input) {
-        return new Double[] { predict(ArrayUtils.toPrimitive((Double [])input)) };
+    public void transform(Map<String, Object> input) {
+        double [] inp = (double []) input.get(getInputKey());
+        input.put(getOutputKey(), predict(inp));
     }
 
 }

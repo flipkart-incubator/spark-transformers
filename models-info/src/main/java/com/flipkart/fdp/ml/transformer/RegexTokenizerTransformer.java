@@ -5,6 +5,7 @@ import com.flipkart.fdp.ml.modelinfo.RegexTokenizerModelInfo;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,7 +13,7 @@ import java.util.regex.Pattern;
  * Transforms input/ predicts for a Regex Tokenizer model representation
  * captured by  {@link com.flipkart.fdp.ml.modelinfo.RegexTokenizerModelInfo}.
  */
-public class RegexTokenizerTransformer implements Transformer {
+public class RegexTokenizerTransformer extends TransformerBase {
     private final RegexTokenizerModelInfo modelInfo;
 
     public RegexTokenizerTransformer(final RegexTokenizerModelInfo modelInfo) {
@@ -43,10 +44,8 @@ public class RegexTokenizerTransformer implements Transformer {
     }
 
     @Override
-    public Object[] transform(Object[] input) {
-        if(input.length > 1) {
-            throw new IllegalArgumentException("RegexTokenizerTransformer does not support arrays of length more than 1");
-        }
-        return predict((String)input[0]);
+    public void transform(Map<String, Object> input) {
+        String inp = (String) input.get(getInputKey());
+        input.put(getOutputKey(), predict(inp));
     }
 }

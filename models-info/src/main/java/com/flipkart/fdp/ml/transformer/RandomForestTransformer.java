@@ -2,7 +2,6 @@ package com.flipkart.fdp.ml.transformer;
 
 import com.flipkart.fdp.ml.modelinfo.DecisionTreeModelInfo;
 import com.flipkart.fdp.ml.modelinfo.RandomForestModelInfo;
-import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,12 +14,12 @@ import java.util.Map;
  * Transforms input/ predicts for a Random Forest model representation
  * captured by  {@link com.flipkart.fdp.ml.modelinfo.RandomForestModelInfo}.
  */
-public class RandomForestTransformer implements Transformer {
+public class RandomForestTransformer extends TransformerBase {
     private static final Logger LOG = LoggerFactory.getLogger(RandomForestTransformer.class);
     private static final String ALGO_CLASSIFICATION = "Classification";
     private static final String ALGO_REGRESSION = "Regression";
     private final RandomForestModelInfo forest;
-    private final List<Transformer> subTransformers;
+    private final List<DecisionTreeTransformer> subTransformers;
 
     public RandomForestTransformer(final RandomForestModelInfo forest) {
         this.forest = forest;
@@ -35,8 +34,9 @@ public class RandomForestTransformer implements Transformer {
     }
 
     @Override
-    public Object[] transform(Object[] input) {
-        return new Double[] { predict(ArrayUtils.toPrimitive((Double [])input)) };
+    public void transform(Map<String, Object> input) {
+        double [] inp = (double [] ) input.get(getInputKey());
+        input.put(getOutputKey(), predict(inp));
     }
 
 
@@ -52,16 +52,16 @@ public class RandomForestTransformer implements Transformer {
 
     private double regression(final double[] input) {
         double total = 0;
-        for (Transformer i : subTransformers) {
-            total += (double)i.transform(ArrayUtils.toObject(input))[0];
+        for (DecisionTreeTransformer i : subTransformers) {
+            total += i.predict(input);
         }
         return total / subTransformers.size();
     }
 
     private double classify(final double[] input) {
         Map<Double, Integer> votes = new HashMap<Double, Integer>();
-        for (Transformer i : subTransformers) {
-            double label = (double)i.transform(ArrayUtils.toObject(input))[0];
+        for (DecisionTreeTransformer i : subTransformers) {
+            double label = i.predict(input);;
 
             Integer existingCount = votes.get(label);
             if (existingCount == null) {

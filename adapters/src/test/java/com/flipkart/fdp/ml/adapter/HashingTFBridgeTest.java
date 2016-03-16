@@ -3,7 +3,6 @@ package com.flipkart.fdp.ml.adapter;
 import com.flipkart.fdp.ml.export.ModelExporter;
 import com.flipkart.fdp.ml.importer.ModelImporter;
 import com.flipkart.fdp.ml.transformer.Transformer;
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.spark.ml.feature.HashingTF;
 import org.apache.spark.ml.feature.Tokenizer;
 import org.apache.spark.mllib.linalg.Vector;
@@ -15,7 +14,9 @@ import org.apache.spark.sql.types.StructType;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.apache.spark.sql.types.DataTypes.*;
 import static org.junit.Assert.assertArrayEquals;
@@ -28,7 +29,7 @@ public class HashingTFBridgeTest extends SparkTestBase {
     @Test
     public void testHashingTF() {
         //prepare data
-        List<Row> data = Arrays.asList(
+        List<Row> trainingData = Arrays.asList(
                 RowFactory.create(1, 0.0, "Hi I heard about Spark"),
                 RowFactory.create(2, 0.0, "I wish Java could use case classes"),
                 RowFactory.create(3, 1.0, "Logistic regression models are neat")
@@ -39,7 +40,7 @@ public class HashingTFBridgeTest extends SparkTestBase {
                 createStructField("sentence", StringType, false),
         });
 
-        DataFrame sentenceData = sqlContext.createDataFrame(data, schema);
+        DataFrame sentenceData = sqlContext.createDataFrame(trainingData, schema);
         Tokenizer tokenizer = new Tokenizer()
                 .setInputCol("sentence")
                 .setOutputCol("words");
@@ -62,7 +63,12 @@ public class HashingTFBridgeTest extends SparkTestBase {
         Row[] sparkOutput = sparkModel.transform(wordsData).orderBy("id").select("id", "sentence", "words", "rawFeatures").collect();
         for (Row row : sparkOutput) {
             String[] words = ((String) row.get(1)).toLowerCase().split(" ");
-            double[] transformedOp = ArrayUtils.toPrimitive((Double[])transformer.transform(words));
+
+            Map<String, Object> data = new HashMap<String, Object>();
+            data.put("input",words);
+            transformer.transform(data);
+            double[] transformedOp = (double []) data.get("output");
+
             double[] sparkOp = ((Vector) row.get(3)).toArray();
             assertArrayEquals(transformedOp, sparkOp, 0.01);
         }

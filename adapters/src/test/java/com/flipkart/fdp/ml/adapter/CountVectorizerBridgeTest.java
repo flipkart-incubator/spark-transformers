@@ -3,7 +3,6 @@ package com.flipkart.fdp.ml.adapter;
 import com.flipkart.fdp.ml.export.ModelExporter;
 import com.flipkart.fdp.ml.importer.ModelImporter;
 import com.flipkart.fdp.ml.transformer.Transformer;
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.ml.feature.CountVectorizer;
 import org.apache.spark.ml.feature.CountVectorizerModel;
@@ -14,9 +13,7 @@ import org.apache.spark.sql.RowFactory;
 import org.apache.spark.sql.types.*;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertArrayEquals;
 
@@ -60,7 +57,12 @@ public class CountVectorizerBridgeTest extends SparkTestBase {
         Row[] sparkOutput = sparkModel.transform(df).orderBy("id").select("feature").collect();
         for (int i = 0; i < 2; i++) {
             Object[] words = input.get(i).toArray();
-            double[] transformedOp = ArrayUtils.toPrimitive((Double[])transformer.transform(words));
+
+            Map<String, Object> data = new HashMap<String, Object>();
+            data.put("input",words);
+            transformer.transform(data);
+            double[] transformedOp = (double []) data.get("output");
+
             double[] sparkOp = ((Vector) sparkOutput[i].get(0)).toArray();
             assertArrayEquals(transformedOp, sparkOp, 0.01);
         }

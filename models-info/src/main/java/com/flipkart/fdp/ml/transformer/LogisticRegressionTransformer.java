@@ -1,15 +1,16 @@
 package com.flipkart.fdp.ml.transformer;
 
 import com.flipkart.fdp.ml.modelinfo.LogisticRegressionModelInfo;
-import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 /**
  * Transforms input/ predicts for a Logistic Regression model representation
  * captured by  {@link com.flipkart.fdp.ml.modelinfo.LogisticRegressionModelInfo}.
  */
-public class LogisticRegressionTransformer implements Transformer {
+public class LogisticRegressionTransformer extends TransformerBase {
     private static final Logger LOG = LoggerFactory.getLogger(LogisticRegressionTransformer.class);
     private final LogisticRegressionModelInfo model;
 
@@ -27,8 +28,9 @@ public class LogisticRegressionTransformer implements Transformer {
     }
 
     @Override
-    public Object[] transform(Object[] input) {
-        return new Double[] { predict(ArrayUtils.toPrimitive((Double [])input)) };
+    public void transform(Map<String, Object> input) {
+        double[] inp = (double[]) input.get(getInputKey());
+        input.put(getOutputKey(), predict(inp));
     }
 
 }

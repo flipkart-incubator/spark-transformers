@@ -1,13 +1,14 @@
 package com.flipkart.fdp.ml.transformer;
 
 import com.flipkart.fdp.ml.modelinfo.StandardScalerModelInfo;
-import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.Map;
 
 /**
  * Transforms input/ predicts for a Standard Scalar model representation
  * captured by  {@link com.flipkart.fdp.ml.modelinfo.StandardScalerModelInfo}.
  */
-public class StandardScalerTransformer implements Transformer {
+public class StandardScalerTransformer extends TransformerBase {
     private final StandardScalerModelInfo modelInfo;
 
     public StandardScalerTransformer(final StandardScalerModelInfo modelInfo) {
@@ -44,7 +45,8 @@ public class StandardScalerTransformer implements Transformer {
     }
 
     @Override
-    public Object[] transform(Object[] input) {
-        return ArrayUtils.toObject(predict(ArrayUtils.toPrimitive((Double [])input)));
+    public void transform(Map<String, Object> input) {
+        double[] inp = (double []) input.get(getInputKey());
+        input.put(getOutputKey(), predict(inp));
     }
 }

@@ -1,15 +1,16 @@
 package com.flipkart.fdp.ml.transformer;
 
 import com.flipkart.fdp.ml.modelinfo.CountVectorizerModelInfo;
-import org.apache.commons.lang3.ArrayUtils;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Transforms input/ predicts for a Count vectorizer model representation
  * captured by  {@link com.flipkart.fdp.ml.modelinfo.CountVectorizerModelInfo}.
  */
-public class CountVectorizerTransformer implements Transformer {
+public class CountVectorizerTransformer extends TransformerBase {
     private final CountVectorizerModelInfo modelInfo;
     private final Map<String, Integer> vocabulary;
 
@@ -53,7 +54,8 @@ public class CountVectorizerTransformer implements Transformer {
     }
 
     @Override
-    public Object[] transform(Object[] input) {
-        return ArrayUtils.toObject(predict((String[]) input));
+    public void transform(Map<String, Object> input) {
+        String[] inp = (String []) input.get(getInputKey());
+        input.put(getOutputKey(), predict(inp));
     }
 }

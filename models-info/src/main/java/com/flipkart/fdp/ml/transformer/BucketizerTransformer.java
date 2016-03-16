@@ -3,12 +3,13 @@ package com.flipkart.fdp.ml.transformer;
 import com.flipkart.fdp.ml.modelinfo.BucketizerModelInfo;
 
 import java.util.Arrays;
+import java.util.Map;
 
 /**
  * Transforms input/ predicts for a Bucketizer model representation
  * captured by  {@link com.flipkart.fdp.ml.modelinfo.BucketizerModelInfo}.
  */
-public class BucketizerTransformer implements Transformer {
+public class BucketizerTransformer extends TransformerBase {
 
     private final BucketizerModelInfo modelInfo;
 
@@ -40,10 +41,8 @@ public class BucketizerTransformer implements Transformer {
     }
 
     @Override
-    public Object[] transform(Object[] input) {
-        if(input.length > 1) {
-            throw new IllegalArgumentException("BucketizerTransformer does not support arrays of length more than 1");
-        }
-        return new Double[] {predict((Double)input[0])};
+    public void transform(Map<String, Object> input) {
+        double inp = (double) input.get(getInputKey());
+        input.put(getOutputKey(), predict(inp));
     }
 }

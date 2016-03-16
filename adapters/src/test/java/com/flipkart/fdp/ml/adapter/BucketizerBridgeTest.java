@@ -3,7 +3,6 @@ package com.flipkart.fdp.ml.adapter;
 import com.flipkart.fdp.ml.export.ModelExporter;
 import com.flipkart.fdp.ml.importer.ModelImporter;
 import com.flipkart.fdp.ml.transformer.Transformer;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.spark.ml.feature.Bucketizer;
 import org.apache.spark.sql.DataFrame;
 import org.apache.spark.sql.Row;
@@ -14,7 +13,9 @@ import org.apache.spark.sql.types.StructType;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
@@ -33,13 +34,13 @@ public class BucketizerBridgeTest extends SparkTestBase {
                 new StructField("id", DataTypes.IntegerType, false, Metadata.empty()),
                 new StructField("feature", DataTypes.DoubleType, false, Metadata.empty())
         });
-        List<Row> data = Arrays.asList(
+        List<Row> trainingData = Arrays.asList(
                 cr(0,validData[0]),
                 cr(1,validData[1]),
                 cr(2,validData[2]),
                 cr(3,validData[3]));
 
-        DataFrame df = sqlContext.createDataFrame(data, schema);
+        DataFrame df = sqlContext.createDataFrame(trainingData, schema);
 
         Bucketizer sparkModel = new Bucketizer()
                 .setInputCol("feature")
@@ -57,7 +58,12 @@ public class BucketizerBridgeTest extends SparkTestBase {
         for (Row r : sparkOutput) {
             double input = r.getDouble(1);
             double sparkOp = r.getDouble(2);
-            double transformedInput = (Double)transformer.transform(ArrayUtils.toObject(new double[]{input}))[0];
+
+            Map<String, Object> data = new HashMap<String, Object>();
+            data.put("input",input);
+            transformer.transform(data);
+            double transformedInput = (double) data.get("output");
+
             assertTrue((transformedInput >= 0) && (transformedInput <= 1));
             assertEquals(transformedInput, sparkOp, 0.01);
             assertEquals(transformedInput, expectedBuckets[r.getInt(0)], 0.01);

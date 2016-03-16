@@ -1,15 +1,15 @@
 package com.flipkart.fdp.ml.transformer;
 
 import com.flipkart.fdp.ml.modelinfo.HashingTFModelInfo;
-import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Arrays;
+import java.util.Map;
 
 /**
  * Transforms input/ predicts for a HashingTF model representation
  * captured by  {@link com.flipkart.fdp.ml.modelinfo.HashingTFModelInfo}.
  */
-public class HashingTFTransformer implements Transformer {
+public class HashingTFTransformer extends TransformerBase {
 
     private final HashingTFModelInfo modelInfo;
 
@@ -33,8 +33,9 @@ public class HashingTFTransformer implements Transformer {
     }
 
     @Override
-    public Object[] transform(Object[] input) {
-        return ArrayUtils.toObject(predict((String [])input));
+    public void transform(Map<String, Object> input) {
+        String [] inp = (String []) input.get(getInputKey());
+        input.put(getOutputKey(), predict(inp));
     }
 
 }
