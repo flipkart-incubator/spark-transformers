@@ -23,13 +23,14 @@ public class PipelineModelTransformer extends TransformerBase {
             transformers[i].setOutputKey("output"+i);
         }
         transformers[0].setInputKeys(new LinkedHashSet<String>(Arrays.asList("input")));
-        transformers[transformers.length].setOutputKey("output");
+        transformers[transformers.length-1].setOutputKey("output");
     }
 
     @Override
     public void transform(Map<String, Object> input) {
             for(Transformer transformer : transformers) {
                 transformer.transform(input);
+                System.out.println(input);
             }
     }
 }

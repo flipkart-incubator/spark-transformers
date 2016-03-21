@@ -3,6 +3,7 @@ package com.flipkart.fdp.ml.export;
 import com.flipkart.fdp.ml.ModelInfoAdapterFactory;
 import com.flipkart.fdp.ml.importer.SerializationConstants;
 import com.flipkart.fdp.ml.modelinfo.ModelInfo;
+import com.flipkart.fdp.ml.modelinfo.PipelineModelInfo;
 import com.google.gson.Gson;
 import org.apache.spark.sql.DataFrame;
 
@@ -25,9 +26,9 @@ public class ModelExporter {
      * @return byte[]
      */
     public static byte[] export(Object model, DataFrame df) {
-        return ModelExporter.export(
+        return export(
                 ModelInfoAdapterFactory.getAdapter(model.getClass())
-                        .getModelInfo(model, df));
+                        .getModelInfo(model, df)).getBytes();
     }
 
     /**
@@ -37,10 +38,20 @@ public class ModelExporter {
      * @param modelInfo model info to be exported of type {@link ModelInfo}
      * @return byte[]
      */
-    private static byte[] export(ModelInfo modelInfo) {
-        Map<String, String> map = new HashMap<String, String>();
+    private static String export(ModelInfo modelInfo) {
+        final Map<String, String> map = new HashMap<String, String>();
         map.put(SerializationConstants.TYPE_IDENTIFIER, modelInfo.getClass().getCanonicalName());
-        map.put(SerializationConstants.MODEL_INFO_IDENTIFIER, gson.toJson(modelInfo));
-        return gson.toJson(map).getBytes();
+        if( modelInfo instanceof PipelineModelInfo) {
+            //custom serialization is needed as type is not encoded into gson serialized modelInfo
+            PipelineModelInfo pipelineModelInfo = (PipelineModelInfo)modelInfo;
+            String [] serializedModels = new String[pipelineModelInfo.getStages().length];
+            for(int i =0; i < serializedModels.length; i++) {
+                serializedModels[i] = export(pipelineModelInfo.getStages()[i]);
+            }
+            map.put(SerializationConstants.MODEL_INFO_IDENTIFIER, gson.toJson(serializedModels));
+        } else {
+            map.put(SerializationConstants.MODEL_INFO_IDENTIFIER, gson.toJson(modelInfo));
+        }
+        return gson.toJson(map);
     }
 }

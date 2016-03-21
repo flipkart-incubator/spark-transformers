@@ -87,7 +87,7 @@ public class PipelineBridgeTest extends SparkTestBase {
         Row[] predictions = sparkPipelineModel.transform(testData).select("id", "text", "probability", "prediction").collect();
         for (Row r : predictions) {
             System.out.println(r);
-            double sparkPipelineOp = r.getDouble(2);
+            double sparkPipelineOp = r.getDouble(3);
             Map<String, Object> data = new HashMap<String, Object>();
             data.put("input", r.getString(1));
             transformer.transform(data);
