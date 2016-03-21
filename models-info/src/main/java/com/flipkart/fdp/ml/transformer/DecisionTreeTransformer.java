@@ -48,7 +48,7 @@ public class DecisionTreeTransformer extends TransformerBase {
 
     @Override
     public void transform(Map<String, Object> input) {
-        double [] inp = (double []) input.get(getInputKey());
+        double [] inp = (double []) input.get(getInputKeys()[0]);
         input.put(getOutputKey(), predict(inp));
     }
 

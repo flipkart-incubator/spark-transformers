@@ -6,5 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public abstract class TransformerBase implements Transformer {
-    private String inputKey = "input", outputKey="output";
+    private String[] inputKeys = new String [] {"input"};
+    private String outputKey="output";
 }

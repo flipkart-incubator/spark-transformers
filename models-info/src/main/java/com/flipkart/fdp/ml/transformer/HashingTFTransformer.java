@@ -34,7 +34,7 @@ public class HashingTFTransformer extends TransformerBase {
 
     @Override
     public void transform(Map<String, Object> input) {
-        String [] inp = (String []) input.get(getInputKey());
+        String [] inp = (String []) input.get(getInputKeys()[0]);
         input.put(getOutputKey(), predict(inp));
     }
 
