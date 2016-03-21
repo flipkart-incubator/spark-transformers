@@ -33,6 +33,7 @@ public class LogisticRegression1ExporterTest extends SparkTestBase {
         assertEquals(lrmodel.intercept(), importedModel.getIntercept(), 0.01);
         assertEquals(lrmodel.numClasses(), importedModel.getNumClasses(), 0.01);
         assertEquals(lrmodel.numFeatures(), importedModel.getNumFeatures(), 0.01);
+        assertEquals(lrmodel.getThreshold(), importedModel.getThreshold(), 0.01);
         for (int i = 0; i < importedModel.getNumFeatures(); i++)
             assertEquals(lrmodel.weights().toArray()[i], importedModel.getWeights()[i], 0.01);
 

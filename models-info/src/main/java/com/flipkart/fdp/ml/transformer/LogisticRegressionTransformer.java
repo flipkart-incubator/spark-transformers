@@ -24,7 +24,8 @@ public class LogisticRegressionTransformer extends TransformerBase {
             dotProduct += input[i] * model.getWeights()[i];
         }
         double margin = dotProduct + model.getIntercept();
-        return 1.0 / (1.0 + Math.exp(-margin));
+        double predictedRaw =  1.0 / (1.0 + Math.exp(-margin));
+        return (predictedRaw > model.getThreshold()? 1.0 : 0.0 );
     }
 
     @Override

@@ -35,7 +35,6 @@ public class LogisticRegressionBridgeTest extends SparkTestBase {
         Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);
 
         //validate predictions
-        lrmodel.clearThreshold();
         List<LabeledPoint> testPoints = trainingData.collect();
         for (LabeledPoint i : testPoints) {
             Vector v = i.features();

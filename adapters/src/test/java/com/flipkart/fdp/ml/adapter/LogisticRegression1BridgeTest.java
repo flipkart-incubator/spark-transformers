@@ -44,10 +44,8 @@ public class LogisticRegression1BridgeTest extends SparkTestBase {
             Map<String, Object> data = new HashMap<String, Object>();
             data.put("input",v.toArray());
             transformer.transform(data);
-            double predictedRaw = (double) data.get("output");
+            double predicted = (double) data.get("output");
 
-
-            double predicted = (predictedRaw > lrmodel.getThreshold()? 1.0 : 0.0 );
             assertEquals(actual, predicted, 0.01);
         }
     }

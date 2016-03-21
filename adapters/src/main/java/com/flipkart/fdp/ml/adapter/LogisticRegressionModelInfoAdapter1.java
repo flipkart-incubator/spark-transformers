@@ -20,6 +20,7 @@ public class LogisticRegressionModelInfoAdapter1
         logisticRegressionModelInfo.setIntercept(sparkLRModel.intercept());
         logisticRegressionModelInfo.setNumClasses(sparkLRModel.numClasses());
         logisticRegressionModelInfo.setNumFeatures(sparkLRModel.numFeatures());
+        logisticRegressionModelInfo.setThreshold(sparkLRModel.getThreshold());
         return logisticRegressionModelInfo;
     }
 
