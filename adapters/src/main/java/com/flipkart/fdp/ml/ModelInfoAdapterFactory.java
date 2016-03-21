@@ -28,6 +28,7 @@ public class ModelInfoAdapterFactory {
         register(new StandardScalerModelInfoAdapter());
         register(new MinMaxScalerModelInfoAdapter());
         register(new BucketizerModelInfoAdapter());
+        register(new PipelineModelInfoAdapter());
 
     }
 
