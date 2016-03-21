@@ -3,21 +3,24 @@ package com.flipkart.fdp.ml.adapter;
 import com.flipkart.fdp.ml.ModelInfoAdapterFactory;
 import com.flipkart.fdp.ml.modelinfo.ModelInfo;
 import com.flipkart.fdp.ml.modelinfo.PipelineModelInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.spark.ml.PipelineModel;
 import org.apache.spark.ml.Transformer;
 import org.apache.spark.sql.DataFrame;
 
 /**
- * Created by akshay.us on 3/19/16.
+ * Transforms Spark's {@link PipelineModel} to  {@link PipelineModelInfo} object
+ * that can be exported through {@link com.flipkart.fdp.ml.export.ModelExporter}
  */
+@Slf4j
 public class PipelineModelInfoAdapter implements ModelInfoAdapter<PipelineModel, PipelineModelInfo> {
     @Override
     public PipelineModelInfo getModelInfo(final PipelineModel from, final DataFrame df) {
         final PipelineModelInfo modelInfo = new PipelineModelInfo();
-        ModelInfo stages [] = new ModelInfo[from.stages().length];
-        for( int i = 0; i < from.stages().length; i++ ) {
+        final ModelInfo stages[] = new ModelInfo[from.stages().length];
+        for (int i = 0; i < from.stages().length; i++) {
             Transformer sparkModel = from.stages()[i];
-            stages[i] = ModelInfoAdapterFactory.getAdapter(sparkModel.getClass()).getModelInfo(sparkModel,df);
+            stages[i] = ModelInfoAdapterFactory.getAdapter(sparkModel.getClass()).getModelInfo(sparkModel, df);
         }
         modelInfo.setStages(stages);
         return modelInfo;

@@ -23,9 +23,9 @@ public class OneHotEncoderModelInfoAdapter implements ModelInfoAdapter<OneHotEnc
         //Ugly but the only way to deal with spark here
         int numTypes = -1;
         Attribute attribute = Attribute.fromStructField(df.schema().apply(inputColumn));
-        if(attribute.attrType() == AttributeType.Nominal()) {
+        if (attribute.attrType() == AttributeType.Nominal()) {
             numTypes = ((NominalAttribute) Attribute.fromStructField(df.schema().apply(inputColumn))).values().get().length;
-        } else if(attribute.attrType() == AttributeType.Binary()){
+        } else if (attribute.attrType() == AttributeType.Binary()) {
             numTypes = ((BinaryAttribute) Attribute.fromStructField(df.schema().apply(inputColumn))).values().get().length;
         }
         //TODO: find a way to extract this from spark OHE instance

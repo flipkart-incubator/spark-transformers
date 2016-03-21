@@ -22,12 +22,12 @@ public class RegexTokenizerTransformer extends TransformerBase {
 
     public String[] predict(final String input) {
         final Pattern regex = Pattern.compile(modelInfo.getPattern());
-        final String targetStr = (modelInfo.isToLowercase()?input.toLowerCase() : input);
+        final String targetStr = (modelInfo.isToLowercase() ? input.toLowerCase() : input);
         final List<String> tokens;
-        if(modelInfo.isGaps()) {
+        if (modelInfo.isGaps()) {
             //using linkedlist for efficient deletion while filtering
             tokens = new LinkedList<String>(Arrays.asList(targetStr.split(regex.pattern())));
-        }else{
+        } else {
             List<String> allMatches = new LinkedList<>();
             Matcher m = regex.matcher(targetStr);
             while (m.find()) {
@@ -37,7 +37,7 @@ public class RegexTokenizerTransformer extends TransformerBase {
         }
         tokens.removeIf(p -> p.length() < modelInfo.getMinTokenLength());
         final String[] filteredTokens = new String[tokens.size()];
-        for(int i = 0; i < filteredTokens.length; i++) {
+        for (int i = 0; i < filteredTokens.length; i++) {
             filteredTokens[i] = tokens.get(i);
         }
         return filteredTokens;

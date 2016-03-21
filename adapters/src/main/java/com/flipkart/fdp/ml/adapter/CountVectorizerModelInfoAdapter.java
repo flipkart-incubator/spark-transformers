@@ -8,7 +8,7 @@ import org.apache.spark.sql.DataFrame;
  * Transforms Spark's {@link CountVectorizerModel} in MlLib to  {@link com.flipkart.fdp.ml.modelinfo.CountVectorizerModelInfo} object
  * that can be exported through {@link com.flipkart.fdp.ml.export.ModelExporter}
  */
-public class CountVectorizerModelInfoAdapter implements ModelInfoAdapter<CountVectorizerModel,CountVectorizerModelInfo> {
+public class CountVectorizerModelInfoAdapter implements ModelInfoAdapter<CountVectorizerModel, CountVectorizerModelInfo> {
     @Override
     public CountVectorizerModelInfo getModelInfo(final CountVectorizerModel from, final DataFrame df) {
         final CountVectorizerModelInfo modelInfo = new CountVectorizerModelInfo();

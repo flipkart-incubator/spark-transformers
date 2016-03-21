@@ -18,24 +18,24 @@ public class MinMaxScalerTransformer extends TransformerBase {
 
     double[] predict(final double[] input) {
         //validate size of vectors
-        if(modelInfo.getOriginalMax().length != modelInfo.getOriginalMin().length || modelInfo.getOriginalMax().length != input.length) {
+        if (modelInfo.getOriginalMax().length != modelInfo.getOriginalMin().length || modelInfo.getOriginalMax().length != input.length) {
             throw new IllegalArgumentException("Size of max, min and input vector are different : "
                     + modelInfo.getOriginalMax().length + " , " + modelInfo.getOriginalMin().length + " , " + input.length);
         }
 
         final double[] originalRange = new double[modelInfo.getOriginalMax().length];
-        for( int i=0 ; i < originalRange.length; i++) {
+        for (int i = 0; i < originalRange.length; i++) {
             originalRange[i] = modelInfo.getOriginalMax()[i] - modelInfo.getOriginalMin()[i];
         }
 
         final double scale = modelInfo.getMax() - modelInfo.getMin();
-        for( int i = 0; i < input.length; i++) {
-            if(originalRange[i] != 0.0) {
-                input[i] = ( input[i] - modelInfo.getOriginalMin()[i] ) / originalRange[i];
-            }else{
+        for (int i = 0; i < input.length; i++) {
+            if (originalRange[i] != 0.0) {
+                input[i] = (input[i] - modelInfo.getOriginalMin()[i]) / originalRange[i];
+            } else {
                 input[i] = 0.5;
             }
-            input[i] = input[i]*scale + modelInfo.getMin();
+            input[i] = input[i] * scale + modelInfo.getMin();
         }
         return input;
     }

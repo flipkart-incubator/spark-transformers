@@ -34,14 +34,14 @@ public class CountVectorizerBridgeTest extends SparkTestBase {
                 RowFactory.create(1, input.get(0)),
                 RowFactory.create(2, input.get(1))
         ));
-        StructType schema = new StructType(new StructField[] {
+        StructType schema = new StructType(new StructField[]{
                 new StructField("id", DataTypes.IntegerType, false, Metadata.empty()),
                 new StructField("text", new ArrayType(DataTypes.StringType, true), false, Metadata.empty())
         });
         DataFrame df = sqlContext.createDataFrame(jrdd, schema);
 
-       //train model in spark
-       CountVectorizerModel sparkModel = new CountVectorizer()
+        //train model in spark
+        CountVectorizerModel sparkModel = new CountVectorizer()
                 .setInputCol("text")
                 .setOutputCol("feature")
                 .setVocabSize(3)
@@ -59,9 +59,9 @@ public class CountVectorizerBridgeTest extends SparkTestBase {
             Object[] words = input.get(i).toArray();
 
             Map<String, Object> data = new HashMap<String, Object>();
-            data.put("input",words);
+            data.put("input", words);
             transformer.transform(data);
-            double[] transformedOp = (double []) data.get("output");
+            double[] transformedOp = (double[]) data.get("output");
 
             double[] sparkOp = ((Vector) sparkOutput[i].get(0)).toArray();
             assertArrayEquals(transformedOp, sparkOp, 0.01);

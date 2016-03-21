@@ -30,15 +30,15 @@ public class BucketizerBridgeTest extends SparkTestBase {
         double[] expectedBuckets = {0.0, 0.0, 1.0, 1.0};
         double[] splits = {-0.5, 0.0, 0.5};
 
-        StructType schema = new StructType(new StructField[] {
+        StructType schema = new StructType(new StructField[]{
                 new StructField("id", DataTypes.IntegerType, false, Metadata.empty()),
                 new StructField("feature", DataTypes.DoubleType, false, Metadata.empty())
         });
         List<Row> trainingData = Arrays.asList(
-                cr(0,validData[0]),
-                cr(1,validData[1]),
-                cr(2,validData[2]),
-                cr(3,validData[3]));
+                cr(0, validData[0]),
+                cr(1, validData[1]),
+                cr(2, validData[2]),
+                cr(3, validData[3]));
 
         DataFrame df = sqlContext.createDataFrame(trainingData, schema);
 
@@ -53,14 +53,14 @@ public class BucketizerBridgeTest extends SparkTestBase {
         //Import and get Transformer
         Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);
 
-        Row[] sparkOutput = sparkModel.transform(df).orderBy("id").select("id","feature", "result").collect();
+        Row[] sparkOutput = sparkModel.transform(df).orderBy("id").select("id", "feature", "result").collect();
 
         for (Row r : sparkOutput) {
             double input = r.getDouble(1);
             double sparkOp = r.getDouble(2);
 
             Map<String, Object> data = new HashMap<String, Object>();
-            data.put("input",input);
+            data.put("input", input);
             transformer.transform(data);
             double transformedInput = (double) data.get("output");
 

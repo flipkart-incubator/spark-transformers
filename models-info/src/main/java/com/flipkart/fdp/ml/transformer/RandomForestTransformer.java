@@ -35,7 +35,7 @@ public class RandomForestTransformer extends TransformerBase {
 
     @Override
     public void transform(Map<String, Object> input) {
-        double [] inp = (double [] ) input.get(getInputKeys().iterator().next());
+        double[] inp = (double[]) input.get(getInputKeys().iterator().next());
         input.put(getOutputKey(), predict(inp));
     }
 
@@ -61,7 +61,8 @@ public class RandomForestTransformer extends TransformerBase {
     private double classify(final double[] input) {
         Map<Double, Integer> votes = new HashMap<Double, Integer>();
         for (DecisionTreeTransformer i : subTransformers) {
-            double label = i.predict(input);;
+            double label = i.predict(input);
+            ;
 
             Integer existingCount = votes.get(label);
             if (existingCount == null) {

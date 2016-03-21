@@ -50,7 +50,6 @@ public class StandardScalerBridgeTest extends SparkTestBase {
         DataFrame df = sqlContext.createDataFrame(sc.parallelize(localTraining), LabeledPoint.class);
 
 
-
         //train model in spark
         StandardScalerModel sparkModelNone = new StandardScaler()
                 .setInputCol("features")
@@ -111,13 +110,13 @@ public class StandardScalerBridgeTest extends SparkTestBase {
     }
 
     private void assertCorrectness(Row[] sparkOutput, double[][] expected, Transformer transformer) {
-        for( int i = 0 ; i < 2; i++) {
+        for (int i = 0; i < 2; i++) {
             double[] input = ((Vector) sparkOutput[i].get(0)).toArray();
 
             Map<String, Object> data = new HashMap<String, Object>();
-            data.put("input",input);
+            data.put("input", input);
             transformer.transform(data);
-            double[] transformedOp = (double []) data.get("output");
+            double[] transformedOp = (double[]) data.get("output");
 
             double[] sparkOp = ((Vector) sparkOutput[i].get(1)).toArray();
             assertArrayEquals(transformedOp, sparkOp, 0.01);

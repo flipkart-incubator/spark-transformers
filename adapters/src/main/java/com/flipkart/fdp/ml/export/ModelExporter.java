@@ -22,7 +22,7 @@ public class ModelExporter {
      * The serialization format currently being used is json
      *
      * @param model model info to be exported
-     * @param df Data frame that is used for training is required for some models as state information is being stored as column metadata by some spark models
+     * @param df    Data frame that is used for training is required for some models as state information is being stored as column metadata by some spark models
      * @return byte[]
      */
     public static byte[] export(Object model, DataFrame df) {
@@ -41,11 +41,11 @@ public class ModelExporter {
     private static String export(ModelInfo modelInfo) {
         final Map<String, String> map = new HashMap<String, String>();
         map.put(SerializationConstants.TYPE_IDENTIFIER, modelInfo.getClass().getCanonicalName());
-        if( modelInfo instanceof PipelineModelInfo) {
+        if (modelInfo instanceof PipelineModelInfo) {
             //custom serialization is needed as type is not encoded into gson serialized modelInfo
-            PipelineModelInfo pipelineModelInfo = (PipelineModelInfo)modelInfo;
-            String [] serializedModels = new String[pipelineModelInfo.getStages().length];
-            for(int i =0; i < serializedModels.length; i++) {
+            PipelineModelInfo pipelineModelInfo = (PipelineModelInfo) modelInfo;
+            String[] serializedModels = new String[pipelineModelInfo.getStages().length];
+            for (int i = 0; i < serializedModels.length; i++) {
                 serializedModels[i] = export(pipelineModelInfo.getStages()[i]);
             }
             map.put(SerializationConstants.MODEL_INFO_IDENTIFIER, gson.toJson(serializedModels));

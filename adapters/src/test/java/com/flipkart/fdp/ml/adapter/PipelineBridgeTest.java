@@ -58,7 +58,7 @@ public class PipelineBridgeTest extends SparkTestBase {
                 .setMaxIter(10)
                 .setRegParam(0.01);
         Pipeline pipeline = new Pipeline()
-                .setStages(new PipelineStage[] {tokenizer, hashingTF, lr});
+                .setStages(new PipelineStage[]{tokenizer, hashingTF, lr});
 
         // Fit the pipeline to training documents.
         PipelineModel sparkPipelineModel = pipeline.fit(trainingData);

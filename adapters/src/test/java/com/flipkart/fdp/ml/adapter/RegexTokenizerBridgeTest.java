@@ -33,7 +33,7 @@ public class RegexTokenizerBridgeTest extends SparkTestBase {
         List<Row> trainingData = Arrays.asList(
                 cr("Test of tok."),
                 cr("Te,st.  punct")
-                );
+        );
         DataFrame dataset = sqlContext.createDataFrame(trainingData, schema);
 
         //train model in spark
@@ -55,9 +55,9 @@ public class RegexTokenizerBridgeTest extends SparkTestBase {
         for (Row row : pairs) {
 
             Map<String, Object> data = new HashMap<String, Object>();
-            data.put("input",(String)row.get(0));
+            data.put("input", (String) row.get(0));
             transformer.transform(data);
-            String[] output = (String []) data.get("output");
+            String[] output = (String[]) data.get("output");
 
             Object sparkOp = row.get(1);
             System.out.println(ArrayUtils.toString(output));

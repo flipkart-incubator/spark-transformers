@@ -17,26 +17,26 @@ public class StandardScalerTransformer extends TransformerBase {
 
     public double[] predict(final double[] input) {
 
-        if(modelInfo.isWithMean()) {
-            if(input.length != modelInfo.getMean().length) {
+        if (modelInfo.isWithMean()) {
+            if (input.length != modelInfo.getMean().length) {
                 throw new IllegalArgumentException("Size of input vector and mean are different : "
                         + input.length + " and " + modelInfo.getMean().length);
             }
-            for( int i =0 ; i < input.length; i++) {
+            for (int i = 0; i < input.length; i++) {
                 input[i] -= modelInfo.getMean()[i];
             }
         }
 
-        if(modelInfo.isWithStd()) {
-            if(input.length != modelInfo.getStd().length) {
+        if (modelInfo.isWithStd()) {
+            if (input.length != modelInfo.getStd().length) {
                 throw new IllegalArgumentException("Size of std and input vector are different : "
                         + input.length + " and " + modelInfo.getStd().length);
             }
-            for( int i=0 ; i < input.length; i++) {
+            for (int i = 0; i < input.length; i++) {
                 double stdi = modelInfo.getStd()[i];
-                if(stdi != 0.0) {
+                if (stdi != 0.0) {
                     input[i] /= stdi;
-                }else{
+                } else {
                     input[i] = 0.0;
                 }
             }
@@ -46,7 +46,7 @@ public class StandardScalerTransformer extends TransformerBase {
 
     @Override
     public void transform(Map<String, Object> input) {
-        double[] inp = (double []) input.get(getInputKeys().iterator().next());
+        double[] inp = (double[]) input.get(getInputKeys().iterator().next());
         input.put(getOutputKey(), predict(inp));
     }
 }

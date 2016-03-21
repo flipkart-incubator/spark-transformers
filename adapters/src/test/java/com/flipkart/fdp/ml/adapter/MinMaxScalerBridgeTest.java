@@ -65,9 +65,9 @@ public class MinMaxScalerBridgeTest extends SparkTestBase {
             double[] input = ((Vector) sparkOutput[i].get(0)).toArray();
 
             Map<String, Object> data = new HashMap<String, Object>();
-            data.put("input",input);
+            data.put("input", input);
             transformer.transform(data);
-            double[] transformedOp = (double []) data.get("output");
+            double[] transformedOp = (double[]) data.get("output");
 
             double[] sparkOp = ((Vector) sparkOutput[i].get(1)).toArray();
             assertArrayEquals(transformedOp, sparkOp, 0.01);

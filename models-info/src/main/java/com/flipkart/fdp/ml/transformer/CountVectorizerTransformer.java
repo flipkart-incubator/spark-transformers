@@ -17,7 +17,7 @@ public class CountVectorizerTransformer extends TransformerBase {
     public CountVectorizerTransformer(final CountVectorizerModelInfo modelInfo) {
         this.modelInfo = modelInfo;
         vocabulary = new HashMap<String, Integer>();
-        for( int i =0 ; i < modelInfo.getVocabulary().length; i++) {
+        for (int i = 0; i < modelInfo.getVocabulary().length; i++) {
             vocabulary.put(modelInfo.getVocabulary()[i], i);
         }
     }
@@ -25,27 +25,25 @@ public class CountVectorizerTransformer extends TransformerBase {
     double[] predict(final String[] input) {
         final Map<String, Integer> termFrequencies = new HashMap<String, Integer>();
         final int tokenCount = input.length;
-        for(String term : input) {
-            if(vocabulary.containsKey(term)) {
-                if(termFrequencies.containsKey(term)) {
-                    termFrequencies.put(term, termFrequencies.get(term)+1);
-                }
-                else {
+        for (String term : input) {
+            if (vocabulary.containsKey(term)) {
+                if (termFrequencies.containsKey(term)) {
+                    termFrequencies.put(term, termFrequencies.get(term) + 1);
+                } else {
                     termFrequencies.put(term, 1);
                 }
-            }
-            else{
+            } else {
                 //ignore terms not in vocabulary
             }
         }
-        final int effectiveMinTF = (int)( (modelInfo.getMinTF() >= 1.0) ? modelInfo.getMinTF() : modelInfo.getMinTF() * tokenCount);
+        final int effectiveMinTF = (int) ((modelInfo.getMinTF() >= 1.0) ? modelInfo.getMinTF() : modelInfo.getMinTF() * tokenCount);
 
         final double[] encoding = new double[modelInfo.getVocabSize()];
         Arrays.fill(encoding, 0.0);
 
-        for(final Map.Entry<String, Integer> entry : termFrequencies.entrySet()) {
+        for (final Map.Entry<String, Integer> entry : termFrequencies.entrySet()) {
             //filter out terms with freq < effectiveMinTF
-            if( entry.getValue() >= effectiveMinTF) {
+            if (entry.getValue() >= effectiveMinTF) {
                 int position = vocabulary.get(entry.getKey());
                 encoding[position] = entry.getValue();
             }
@@ -55,7 +53,7 @@ public class CountVectorizerTransformer extends TransformerBase {
 
     @Override
     public void transform(Map<String, Object> input) {
-        String[] inp = (String []) input.get(getInputKeys().iterator().next());
+        String[] inp = (String[]) input.get(getInputKeys().iterator().next());
         input.put(getOutputKey(), predict(inp));
     }
 }

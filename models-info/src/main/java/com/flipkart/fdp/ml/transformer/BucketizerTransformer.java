@@ -18,12 +18,12 @@ public class BucketizerTransformer extends TransformerBase {
     }
 
     public double predict(final double input) {
-        if( modelInfo.getSplits().length <=0) {
+        if (modelInfo.getSplits().length <= 0) {
             throw new RuntimeException("BucketizerTransformer : splits have incorrect length : " + modelInfo.getSplits().length);
         }
 
-        final double last = modelInfo.getSplits()[modelInfo.getSplits().length-1];
-        if(input == last) {
+        final double last = modelInfo.getSplits()[modelInfo.getSplits().length - 1];
+        if (input == last) {
             return modelInfo.getSplits().length - 2;
         }
 
