@@ -26,7 +26,7 @@ public class StringIndexerTransformer extends TransformerBase {
 
     @Override
     public void transform(Map<String, Object> input) {
-        String inp = (String) input.get(getInputKeys()[0]);
+        String inp = (String) input.get(getInputKeys().iterator().next());
         input.put(getOutputKey(), predict(inp));
     }
 }

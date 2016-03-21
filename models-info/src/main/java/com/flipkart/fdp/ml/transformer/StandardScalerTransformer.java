@@ -46,7 +46,7 @@ public class StandardScalerTransformer extends TransformerBase {
 
     @Override
     public void transform(Map<String, Object> input) {
-        double[] inp = (double []) input.get(getInputKeys()[0]);
+        double[] inp = (double []) input.get(getInputKeys().iterator().next());
         input.put(getOutputKey(), predict(inp));
     }
 }
