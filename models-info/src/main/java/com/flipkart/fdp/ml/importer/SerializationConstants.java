@@ -1,9 +1,12 @@
 package com.flipkart.fdp.ml.importer;
 
+import java.nio.charset.Charset;
+
 /**
  * Class holding constants used in serialization
  */
 public class SerializationConstants {
+    public static final Charset CHARSET = Charset.forName("UTF-8");
     //key to identify type in serialized format
     public static final String TYPE_IDENTIFIER = "_class";
     //key to identify model info payload in serialized format

@@ -35,7 +35,7 @@ public class ModelImporter {
      * @return model info imported of type {@link ModelInfo}
      */
     public static ModelInfo importModelInfo(byte[] serializedModelInfo) {
-        String data = new String(serializedModelInfo);
+        String data = new String(serializedModelInfo, SerializationConstants.CHARSET);
         Map<String, String> map = gson.fromJson(data, new TypeToken<Map<String, String>>() {
         }.getType());
         Class modelClass = null;

@@ -29,7 +29,7 @@ public class ModelExporter {
     public static byte[] export(Object model, DataFrame df) {
         return export(
                 ModelInfoAdapterFactory.getAdapter(model.getClass())
-                        .adapt(model, df)).getBytes();
+                        .adapt(model, df)).getBytes(SerializationConstants.CHARSET);
     }
 
     /**
