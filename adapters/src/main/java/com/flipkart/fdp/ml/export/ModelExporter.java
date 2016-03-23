@@ -4,6 +4,7 @@ import com.flipkart.fdp.ml.ModelInfoAdapterFactory;
 import com.flipkart.fdp.ml.importer.SerializationConstants;
 import com.flipkart.fdp.ml.modelinfo.ModelInfo;
 import com.flipkart.fdp.ml.modelinfo.PipelineModelInfo;
+import com.flipkart.fdp.ml.utils.Constants;
 import com.google.gson.Gson;
 import org.apache.spark.sql.DataFrame;
 
@@ -40,6 +41,8 @@ public class ModelExporter {
      */
     private static String export(ModelInfo modelInfo) {
         final Map<String, String> map = new HashMap<String, String>();
+        map.put(SerializationConstants.SPARK_VERSION, Constants.SUPPORTED_SPARK_VERSION);
+        map.put(SerializationConstants.EXPORTER_LIBRARY_VERSION, Constants.LIBRARY_VERSION);
         map.put(SerializationConstants.TYPE_IDENTIFIER, modelInfo.getClass().getCanonicalName());
         if (modelInfo instanceof PipelineModelInfo) {
             //custom serialization is needed as type is not encoded into gson serialized modelInfo

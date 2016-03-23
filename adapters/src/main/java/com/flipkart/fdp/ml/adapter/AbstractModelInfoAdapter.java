@@ -8,8 +8,10 @@ import org.apache.spark.sql.DataFrame;
 public abstract class AbstractModelInfoAdapter<F, T extends ModelInfo> implements ModelInfoAdapter<F, T> {
 
     private void preConditions(DataFrame df) {
-        if(! Constants.SUPPORTED_SPARK_VERSION.equals(df.sqlContext().sparkContext().version())) {
-            throw new UnsupportedOperationException("Only spark version " + Constants.SUPPORTED_SPARK_VERSION + " is supported by this version of the library");
+        if(null != df) {
+            if (!Constants.SUPPORTED_SPARK_VERSION.equals(df.sqlContext().sparkContext().version())) {
+                throw new UnsupportedOperationException("Only spark version " + Constants.SUPPORTED_SPARK_VERSION + " is supported by this version of the library");
+            }
         }
     }
 
