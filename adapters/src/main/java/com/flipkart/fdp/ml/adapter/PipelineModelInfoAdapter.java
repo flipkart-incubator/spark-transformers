@@ -13,14 +13,14 @@ import org.apache.spark.sql.DataFrame;
  * that can be exported through {@link com.flipkart.fdp.ml.export.ModelExporter}
  */
 @Slf4j
-public class PipelineModelInfoAdapter implements ModelInfoAdapter<PipelineModel, PipelineModelInfo> {
+public class PipelineModelInfoAdapter extends AbstractModelInfoAdapter<PipelineModel, PipelineModelInfo> {
     @Override
     public PipelineModelInfo getModelInfo(final PipelineModel from, final DataFrame df) {
         final PipelineModelInfo modelInfo = new PipelineModelInfo();
         final ModelInfo stages[] = new ModelInfo[from.stages().length];
         for (int i = 0; i < from.stages().length; i++) {
             Transformer sparkModel = from.stages()[i];
-            stages[i] = ModelInfoAdapterFactory.getAdapter(sparkModel.getClass()).getModelInfo(sparkModel, df);
+            stages[i] = ModelInfoAdapterFactory.getAdapter(sparkModel.getClass()).adapt(sparkModel, df);
         }
         modelInfo.setStages(stages);
         return modelInfo;

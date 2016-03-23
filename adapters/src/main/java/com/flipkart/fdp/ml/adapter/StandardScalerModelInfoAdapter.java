@@ -8,7 +8,7 @@ import org.apache.spark.sql.DataFrame;
  * Transforms Spark's {@link StandardScalerModel} in MlLib to  {@link com.flipkart.fdp.ml.modelinfo.StandardScalerModelInfo} object
  * that can be exported through {@link com.flipkart.fdp.ml.export.ModelExporter}
  */
-public class StandardScalerModelInfoAdapter implements ModelInfoAdapter<StandardScalerModel, StandardScalerModelInfo> {
+public class StandardScalerModelInfoAdapter extends AbstractModelInfoAdapter<StandardScalerModel, StandardScalerModelInfo> {
     @Override
     public StandardScalerModelInfo getModelInfo(final StandardScalerModel from, final DataFrame df) {
         final StandardScalerModelInfo modelInfo = new StandardScalerModelInfo();

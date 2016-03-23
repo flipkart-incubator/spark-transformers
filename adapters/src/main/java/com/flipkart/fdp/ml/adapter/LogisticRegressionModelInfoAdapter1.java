@@ -11,7 +11,7 @@ import org.apache.spark.sql.DataFrame;
  */
 @Slf4j
 public class LogisticRegressionModelInfoAdapter1
-        implements ModelInfoAdapter<LogisticRegressionModel, LogisticRegressionModelInfo> {
+        extends AbstractModelInfoAdapter<LogisticRegressionModel, LogisticRegressionModelInfo> {
 
     @Override
     public LogisticRegressionModelInfo getModelInfo(final LogisticRegressionModel sparkLRModel, DataFrame df) {

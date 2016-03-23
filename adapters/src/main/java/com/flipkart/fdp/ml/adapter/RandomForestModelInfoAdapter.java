@@ -11,7 +11,7 @@ import org.apache.spark.sql.DataFrame;
  * that can be exported through {@link com.flipkart.fdp.ml.export.ModelExporter}
  */
 public class RandomForestModelInfoAdapter
-        implements ModelInfoAdapter<RandomForestModel, RandomForestModelInfo> {
+        extends AbstractModelInfoAdapter<RandomForestModel, RandomForestModelInfo> {
 
     private final DecisionTreeModelInfoAdapter bridge = new DecisionTreeModelInfoAdapter();
 

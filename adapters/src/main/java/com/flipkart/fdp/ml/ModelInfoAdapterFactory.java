@@ -1,8 +1,7 @@
 package com.flipkart.fdp.ml;
 
 import com.flipkart.fdp.ml.adapter.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 
@@ -10,8 +9,8 @@ import java.util.Map;
  * A factory that will create and cache various adapters of type {@link ModelInfoAdapter}
  * The purpose of the class is to abstract away that logic of identifying which adapter to use.
  */
+@Slf4j
 public class ModelInfoAdapterFactory {
-    private static final Logger LOG = LoggerFactory.getLogger(ModelInfoAdapterFactory.class);
 
     private static final Map<String, ModelInfoAdapter> registry = new java.util.HashMap<String, ModelInfoAdapter>();
 

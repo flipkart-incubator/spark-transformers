@@ -8,7 +8,7 @@ import org.apache.spark.sql.DataFrame;
  * Transforms Spark's {@link Bucketizer} in MlLib to  {@link com.flipkart.fdp.ml.modelinfo.BucketizerModelInfo} object
  * that can be exported through {@link com.flipkart.fdp.ml.export.ModelExporter}
  */
-public class BucketizerModelInfoAdapter implements ModelInfoAdapter<Bucketizer, BucketizerModelInfo> {
+public class BucketizerModelInfoAdapter extends AbstractModelInfoAdapter<Bucketizer, BucketizerModelInfo> {
 
     @Override
     public BucketizerModelInfo getModelInfo(final Bucketizer from, final DataFrame df) {

@@ -8,7 +8,7 @@ import org.apache.spark.sql.DataFrame;
  * Transforms Spark's {@link MinMaxScalerModel} in MlLib to  {@link com.flipkart.fdp.ml.modelinfo.MinMaxScalerModelInfo} object
  * that can be exported through {@link com.flipkart.fdp.ml.export.ModelExporter}
  */
-public class MinMaxScalerModelInfoAdapter implements ModelInfoAdapter<MinMaxScalerModel, MinMaxScalerModelInfo> {
+public class MinMaxScalerModelInfoAdapter extends AbstractModelInfoAdapter<MinMaxScalerModel, MinMaxScalerModelInfo> {
     @Override
     public MinMaxScalerModelInfo getModelInfo(final MinMaxScalerModel from, final DataFrame df) {
         final MinMaxScalerModelInfo modelInfo = new MinMaxScalerModelInfo();

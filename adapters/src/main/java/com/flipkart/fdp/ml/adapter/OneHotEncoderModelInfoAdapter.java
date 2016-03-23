@@ -13,7 +13,7 @@ import org.apache.spark.sql.DataFrame;
  * Transforms Spark's {@link StringIndexerModel} in MlLib to  {@link com.flipkart.fdp.ml.modelinfo.StringIndexerModelInfo} object
  * that can be exported through {@link com.flipkart.fdp.ml.export.ModelExporter}
  */
-public class OneHotEncoderModelInfoAdapter implements ModelInfoAdapter<OneHotEncoder, OneHotEncoderModelInfo> {
+public class OneHotEncoderModelInfoAdapter extends AbstractModelInfoAdapter<OneHotEncoder, OneHotEncoderModelInfo> {
 
     @Override
     public OneHotEncoderModelInfo getModelInfo(final OneHotEncoder from, DataFrame df) {
