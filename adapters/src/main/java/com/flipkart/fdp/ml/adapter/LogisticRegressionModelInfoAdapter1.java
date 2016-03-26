@@ -5,6 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.spark.ml.classification.LogisticRegressionModel;
 import org.apache.spark.sql.DataFrame;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 /**
  * Transforms Spark's {@link LogisticRegressionModel} to  {@link LogisticRegressionModelInfo} object
  * that can be exported through {@link com.flipkart.fdp.ml.export.ModelExporter}
@@ -21,6 +24,10 @@ public class LogisticRegressionModelInfoAdapter1
         logisticRegressionModelInfo.setNumClasses(sparkLRModel.numClasses());
         logisticRegressionModelInfo.setNumFeatures(sparkLRModel.numFeatures());
         logisticRegressionModelInfo.setThreshold(sparkLRModel.getThreshold());
+        Set<String> inputKeys = new LinkedHashSet<String>();
+        inputKeys.add(sparkLRModel.getFeaturesCol());
+        logisticRegressionModelInfo.setInputKeys(inputKeys);
+        logisticRegressionModelInfo.setOutputKey(sparkLRModel.getPredictionCol());
         return logisticRegressionModelInfo;
     }
 

@@ -8,6 +8,9 @@ import org.apache.spark.ml.attribute.NominalAttribute;
 import org.apache.spark.ml.feature.OneHotEncoder;
 import org.apache.spark.sql.DataFrame;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 /**
  * Transforms Spark's {@link OneHotEncoder} in MlLib to  {@link com.flipkart.fdp.ml.modelinfo.OneHotEncoderModelInfo} object
  * that can be exported through {@link com.flipkart.fdp.ml.export.ModelExporter}
@@ -32,6 +35,10 @@ public class OneHotEncoderModelInfoAdapter extends AbstractModelInfoAdapter<OneH
 
         modelInfo.setShouldDropLast(shouldDropLast);
         modelInfo.setNumTypes(numTypes);
+        Set<String> inputKeys = new LinkedHashSet<String>();
+        inputKeys.add(from.getInputCol());
+        modelInfo.setInputKeys(inputKeys);
+        modelInfo.setOutputKey(from.getOutputCol());
         return modelInfo;
     }
 

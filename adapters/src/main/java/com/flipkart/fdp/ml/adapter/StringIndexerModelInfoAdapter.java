@@ -5,7 +5,9 @@ import org.apache.spark.ml.feature.StringIndexerModel;
 import org.apache.spark.sql.DataFrame;
 
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Transforms Spark's {@link StringIndexerModel} in MlLib to  {@link com.flipkart.fdp.ml.modelinfo.StringIndexerModelInfo} object
@@ -22,6 +24,10 @@ public class StringIndexerModelInfoAdapter extends AbstractModelInfoAdapter<Stri
         }
         final StringIndexerModelInfo modelInfo = new StringIndexerModelInfo();
         modelInfo.setLabelToIndex(labelToIndex);
+        Set<String> inputKeys = new LinkedHashSet<String>();
+        inputKeys.add(from.getInputCol());
+        modelInfo.setInputKeys(inputKeys);
+        modelInfo.setOutputKey(from.getOutputCol());
         return modelInfo;
     }
 
