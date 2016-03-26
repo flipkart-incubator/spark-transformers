@@ -55,9 +55,9 @@ public class RegexTokenizerBridgeTest extends SparkTestBase {
         for (Row row : pairs) {
 
             Map<String, Object> data = new HashMap<String, Object>();
-            data.put("input", (String) row.get(0));
+            data.put(sparkModel.getInputCol(), row.getString(0));
             transformer.transform(data);
-            String[] output = (String[]) data.get("output");
+            String[] output = (String[]) data.get(sparkModel.getOutputCol());
 
             Object sparkOp = row.get(1);
             System.out.println(ArrayUtils.toString(output));

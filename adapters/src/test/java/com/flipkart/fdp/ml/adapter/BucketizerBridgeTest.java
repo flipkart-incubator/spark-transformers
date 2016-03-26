@@ -60,9 +60,9 @@ public class BucketizerBridgeTest extends SparkTestBase {
             double sparkOp = r.getDouble(2);
 
             Map<String, Object> data = new HashMap<String, Object>();
-            data.put("input", input);
+            data.put(sparkModel.getInputCol(), input);
             transformer.transform(data);
-            double transformedInput = (double) data.get("output");
+            double transformedInput = (double) data.get(sparkModel.getOutputCol());
 
             assertTrue((transformedInput >= 0) && (transformedInput <= 1));
             assertEquals(transformedInput, sparkOp, 0.01);

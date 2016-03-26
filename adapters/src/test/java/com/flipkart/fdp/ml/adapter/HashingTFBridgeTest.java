@@ -65,9 +65,9 @@ public class HashingTFBridgeTest extends SparkTestBase {
             String[] words = ((String) row.get(1)).toLowerCase().split(" ");
 
             Map<String, Object> data = new HashMap<String, Object>();
-            data.put("input", words);
+            data.put(sparkModel.getInputCol(), words);
             transformer.transform(data);
-            double[] transformedOp = (double[]) data.get("output");
+            double[] transformedOp = (double[]) data.get(sparkModel.getOutputCol());
 
             double[] sparkOp = ((Vector) row.get(3)).toArray();
             assertArrayEquals(transformedOp, sparkOp, 0.01);

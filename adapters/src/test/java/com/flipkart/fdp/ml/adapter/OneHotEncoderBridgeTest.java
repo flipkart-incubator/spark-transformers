@@ -64,9 +64,9 @@ public class OneHotEncoderBridgeTest extends SparkTestBase {
         for (Row row : sparkOutput) {
 
             Map<String, Object> data = new HashMap<String, Object>();
-            data.put("input", row.getDouble(1));
+            data.put(sparkModel.getInputCol(), row.getDouble(1));
             transformer.transform(data);
-            double[] transformedOp = (double[]) data.get("output");
+            double[] transformedOp = (double[]) data.get(sparkModel.getOutputCol());
 
             double[] sparkOp = ((Vector) row.get(2)).toArray();
             assertArrayEquals(transformedOp, sparkOp, 0.01);

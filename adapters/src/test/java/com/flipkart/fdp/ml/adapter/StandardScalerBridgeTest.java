@@ -53,28 +53,28 @@ public class StandardScalerBridgeTest extends SparkTestBase {
         //train model in spark
         StandardScalerModel sparkModelNone = new StandardScaler()
                 .setInputCol("features")
-                .setOutputCol("scaledOutputNone")
+                .setOutputCol("scaledOutput")
                 .setWithMean(false)
                 .setWithStd(false)
                 .fit(df);
 
         StandardScalerModel sparkModelWithMean = new StandardScaler()
                 .setInputCol("features")
-                .setOutputCol("scaledOutputWithMean")
+                .setOutputCol("scaledOutput")
                 .setWithMean(true)
                 .setWithStd(false)
                 .fit(df);
 
         StandardScalerModel sparkModelWithStd = new StandardScaler()
                 .setInputCol("features")
-                .setOutputCol("scaledOutputWithStd")
+                .setOutputCol("scaledOutput")
                 .setWithMean(false)
                 .setWithStd(true)
                 .fit(df);
 
         StandardScalerModel sparkModelWithBoth = new StandardScaler()
                 .setInputCol("features")
-                .setOutputCol("scaledOutputWithBoth")
+                .setOutputCol("scaledOutput")
                 .setWithMean(true)
                 .setWithStd(true)
                 .fit(df);
@@ -95,16 +95,16 @@ public class StandardScalerBridgeTest extends SparkTestBase {
 
 
         //compare predictions
-        Row[] sparkNoneOutput = sparkModelNone.transform(df).orderBy("label").select("features", "scaledOutputNone").collect();
+        Row[] sparkNoneOutput = sparkModelNone.transform(df).orderBy("label").select("features", "scaledOutput").collect();
         assertCorrectness(sparkNoneOutput, data, transformerNone);
 
-        Row[] sparkWithMeanOutput = sparkModelWithMean.transform(df).orderBy("label").select("features", "scaledOutputWithMean").collect();
+        Row[] sparkWithMeanOutput = sparkModelWithMean.transform(df).orderBy("label").select("features", "scaledOutput").collect();
         assertCorrectness(sparkWithMeanOutput, resWithMean, transformerWithMean);
 
-        Row[] sparkWithStdOutput = sparkModelWithStd.transform(df).orderBy("label").select("features", "scaledOutputWithStd").collect();
+        Row[] sparkWithStdOutput = sparkModelWithStd.transform(df).orderBy("label").select("features", "scaledOutput").collect();
         assertCorrectness(sparkWithStdOutput, resWithStd, transformerWithStd);
 
-        Row[] sparkWithBothOutput = sparkModelWithBoth.transform(df).orderBy("label").select("features", "scaledOutputWithBoth").collect();
+        Row[] sparkWithBothOutput = sparkModelWithBoth.transform(df).orderBy("label").select("features", "scaledOutput").collect();
         assertCorrectness(sparkWithBothOutput, resWithBoth, transformerWithBoth);
 
     }
@@ -114,9 +114,9 @@ public class StandardScalerBridgeTest extends SparkTestBase {
             double[] input = ((Vector) sparkOutput[i].get(0)).toArray();
 
             Map<String, Object> data = new HashMap<String, Object>();
-            data.put("input", input);
+            data.put("features", input);
             transformer.transform(data);
-            double[] transformedOp = (double[]) data.get("output");
+            double[] transformedOp = (double[]) data.get("scaledOutput");
 
             double[] sparkOp = ((Vector) sparkOutput[i].get(1)).toArray();
             assertArrayEquals(transformedOp, sparkOp, 0.01);

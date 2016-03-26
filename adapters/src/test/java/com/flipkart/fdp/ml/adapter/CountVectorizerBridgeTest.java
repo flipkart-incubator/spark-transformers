@@ -59,9 +59,9 @@ public class CountVectorizerBridgeTest extends SparkTestBase {
             Object[] words = input.get(i).toArray();
 
             Map<String, Object> data = new HashMap<String, Object>();
-            data.put("input", words);
+            data.put(sparkModel.getInputCol(), words);
             transformer.transform(data);
-            double[] transformedOp = (double[]) data.get("output");
+            double[] transformedOp = (double[]) data.get(sparkModel.getOutputCol());
 
             double[] sparkOp = ((Vector) sparkOutput[i].get(0)).toArray();
             assertArrayEquals(transformedOp, sparkOp, 0.01);

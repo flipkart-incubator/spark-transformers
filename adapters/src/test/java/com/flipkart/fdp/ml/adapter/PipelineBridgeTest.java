@@ -89,9 +89,9 @@ public class PipelineBridgeTest extends SparkTestBase {
             System.out.println(r);
             double sparkPipelineOp = r.getDouble(3);
             Map<String, Object> data = new HashMap<String, Object>();
-            data.put("input", r.getString(1));
+            data.put("text", r.getString(1));
             transformer.transform(data);
-            double exportedPipelineOp = (double) data.get("output");
+            double exportedPipelineOp = (double) data.get("prediction");
             assertEquals(sparkPipelineOp, exportedPipelineOp, 0.01);
         }
     }

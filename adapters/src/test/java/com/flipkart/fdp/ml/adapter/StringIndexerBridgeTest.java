@@ -52,9 +52,9 @@ public class StringIndexerBridgeTest extends SparkTestBase {
         for (Row row : sparkOutput) {
 
             Map<String, Object> data = new HashMap<String, Object>();
-            data.put("input", (String) row.get(1));
+            data.put(model.getInputCol(), (String) row.get(1));
             transformer.transform(data);
-            double output = (double) data.get("output");
+            double output = (double) data.get(model.getOutputCol());
 
             double indexerOutput = (output);
             assertEquals(indexerOutput, (double) row.get(2), 0.01);
