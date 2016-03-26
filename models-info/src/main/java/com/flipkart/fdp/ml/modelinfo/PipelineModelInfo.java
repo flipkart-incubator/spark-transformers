@@ -8,7 +8,7 @@ import lombok.Data;
  * Represents information for a pipeline model
  */
 @Data
-public class PipelineModelInfo implements ModelInfo {
+public class PipelineModelInfo extends AbstractModelInfo {
 
     private ModelInfo stages[];
 

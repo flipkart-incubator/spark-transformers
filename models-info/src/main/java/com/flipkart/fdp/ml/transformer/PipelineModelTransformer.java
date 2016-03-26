@@ -2,15 +2,13 @@ package com.flipkart.fdp.ml.transformer;
 
 import com.flipkart.fdp.ml.modelinfo.PipelineModelInfo;
 
-import java.util.Arrays;
-import java.util.LinkedHashSet;
 import java.util.Map;
 
 /**
  * Transforms input/ predicts for a Pipeline model representation
  * captured by  {@link com.flipkart.fdp.ml.modelinfo.PipelineModelInfo}.
  */
-public class PipelineModelTransformer extends TransformerBase {
+public class PipelineModelTransformer implements Transformer {
 
     private final PipelineModelInfo modelInfo;
     private final Transformer transformers[];
@@ -21,11 +19,7 @@ public class PipelineModelTransformer extends TransformerBase {
         transformers = new Transformer[modelInfo.getStages().length];
         for (int i = 0; i < transformers.length; i++) {
             transformers[i] = modelInfo.getStages()[i].getTransformer();
-            transformers[i].setInputKeys(new LinkedHashSet<String>(Arrays.asList("output" + (i - 1))));
-            transformers[i].setOutputKey("output" + i);
         }
-        transformers[0].setInputKeys(new LinkedHashSet<String>(Arrays.asList("input")));
-        transformers[transformers.length - 1].setOutputKey("output");
     }
 
     @Override

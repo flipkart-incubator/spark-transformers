@@ -1,5 +1,6 @@
 package com.flipkart.fdp.ml.transformer;
 
+import com.flipkart.fdp.ml.modelinfo.AbstractModelInfo;
 import com.flipkart.fdp.ml.modelinfo.RegexTokenizerModelInfo;
 
 import java.util.Arrays;
@@ -13,7 +14,7 @@ import java.util.regex.Pattern;
  * Transforms input/ predicts for a Regex Tokenizer model representation
  * captured by  {@link com.flipkart.fdp.ml.modelinfo.RegexTokenizerModelInfo}.
  */
-public class RegexTokenizerTransformer extends TransformerBase {
+public class RegexTokenizerTransformer implements Transformer {
     private final RegexTokenizerModelInfo modelInfo;
 
     public RegexTokenizerTransformer(final RegexTokenizerModelInfo modelInfo) {
@@ -45,7 +46,7 @@ public class RegexTokenizerTransformer extends TransformerBase {
 
     @Override
     public void transform(Map<String, Object> input) {
-        String inp = (String) input.get(getInputKeys().iterator().next());
-        input.put(getOutputKey(), predict(inp));
+        String inp = (String) input.get(modelInfo.getInputKeys().iterator().next());
+        input.put(modelInfo.getOutputKey(), predict(inp));
     }
 }

@@ -11,7 +11,7 @@ import java.util.Map;
  * Represents information for StringIndexer model
  */
 @Data
-public class StringIndexerModelInfo implements ModelInfo {
+public class StringIndexerModelInfo extends AbstractModelInfo {
 
     private Map<String, Double> labelToIndex = new HashMap<String, Double>();
 

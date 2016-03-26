@@ -9,7 +9,7 @@ import lombok.Data;
  */
 
 @Data
-public class RegexTokenizerModelInfo implements ModelInfo {
+public class RegexTokenizerModelInfo extends AbstractModelInfo {
     private int minTokenLength;
     private boolean gaps, toLowercase;
     private String pattern;

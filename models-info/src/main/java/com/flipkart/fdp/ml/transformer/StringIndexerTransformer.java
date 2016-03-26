@@ -8,7 +8,7 @@ import java.util.Map;
  * Transforms input/ predicts for a String Indexer model representation
  * captured by  {@link com.flipkart.fdp.ml.modelinfo.StringIndexerModelInfo}.
  */
-public class StringIndexerTransformer extends TransformerBase {
+public class StringIndexerTransformer implements Transformer {
 
     private final StringIndexerModelInfo modelInfo;
 
@@ -26,7 +26,7 @@ public class StringIndexerTransformer extends TransformerBase {
 
     @Override
     public void transform(Map<String, Object> input) {
-        String inp = (String) input.get(getInputKeys().iterator().next());
-        input.put(getOutputKey(), predict(inp));
+        String inp = (String) input.get(modelInfo.getInputKeys().iterator().next());
+        input.put(modelInfo.getOutputKey(), predict(inp));
     }
 }

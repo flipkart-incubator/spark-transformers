@@ -8,7 +8,7 @@ import lombok.Data;
  * Represents information for a CountVectorizer model
  */
 @Data
-public class CountVectorizerModelInfo implements ModelInfo {
+public class CountVectorizerModelInfo extends AbstractModelInfo {
 
     private int vocabSize;
     private double minTF;

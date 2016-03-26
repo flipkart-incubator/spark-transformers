@@ -9,7 +9,7 @@ import lombok.Data;
  */
 
 @Data
-public class MinMaxScalerModelInfo implements ModelInfo {
+public class MinMaxScalerModelInfo extends AbstractModelInfo {
     private double[] originalMin, originalMax;
     private double min, max;
 

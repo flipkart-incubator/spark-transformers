@@ -11,7 +11,7 @@ import java.util.HashMap;
  * Represents information for a Decision Tree model
  */
 @Data
-public class DecisionTreeModelInfo implements ModelInfo {
+public class DecisionTreeModelInfo extends AbstractModelInfo {
     private int root;
     private HashMap<Integer, Integer> leftChildMap = new HashMap<Integer, Integer>();
     private HashMap<Integer, Integer> rightChildMap = new HashMap<Integer, Integer>();

@@ -8,7 +8,7 @@ import lombok.Data;
  * Represents information for a Logistic Regression model
  */
 @Data
-public class LogisticRegressionModelInfo implements ModelInfo {
+public class LogisticRegressionModelInfo extends AbstractModelInfo {
     private double[] weights;
     private double intercept;
     private int numClasses;

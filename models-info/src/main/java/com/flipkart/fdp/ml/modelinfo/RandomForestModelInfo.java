@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 
 @Data
-public class RandomForestModelInfo implements ModelInfo {
+public class RandomForestModelInfo extends AbstractModelInfo {
     private String algorithm;
     private ArrayList<DecisionTreeModelInfo> trees = new ArrayList<DecisionTreeModelInfo>();
 

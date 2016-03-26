@@ -1,5 +1,6 @@
 package com.flipkart.fdp.ml.transformer;
 
+import com.flipkart.fdp.ml.modelinfo.AbstractModelInfo;
 import com.flipkart.fdp.ml.modelinfo.BucketizerModelInfo;
 
 import java.util.Arrays;
@@ -9,7 +10,7 @@ import java.util.Map;
  * Transforms input/ predicts for a Bucketizer model representation
  * captured by  {@link com.flipkart.fdp.ml.modelinfo.BucketizerModelInfo}.
  */
-public class BucketizerTransformer extends TransformerBase {
+public class BucketizerTransformer implements Transformer {
 
     private final BucketizerModelInfo modelInfo;
 
@@ -42,7 +43,7 @@ public class BucketizerTransformer extends TransformerBase {
 
     @Override
     public void transform(Map<String, Object> input) {
-        double inp = (double) input.get(getInputKeys().iterator().next());
-        input.put(getOutputKey(), predict(inp));
+        double inp = (double) input.get(modelInfo.getInputKeys().iterator().next());
+        input.put(modelInfo.getOutputKey(), predict(inp));
     }
 }

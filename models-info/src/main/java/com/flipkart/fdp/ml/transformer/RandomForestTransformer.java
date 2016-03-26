@@ -14,7 +14,7 @@ import java.util.Map;
  * Transforms input/ predicts for a Random Forest model representation
  * captured by  {@link com.flipkart.fdp.ml.modelinfo.RandomForestModelInfo}.
  */
-public class RandomForestTransformer extends TransformerBase {
+public class RandomForestTransformer implements Transformer {
     private static final Logger LOG = LoggerFactory.getLogger(RandomForestTransformer.class);
     private static final String ALGO_CLASSIFICATION = "Classification";
     private static final String ALGO_REGRESSION = "Regression";
@@ -35,8 +35,8 @@ public class RandomForestTransformer extends TransformerBase {
 
     @Override
     public void transform(Map<String, Object> input) {
-        double[] inp = (double[]) input.get(getInputKeys().iterator().next());
-        input.put(getOutputKey(), predict(inp));
+        double[] inp = (double[]) input.get(forest.getInputKeys().iterator().next());
+        input.put(forest.getOutputKey(), predict(inp));
     }
 
 
