@@ -6,14 +6,16 @@ import org.apache.spark.ml.attribute.AttributeType;
 import org.apache.spark.ml.attribute.BinaryAttribute;
 import org.apache.spark.ml.attribute.NominalAttribute;
 import org.apache.spark.ml.feature.OneHotEncoder;
-import org.apache.spark.ml.feature.StringIndexerModel;
 import org.apache.spark.sql.DataFrame;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 /**
- * Transforms Spark's {@link StringIndexerModel} in MlLib to  {@link com.flipkart.fdp.ml.modelinfo.StringIndexerModelInfo} object
+ * Transforms Spark's {@link OneHotEncoder} in MlLib to  {@link com.flipkart.fdp.ml.modelinfo.OneHotEncoderModelInfo} object
  * that can be exported through {@link com.flipkart.fdp.ml.export.ModelExporter}
  */
-public class OneHotEncoderModelInfoAdapter implements ModelInfoAdapter<OneHotEncoder, OneHotEncoderModelInfo> {
+public class OneHotEncoderModelInfoAdapter extends AbstractModelInfoAdapter<OneHotEncoder, OneHotEncoderModelInfo> {
 
     @Override
     public OneHotEncoderModelInfo getModelInfo(final OneHotEncoder from, DataFrame df) {
@@ -23,9 +25,9 @@ public class OneHotEncoderModelInfoAdapter implements ModelInfoAdapter<OneHotEnc
         //Ugly but the only way to deal with spark here
         int numTypes = -1;
         Attribute attribute = Attribute.fromStructField(df.schema().apply(inputColumn));
-        if(attribute.attrType() == AttributeType.Nominal()) {
+        if (attribute.attrType() == AttributeType.Nominal()) {
             numTypes = ((NominalAttribute) Attribute.fromStructField(df.schema().apply(inputColumn))).values().get().length;
-        } else if(attribute.attrType() == AttributeType.Binary()){
+        } else if (attribute.attrType() == AttributeType.Binary()) {
             numTypes = ((BinaryAttribute) Attribute.fromStructField(df.schema().apply(inputColumn))).values().get().length;
         }
         //TODO: find a way to extract this from spark OHE instance
@@ -33,6 +35,10 @@ public class OneHotEncoderModelInfoAdapter implements ModelInfoAdapter<OneHotEnc
 
         modelInfo.setShouldDropLast(shouldDropLast);
         modelInfo.setNumTypes(numTypes);
+        Set<String> inputKeys = new LinkedHashSet<String>();
+        inputKeys.add(from.getInputCol());
+        modelInfo.setInputKeys(inputKeys);
+        modelInfo.setOutputKey(from.getOutputCol());
         return modelInfo;
     }
 

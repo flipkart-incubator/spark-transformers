@@ -4,11 +4,14 @@ import com.flipkart.fdp.ml.modelinfo.StandardScalerModelInfo;
 import org.apache.spark.ml.feature.StandardScalerModel;
 import org.apache.spark.sql.DataFrame;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 /**
  * Transforms Spark's {@link StandardScalerModel} in MlLib to  {@link com.flipkart.fdp.ml.modelinfo.StandardScalerModelInfo} object
  * that can be exported through {@link com.flipkart.fdp.ml.export.ModelExporter}
  */
-public class StandardScalerModelInfoAdapter implements ModelInfoAdapter<StandardScalerModel, StandardScalerModelInfo> {
+public class StandardScalerModelInfoAdapter extends AbstractModelInfoAdapter<StandardScalerModel, StandardScalerModelInfo> {
     @Override
     public StandardScalerModelInfo getModelInfo(final StandardScalerModel from, final DataFrame df) {
         final StandardScalerModelInfo modelInfo = new StandardScalerModelInfo();
@@ -16,6 +19,10 @@ public class StandardScalerModelInfoAdapter implements ModelInfoAdapter<Standard
         modelInfo.setStd(from.std().toArray());
         modelInfo.setWithMean(from.getWithMean());
         modelInfo.setWithStd(from.getWithStd());
+        Set<String> inputKeys = new LinkedHashSet<String>();
+        inputKeys.add(from.getInputCol());
+        modelInfo.setInputKeys(inputKeys);
+        modelInfo.setOutputKey(from.getOutputCol());
         return modelInfo;
     }
 

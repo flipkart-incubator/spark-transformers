@@ -11,10 +11,10 @@ public interface ModelInfoAdapter<F, T extends ModelInfo> {
 
     /**
      * @param from source object in spark's mllib
-     * @param df Data frame that is used for training is required for some models as state information is being stored as column metadata by spark models
+     * @param df   Data frame that is used for training is required for some models as state information is being stored as column metadata by spark models
      * @return returns the corresponding {@link ModelInfo} object that represents the model information
      */
-    T getModelInfo(F from, DataFrame df);
+    T adapt(F from, DataFrame df);
 
     /**
      * @return Get the source class which is being adapted from.

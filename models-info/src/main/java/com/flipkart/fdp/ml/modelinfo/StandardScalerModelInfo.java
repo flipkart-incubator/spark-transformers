@@ -9,7 +9,7 @@ import lombok.Data;
  */
 
 @Data
-public class StandardScalerModelInfo implements ModelInfo {
+public class StandardScalerModelInfo extends AbstractModelInfo {
     private double[] std, mean;
     private boolean withStd, withMean;
 

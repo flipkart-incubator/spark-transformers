@@ -16,7 +16,7 @@ import java.util.Stack;
  */
 @Slf4j
 public class DecisionTreeModelInfoAdapter
-        implements ModelInfoAdapter<DecisionTreeModel, DecisionTreeModelInfo> {
+        extends AbstractModelInfoAdapter<DecisionTreeModel, DecisionTreeModelInfo> {
 
     private void visit(final Node node, final Stack<Node> nodesToVisit, final DecisionTreeModelInfo treeInfo) {
         final DecisionNode nodeInfo = new DecisionNode();

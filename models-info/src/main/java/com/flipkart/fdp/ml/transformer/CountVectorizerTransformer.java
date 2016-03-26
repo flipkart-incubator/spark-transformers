@@ -1,9 +1,11 @@
 package com.flipkart.fdp.ml.transformer;
 
+import com.flipkart.fdp.ml.modelinfo.AbstractModelInfo;
 import com.flipkart.fdp.ml.modelinfo.CountVectorizerModelInfo;
-import org.apache.commons.lang3.ArrayUtils;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Transforms input/ predicts for a Count vectorizer model representation
@@ -16,7 +18,7 @@ public class CountVectorizerTransformer implements Transformer {
     public CountVectorizerTransformer(final CountVectorizerModelInfo modelInfo) {
         this.modelInfo = modelInfo;
         vocabulary = new HashMap<String, Integer>();
-        for( int i =0 ; i < modelInfo.getVocabulary().length; i++) {
+        for (int i = 0; i < modelInfo.getVocabulary().length; i++) {
             vocabulary.put(modelInfo.getVocabulary()[i], i);
         }
     }
@@ -24,27 +26,25 @@ public class CountVectorizerTransformer implements Transformer {
     double[] predict(final String[] input) {
         final Map<String, Integer> termFrequencies = new HashMap<String, Integer>();
         final int tokenCount = input.length;
-        for(String term : input) {
-            if(vocabulary.containsKey(term)) {
-                if(termFrequencies.containsKey(term)) {
-                    termFrequencies.put(term, termFrequencies.get(term)+1);
-                }
-                else {
+        for (String term : input) {
+            if (vocabulary.containsKey(term)) {
+                if (termFrequencies.containsKey(term)) {
+                    termFrequencies.put(term, termFrequencies.get(term) + 1);
+                } else {
                     termFrequencies.put(term, 1);
                 }
-            }
-            else{
+            } else {
                 //ignore terms not in vocabulary
             }
         }
-        final int effectiveMinTF = (int)( (modelInfo.getMinTF() >= 1.0) ? modelInfo.getMinTF() : modelInfo.getMinTF() * tokenCount);
+        final int effectiveMinTF = (int) ((modelInfo.getMinTF() >= 1.0) ? modelInfo.getMinTF() : modelInfo.getMinTF() * tokenCount);
 
         final double[] encoding = new double[modelInfo.getVocabSize()];
         Arrays.fill(encoding, 0.0);
 
-        for(final Map.Entry<String, Integer> entry : termFrequencies.entrySet()) {
+        for (final Map.Entry<String, Integer> entry : termFrequencies.entrySet()) {
             //filter out terms with freq < effectiveMinTF
-            if( entry.getValue() >= effectiveMinTF) {
+            if (entry.getValue() >= effectiveMinTF) {
                 int position = vocabulary.get(entry.getKey());
                 encoding[position] = entry.getValue();
             }
@@ -53,7 +53,8 @@ public class CountVectorizerTransformer implements Transformer {
     }
 
     @Override
-    public Object[] transform(Object[] input) {
-        return ArrayUtils.toObject(predict((String[]) input));
+    public void transform(Map<String, Object> input) {
+        String[] inp = (String[]) input.get(modelInfo.getInputKeys().iterator().next());
+        input.put(modelInfo.getOutputKey(), predict(inp));
     }
 }

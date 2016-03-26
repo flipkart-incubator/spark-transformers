@@ -8,7 +8,7 @@ import lombok.Data;
  * Represents information for a HashingTF model
  */
 @Data
-public class HashingTFModelInfo implements ModelInfo {
+public class HashingTFModelInfo extends AbstractModelInfo {
     private int numFeatures;
 
     /**

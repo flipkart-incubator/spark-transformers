@@ -11,7 +11,7 @@ import org.apache.spark.sql.DataFrame;
  */
 @Slf4j
 public class LogisticRegressionModelInfoAdapter
-        implements ModelInfoAdapter<LogisticRegressionModel, LogisticRegressionModelInfo> {
+        extends AbstractModelInfoAdapter<LogisticRegressionModel, LogisticRegressionModelInfo> {
 
     @Override
     public LogisticRegressionModelInfo getModelInfo(final LogisticRegressionModel sparkLRModel, DataFrame df) {
@@ -20,6 +20,7 @@ public class LogisticRegressionModelInfoAdapter
         logisticRegressionModelInfo.setIntercept(sparkLRModel.intercept());
         logisticRegressionModelInfo.setNumClasses(sparkLRModel.numClasses());
         logisticRegressionModelInfo.setNumFeatures(sparkLRModel.numFeatures());
+        logisticRegressionModelInfo.setThreshold((double) sparkLRModel.getThreshold().get());
         return logisticRegressionModelInfo;
     }
 

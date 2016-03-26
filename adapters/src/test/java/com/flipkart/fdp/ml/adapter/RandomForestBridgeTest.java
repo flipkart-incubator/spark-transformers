@@ -3,7 +3,6 @@ package com.flipkart.fdp.ml.adapter;
 import com.flipkart.fdp.ml.export.ModelExporter;
 import com.flipkart.fdp.ml.importer.ModelImporter;
 import com.flipkart.fdp.ml.transformer.Transformer;
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.mllib.linalg.Vector;
 import org.apache.spark.mllib.regression.LabeledPoint;
@@ -14,6 +13,7 @@ import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
@@ -32,11 +32,11 @@ public class RandomForestBridgeTest extends SparkTestBase {
 
         //prepare data
         String datapath = "src/test/resources/classification_test.libsvm";
-        JavaRDD<LabeledPoint> data = MLUtils.loadLibSVMFile(sc.sc(), datapath).toJavaRDD();
+        JavaRDD<LabeledPoint> trainingData = MLUtils.loadLibSVMFile(sc.sc(), datapath).toJavaRDD();
 
         //Train model in scala
         RandomForestModel sparkModel = RandomForest
-                .trainClassifier(data, numClasses, categoricalFeaturesInfo, numTrees,
+                .trainClassifier(trainingData, numClasses, categoricalFeaturesInfo, numTrees,
                         featureSubsetStrategy, impurity, maxDepth, maxBins, seed);
 
         //Export this model
@@ -46,12 +46,16 @@ public class RandomForestBridgeTest extends SparkTestBase {
         Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);
 
         //verify that predictions are the same
-        List<LabeledPoint> testPoints = data.take(10);
+        List<LabeledPoint> testPoints = trainingData.take(10);
         for (LabeledPoint i : testPoints) {
             Vector v = i.features();
             double actual = sparkModel.predict(v);
-            double predicted = (double) transformer.transform(ArrayUtils.toObject(v.toArray()))[0];
-            System.out.println(actual + "  -- " + predicted);
+
+            Map<String, Object> data = new HashMap<String, Object>();
+            data.put("input", v.toArray());
+            transformer.transform(data);
+            double predicted = (double) data.get("output");
+
             assertEquals(actual, predicted, 0.01);
         }
     }
@@ -67,11 +71,11 @@ public class RandomForestBridgeTest extends SparkTestBase {
 
         //prepare data
         HashMap<Integer, Integer> categoricalFeaturesInfo = new HashMap<Integer, Integer>();
-        JavaRDD<LabeledPoint> data = MLUtils.loadLibSVMFile(sc.sc(), datapath).toJavaRDD();
+        JavaRDD<LabeledPoint> trainingData = MLUtils.loadLibSVMFile(sc.sc(), datapath).toJavaRDD();
 
         //Train model in spark
         RandomForestModel sparkModel = RandomForest
-                .trainRegressor(data, categoricalFeaturesInfo, numTrees, featureSubsetStrategy,
+                .trainRegressor(trainingData, categoricalFeaturesInfo, numTrees, featureSubsetStrategy,
                         impurity, maxDepth, maxBins, seed);
 
         //Export this model
@@ -81,12 +85,16 @@ public class RandomForestBridgeTest extends SparkTestBase {
         Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);
 
         //verify that predictions are the same
-        List<LabeledPoint> testPoints = data.collect();
+        List<LabeledPoint> testPoints = trainingData.collect();
         for (LabeledPoint i : testPoints) {
             Vector v = i.features();
             double actual = sparkModel.predict(v);
-            double predicted = (double) transformer.transform(ArrayUtils.toObject(v.toArray()))[0];
-            //System.out.println(actual + "  -- " + predicted);
+
+            Map<String, Object> data = new HashMap<String, Object>();
+            data.put("input", v.toArray());
+            transformer.transform(data);
+            double predicted = (double) data.get("output");
+
             assertEquals(actual, predicted, 0.01);
         }
     }

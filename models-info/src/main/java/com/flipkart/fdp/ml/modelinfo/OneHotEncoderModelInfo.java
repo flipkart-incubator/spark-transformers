@@ -8,7 +8,7 @@ import lombok.Data;
  * Represents information for a one hot encoder model
  */
 @Data
-public class OneHotEncoderModelInfo implements ModelInfo {
+public class OneHotEncoderModelInfo extends AbstractModelInfo {
 
     //default value for should drop last is true
     private boolean shouldDropLast = true;

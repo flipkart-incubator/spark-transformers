@@ -8,7 +8,7 @@ import lombok.Data;
  * Represents information for a Bucketizer model
  */
 @Data
-public class BucketizerModelInfo implements ModelInfo{
+public class BucketizerModelInfo extends AbstractModelInfo {
 
     private double[] splits;
 

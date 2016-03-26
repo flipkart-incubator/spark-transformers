@@ -2,6 +2,8 @@ package com.flipkart.fdp.ml.transformer;
 
 import com.flipkart.fdp.ml.modelinfo.StringIndexerModelInfo;
 
+import java.util.Map;
+
 /**
  * Transforms input/ predicts for a String Indexer model representation
  * captured by  {@link com.flipkart.fdp.ml.modelinfo.StringIndexerModelInfo}.
@@ -23,10 +25,8 @@ public class StringIndexerTransformer implements Transformer {
     }
 
     @Override
-    public Object[] transform(Object[] input) {
-        if(input.length > 1) {
-            throw new IllegalArgumentException("StringIndexerTransformer does not support arrays of length more than 1");
-        }
-        return new Double[] {predict((String)input[0])};
+    public void transform(Map<String, Object> input) {
+        String inp = (String) input.get(modelInfo.getInputKeys().iterator().next());
+        input.put(modelInfo.getOutputKey(), predict(inp));
     }
 }

@@ -1,10 +1,12 @@
 package com.flipkart.fdp.ml.transformer;
 
+import com.flipkart.fdp.ml.modelinfo.AbstractModelInfo;
 import com.flipkart.fdp.ml.modelinfo.RegexTokenizerModelInfo;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,12 +23,12 @@ public class RegexTokenizerTransformer implements Transformer {
 
     public String[] predict(final String input) {
         final Pattern regex = Pattern.compile(modelInfo.getPattern());
-        final String targetStr = (modelInfo.isToLowercase()?input.toLowerCase() : input);
+        final String targetStr = (modelInfo.isToLowercase() ? input.toLowerCase() : input);
         final List<String> tokens;
-        if(modelInfo.isGaps()) {
+        if (modelInfo.isGaps()) {
             //using linkedlist for efficient deletion while filtering
             tokens = new LinkedList<String>(Arrays.asList(targetStr.split(regex.pattern())));
-        }else{
+        } else {
             List<String> allMatches = new LinkedList<>();
             Matcher m = regex.matcher(targetStr);
             while (m.find()) {
@@ -36,17 +38,15 @@ public class RegexTokenizerTransformer implements Transformer {
         }
         tokens.removeIf(p -> p.length() < modelInfo.getMinTokenLength());
         final String[] filteredTokens = new String[tokens.size()];
-        for(int i = 0; i < filteredTokens.length; i++) {
+        for (int i = 0; i < filteredTokens.length; i++) {
             filteredTokens[i] = tokens.get(i);
         }
         return filteredTokens;
     }
 
     @Override
-    public Object[] transform(Object[] input) {
-        if(input.length > 1) {
-            throw new IllegalArgumentException("RegexTokenizerTransformer does not support arrays of length more than 1");
-        }
-        return predict((String)input[0]);
+    public void transform(Map<String, Object> input) {
+        String inp = (String) input.get(modelInfo.getInputKeys().iterator().next());
+        input.put(modelInfo.getOutputKey(), predict(inp));
     }
 }
