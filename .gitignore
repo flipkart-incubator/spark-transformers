@@ -1,6 +1,7 @@
 *.class
 models-info/target/
 adapters/target/
+target/
 #intellij specific files
 .idea/
 *.iml

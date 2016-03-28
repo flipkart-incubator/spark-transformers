@@ -9,7 +9,7 @@ import java.util.Map;
 public interface Transformer {
 
     /**
-     * @param input values as map of <String, Object> for the transformation
+     * @param input values as map of (String, Object) for the transformation
      *              similar to the lines of a dataframe.
      */
     public void transform(Map<String, Object> input);
