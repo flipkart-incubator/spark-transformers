@@ -1,4 +1,4 @@
-<img src="https://github.com/Flipkart/spark-transformers/blob/master/spark-transformers-logo.png">
+<img src="https://github.com/flipkart-incubator/spark-transformers/blob/master/spark-transformers-logo.png">
 
 ## Spark-Transformers: Library for exporting spark models in Java ecosystem.
 
