@@ -2,6 +2,7 @@ package com.flipkart.fdp.ml.adapter;
 
 import com.flipkart.fdp.ml.modelinfo.ModelInfo;
 import com.flipkart.fdp.ml.utils.Constants;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.spark.sql.DataFrame;
 
 
@@ -9,8 +10,8 @@ public abstract class AbstractModelInfoAdapter<F, T extends ModelInfo> implement
 
     private void preConditions(DataFrame df) {
         if(null != df) {
-            if (!Constants.SUPPORTED_SPARK_VERSION.equals(df.sqlContext().sparkContext().version())) {
-                throw new UnsupportedOperationException("Only spark version " + Constants.SUPPORTED_SPARK_VERSION + " is supported by this version of the library");
+            if ( !StringUtils.startsWith(df.sqlContext().sparkContext().version(), Constants.SUPPORTED_SPARK_VERSION_PREFIX) ) {
+                throw new UnsupportedOperationException("Only spark version " + Constants.SUPPORTED_SPARK_VERSION_PREFIX + " is supported by this version of the library");
             }
         }
     }

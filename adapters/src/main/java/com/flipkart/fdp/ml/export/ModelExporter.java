@@ -41,7 +41,7 @@ public class ModelExporter {
      */
     private static String export(ModelInfo modelInfo) {
         final Map<String, String> map = new HashMap<String, String>();
-        map.put(SerializationConstants.SPARK_VERSION, Constants.SUPPORTED_SPARK_VERSION);
+        map.put(SerializationConstants.SPARK_VERSION, Constants.SUPPORTED_SPARK_VERSION_PREFIX);
         map.put(SerializationConstants.EXPORTER_LIBRARY_VERSION, Constants.LIBRARY_VERSION);
         map.put(SerializationConstants.TYPE_IDENTIFIER, modelInfo.getClass().getCanonicalName());
         if (modelInfo instanceof PipelineModelInfo) {
