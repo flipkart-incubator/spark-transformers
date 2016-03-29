@@ -8,6 +8,9 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 
 /**
+ * Transforms Spark's {@link VectorAssemblerModel} in MlLib to  {@link com.flipkart.fdp.ml.modelinfo.VectorAssemblerModelInfo} object
+ * that can be exported through {@link com.flipkart.fdp.ml.export.ModelExporter}
+
  * Created by rohan.shetty on 28/03/16.
  */
 public class VectorAssemblerModelAdapter extends AbstractModelInfoAdapter<VectorAssembler, VectorAssemblerModelInfo> {
