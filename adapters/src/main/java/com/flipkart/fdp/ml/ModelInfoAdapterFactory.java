@@ -12,7 +12,7 @@ import java.util.Map;
 @Slf4j
 public class ModelInfoAdapterFactory {
 
-    private static final Map<String, ModelInfoAdapter> registry = new java.util.HashMap<String, ModelInfoAdapter>();
+    private static final Map<String, ModelInfoAdapter> registry = new java.util.HashMap<>();
 
     static {
         register(new LogisticRegressionModelInfoAdapter());
@@ -28,6 +28,7 @@ public class ModelInfoAdapterFactory {
         register(new MinMaxScalerModelInfoAdapter());
         register(new BucketizerModelInfoAdapter());
         register(new PipelineModelInfoAdapter());
+        register(new VectorAssemblerModelAdapter());
 
     }
 
