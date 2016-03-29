@@ -4,12 +4,12 @@
 
 ## Full Documentation
 
-See the [Wiki](https://github.com/Flipkart/spark-transformers/wiki) for full documentation, examples, operational details and other information.
+See the [Wiki](https://github.com/flipkart-incubator/spark-transformers/wiki) for full documentation, examples, operational details and other information.
 
 ## Communication
 
 - Google Group: [Fdp-Ml-Dev](fdp-ml-dev@flipkart.com)
-- [GitHub Issues](https://github.com/Flipkart/spark-transformers/issues)
+- [GitHub Issues](https://github.com/flipkart-incubator/spark-transformers/issues)
 
 
 ## What does it do?
@@ -20,7 +20,7 @@ See the [Wiki](https://github.com/Flipkart/spark-transformers/wiki) for full doc
 
 ## Bugs and Feedback
 
-For bugs, questions and discussions please use the [Github Issues](https://github.com/Flipkart/spark-transformers/issue).
+For bugs, questions and discussions please use the [Github Issues](https://github.com/flipkart-incubator/spark-transformers/issue).
 
  
 ## LICENSE
