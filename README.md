@@ -8,7 +8,7 @@ See the [Wiki](https://github.com/flipkart-incubator/spark-transformers/wiki) fo
 
 ## Communication
 
-- Google Group: [Fdp-Ml-Dev](fdp-ml-dev@flipkart.com)
+- Google Group: [fdp-ml-dev](mailto:fdp-ml-dev@flipkart.com)
 - [GitHub Issues](https://github.com/flipkart-incubator/spark-transformers/issues)
 
 
