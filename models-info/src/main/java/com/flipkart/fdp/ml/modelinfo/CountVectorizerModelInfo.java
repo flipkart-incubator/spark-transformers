@@ -10,7 +10,6 @@ import lombok.Data;
 @Data
 public class CountVectorizerModelInfo extends AbstractModelInfo {
 
-    private int vocabSize;
     private double minTF;
     private String[] vocabulary;
 

@@ -16,7 +16,6 @@ public class CountVectorizerModelInfoAdapter extends AbstractModelInfoAdapter<Co
     public CountVectorizerModelInfo getModelInfo(final CountVectorizerModel from, final DataFrame df) {
         final CountVectorizerModelInfo modelInfo = new CountVectorizerModelInfo();
         modelInfo.setMinTF(from.getMinTF());
-        modelInfo.setVocabSize(from.getVocabSize());
         modelInfo.setVocabulary(from.vocabulary());
         Set<String> inputKeys = new LinkedHashSet<String>();
         inputKeys.add(from.getInputCol());

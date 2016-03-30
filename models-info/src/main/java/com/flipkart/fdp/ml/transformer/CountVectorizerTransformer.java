@@ -1,6 +1,5 @@
 package com.flipkart.fdp.ml.transformer;
 
-import com.flipkart.fdp.ml.modelinfo.AbstractModelInfo;
 import com.flipkart.fdp.ml.modelinfo.CountVectorizerModelInfo;
 
 import java.util.Arrays;
@@ -39,7 +38,7 @@ public class CountVectorizerTransformer implements Transformer {
         }
         final int effectiveMinTF = (int) ((modelInfo.getMinTF() >= 1.0) ? modelInfo.getMinTF() : modelInfo.getMinTF() * tokenCount);
 
-        final double[] encoding = new double[modelInfo.getVocabSize()];
+        final double[] encoding = new double[modelInfo.getVocabulary().length];
         Arrays.fill(encoding, 0.0);
 
         for (final Map.Entry<String, Integer> entry : termFrequencies.entrySet()) {
