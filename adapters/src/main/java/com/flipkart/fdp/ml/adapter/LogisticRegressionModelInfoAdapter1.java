@@ -28,6 +28,7 @@ public class LogisticRegressionModelInfoAdapter1
         inputKeys.add(sparkLRModel.getFeaturesCol());
         logisticRegressionModelInfo.setInputKeys(inputKeys);
         logisticRegressionModelInfo.setOutputKey(sparkLRModel.getPredictionCol());
+        logisticRegressionModelInfo.setProbabilityKey(sparkLRModel.getProbabilityCol());
         return logisticRegressionModelInfo;
     }
 
