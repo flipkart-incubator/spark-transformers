@@ -15,8 +15,10 @@ See the [Wiki](https://github.com/flipkart-incubator/spark-transformers/wiki) fo
 ## What does it do?
 
 * Provide a way to export Spark models/transformations into a custom format which can be imported back into a java object.
-* Provide a way to do modelInfo predictions in java ecosystem.
+* Provide a way to do model predictions in java ecosystem.
 
+## Tech Talk on spark transformers
+[Presentation link](https://docs.google.com/presentation/d/1tfcV0jnoTWhFonY_dzrBO1Qk5ar-jY5yoqWcRQQe6v4/edit?usp=sharing)
 
 ## Bugs and Feedback
 
