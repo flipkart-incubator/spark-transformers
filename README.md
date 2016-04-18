@@ -22,7 +22,7 @@ See the [Wiki](https://github.com/flipkart-incubator/spark-transformers/wiki) fo
 
 ## Bugs and Feedback
 
-For bugs, questions and discussions please use the [Github Issues](https://github.com/flipkart-incubator/spark-transformers/issue).
+For bugs, questions and discussions please use the [Github Issues](https://github.com/flipkart-incubator/spark-transformers/issues).
 
  
 ## LICENSE
