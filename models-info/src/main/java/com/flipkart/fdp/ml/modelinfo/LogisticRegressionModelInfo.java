@@ -15,6 +15,8 @@ public class LogisticRegressionModelInfo extends AbstractModelInfo {
     private int numFeatures;
     private double threshold;
 
+    private String probabilityKey = "probability";
+
     /**
      * @return an corresponding {@link LogisticRegressionTransformer} for this model info
      */
