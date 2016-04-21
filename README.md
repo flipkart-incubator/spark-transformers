@@ -2,6 +2,8 @@
 
 ## Spark-Transformers: Library for exporting spark models in Java ecosystem.
 
+[![][maven img]][maven]
+[![][license img]][license]
 ## Full Documentation
 
 See the [Wiki](https://github.com/flipkart-incubator/spark-transformers/wiki) for full documentation, examples, operational details and other information.
@@ -27,3 +29,12 @@ For bugs, questions and discussions please use the [Github Issues](https://githu
  
 ## LICENSE
 Spark-Transformers is licensed under : The Apache Software License, Version 2.0. Here is a copy of the license (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+[maven]:http://search.maven.org/#search%7Cga%7C1%7Ccom.flipkart.fdp.ml
+[maven img]:https://img.shields.io/badge/maven-0.1-green.svg
+
+[release]:https://github.com/flipkart-incubator/spark-transformers/releases
+[release img]:https://img.shields.io/badge/release-0.1-green.svg
+
+[license]:http://www.apache.org/licenses/LICENSE-2.0.txt
+[license img]:https://img.shields.io/badge/License-Apache%202-blue.svg
