@@ -15,6 +15,7 @@ public class ModelInfoAdapterFactory {
     private static final Map<String, ModelInfoAdapter> registry = new java.util.HashMap<>();
 
     static {
+        register(new CustomOneHotEncoderModelInfoAdapter());
         register(new LogisticRegressionModelInfoAdapter());
         register(new LogisticRegressionModelInfoAdapter1());
         register(new DecisionTreeModelInfoAdapter());

@@ -6,6 +6,7 @@ import org.apache.spark.ml.attribute.AttributeType;
 import org.apache.spark.ml.attribute.BinaryAttribute;
 import org.apache.spark.ml.attribute.NominalAttribute;
 import org.apache.spark.ml.feature.OneHotEncoder;
+import org.apache.spark.ml.param.ParamPair;
 import org.apache.spark.sql.DataFrame;
 
 import java.util.LinkedHashSet;
@@ -30,11 +31,9 @@ public class OneHotEncoderModelInfoAdapter extends AbstractModelInfoAdapter<OneH
         } else if (attribute.attrType() == AttributeType.Binary()) {
             numTypes = ((BinaryAttribute) Attribute.fromStructField(df.schema().apply(inputColumn))).values().get().length;
         }
-        //TODO: find a way to extract this from spark OHE instance
-        boolean shouldDropLast = true;
 
-        modelInfo.setShouldDropLast(shouldDropLast);
-        modelInfo.setNumTypes(numTypes);
+        //TODO: Since dropLast is not accesible here, We are deliberately setting numTypes. This is the reason, we should use CustomOneHotEncoder
+        modelInfo.setNumTypes(numTypes - 1);
         Set<String> inputKeys = new LinkedHashSet<String>();
         inputKeys.add(from.getInputCol());
         modelInfo.setInputKeys(inputKeys);

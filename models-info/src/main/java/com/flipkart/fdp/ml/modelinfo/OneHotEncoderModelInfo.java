@@ -10,10 +10,7 @@ import lombok.Data;
 @Data
 public class OneHotEncoderModelInfo extends AbstractModelInfo {
 
-    //default value for should drop last is true
-    private boolean shouldDropLast = true;
     private int numTypes;
-
     /**
      * @return an corresponding {@link OneHotEncoderTransformer} for this model info
      */

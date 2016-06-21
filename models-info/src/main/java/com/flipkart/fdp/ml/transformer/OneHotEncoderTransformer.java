@@ -20,9 +20,7 @@ public class OneHotEncoderTransformer implements Transformer {
 
     public double[] predict(final double input) {
         int size = modelInfo.getNumTypes();
-        if (modelInfo.isShouldDropLast()) {
-            size--;
-        }
+
         final double encoding[] = new double[size];
         Arrays.fill(encoding, 0.0);
 
