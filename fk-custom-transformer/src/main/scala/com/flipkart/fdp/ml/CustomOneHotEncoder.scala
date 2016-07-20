@@ -50,12 +50,6 @@ trait CustomOneHotParams extends Params {
   setDefault(outputCol, uid + "__output")
   final def getOutputCol: String = $(outputCol)
 
-  //val vectorSize: IntParam =
-  //  new IntParam(this, "Vector Size", "size of the vector", ParamValidators.gt(0))
-
-  /** @group getParam */
-  //def getVectorSize: Int = $(vectorSize)
-
   /** Validates and transforms the input schema. */
   protected def validateAndTransformSchema(schema: StructType): StructType = {
     val typeCandidates = List(new ArrayType(StringType, true), new ArrayType(StringType, false))
@@ -144,8 +138,7 @@ class CustomOneHotEncoder(override val uid: String)
   }
 
 
-  override def fit(dataFrame: DataFrame): CustomOneHotEncoderModel = {//Dataset[_]
-  //val dataFrame = dataset.toDF()
+  override def fit(dataFrame: DataFrame): CustomOneHotEncoderModel = {
   // schema transformation
   val inputColName: String = $(inputCol)
     val outputColName: String = $(outputCol)
@@ -178,7 +171,6 @@ class CustomOneHotEncoder(override val uid: String)
     require(size > 0, "The vector size should be > 0")
 
     return new CustomOneHotEncoderModel(uid, size).setInputCol(inputColName).setOutputCol(outputColName)
-    //dataFrame.select(col("*"), encode(col(inputColName).cast(DoubleType)).as(outputColName, metadata))
   }
 
   override def copy(extra: ParamMap): CustomOneHotEncoder = defaultCopy(extra)
