@@ -60,7 +60,7 @@ trait CustomOneHotParams extends Params {
   protected def validateAndTransformSchema(schema: StructType): StructType = {
     val typeCandidates = List(new ArrayType(StringType, true), new ArrayType(StringType, false))
     //CustomOneHotSchemaUtil.checkColumnTypes(schema, $(inputCol), typeCandidates)
-    CustomOneHotSchemaUtil.appendColumn(schema, $(outputCol), new VectorUDT)
+    CustomSchemaUtil.appendColumn(schema, $(outputCol), new VectorUDT)
   }
 }
 

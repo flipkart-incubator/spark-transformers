@@ -9,7 +9,7 @@ import org.apache.spark.sql.types.{DataType, StructField, StructType}
 /**
  * Utils for handling schemas.
  */
-object CustomOneHotSchemaUtil {
+object CustomSchemaUtil {
 
   // TODO: Move the utility methods to SQL.
 
