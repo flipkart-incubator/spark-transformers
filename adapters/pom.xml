@@ -17,7 +17,7 @@
 
     <artifactId>adapters</artifactId>
     <packaging>jar</packaging>
-    <version>0.1.1</version>
+    <version>0.1.1-java1.7</version>
     <name>Spark Model Adapters</name>
 
     <dependencies>
