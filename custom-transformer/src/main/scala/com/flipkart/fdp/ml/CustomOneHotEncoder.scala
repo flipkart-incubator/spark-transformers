@@ -122,8 +122,7 @@ class CustomOneHotEncoder(override val uid: String)
   }
 
 
-  override def fit(dataFrame: DataFrame): CustomOneHotEncoderModel = {//Dataset[_]
-  //val dataFrame = dataset.toDF()
+  override def fit(dataFrame: DataFrame): CustomOneHotEncoderModel = {
   // schema transformation
   val inputColName: String = $(inputCol)
     val outputColName: String = $(outputCol)
@@ -156,7 +155,6 @@ class CustomOneHotEncoder(override val uid: String)
     require(size > 0, "The vector size should be > 0")
 
     return new CustomOneHotEncoderModel(uid, size).setInputCol(inputColName).setOutputCol(outputColName)
-    //dataFrame.select(col("*"), encode(col(inputColName).cast(DoubleType)).as(outputColName, metadata))
   }
 
   override def copy(extra: ParamMap): CustomOneHotEncoder = defaultCopy(extra)
