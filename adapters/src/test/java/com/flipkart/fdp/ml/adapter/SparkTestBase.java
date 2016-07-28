@@ -22,7 +22,7 @@ public class SparkTestBase {
     @Before
     public void setup() {
         SparkConf sparkConf = new SparkConf();
-        String master = "local[1]";
+        String master = "local[2]";
         sparkConf.setMaster(master);
         sparkConf.setAppName("Local Spark Unit Test");
         sc = new JavaSparkContext(new SparkContext(sparkConf));
