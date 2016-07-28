@@ -47,8 +47,8 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modules>
         <module>models-info</module>
-        <module>adapters</module>
         <module>custom-transformer</module>
+        <module>adapters</module>
     </modules>
 
     <dependencies>
