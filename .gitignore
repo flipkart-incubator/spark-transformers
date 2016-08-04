@@ -1,7 +1,10 @@
 *.class
 models-info/target/
-adapters/target/
+adapters-1.6/target/
+adapters-2.0/target/
+adapters-2.0/spark-warehouse/
 target/
+
 #intellij specific files
 .idea/
 *.iml
