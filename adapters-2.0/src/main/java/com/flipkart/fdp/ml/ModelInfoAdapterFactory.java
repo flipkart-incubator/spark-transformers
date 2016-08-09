@@ -28,6 +28,7 @@ public class ModelInfoAdapterFactory {
         register(new BucketizerModelInfoAdapter());
         register(new PipelineModelInfoAdapter());
         register(new VectorAssemblerModelAdapter());
+        register(new ChiSqSelectorModelInfoAdapter());
 
     }
 
