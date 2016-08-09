@@ -31,6 +31,7 @@ public class ModelInfoAdapterFactory {
         register(new PipelineModelInfoAdapter());
         register(new VectorAssemblerModelAdapter());
         register(new ChiSqSelectorModelInfoAdapter());
+        register(new CustomLogScalerModelInfoAdapter());
 
     }
 
