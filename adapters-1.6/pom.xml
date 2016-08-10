@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.flipkart.fdp.ml</groupId>
         <artifactId>spark-transformers</artifactId>
-        <version>0.1.4</version>
+        <version>0.1.5</version>
         <relativePath>..</relativePath>
     </parent>
 
