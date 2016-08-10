@@ -9,14 +9,14 @@ import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.StructType
 
 
-class CustomLogScaler(override val uid: String, val addValue: Double)
+class Log1PScaler(override val uid: String)
   extends Transformer {
 
   final val inputCol: Param[String] = new Param[String](this, "inputCol", "input column name")
   final val outputCol: Param[String] = new Param[String](this, "outputCol", "output column name")
 
-  def this(addValue: Double) {
-    this(Identifiable.randomUID("customLogScaler"), addValue)
+  def this() {
+    this(Identifiable.randomUID("customLogScaler"))
   }
 
   final def getInputCol: String = $(inputCol)
@@ -37,7 +37,7 @@ class CustomLogScaler(override val uid: String, val addValue: Double)
           val size = values.size
           var i = 0
           while (i < size) {
-            values(i) = Math.log(addValue + values(i));
+            values(i) = Math.log1p(values(i));
             i += 1
           }
           Vectors.dense(values)
@@ -48,7 +48,7 @@ class CustomLogScaler(override val uid: String, val addValue: Double)
           val nnz = values.size
           var i = 0
           while (i < nnz) {
-            values(i) = Math.log(addValue + values(i));
+            values(i) = Math.log1p(values(i));
             i += 1
           }
           Vectors.sparse(size, indices, values)
@@ -67,8 +67,8 @@ class CustomLogScaler(override val uid: String, val addValue: Double)
     return CustomSchemaUtil.appendColumn(schema, $(outputCol), new VectorUDT)
   }
 
-  override def copy(extra: ParamMap): CustomLogScaler = {
-    val copied = new CustomLogScaler(uid, addValue)
+  override def copy(extra: ParamMap): Log1PScaler = {
+    val copied = new Log1PScaler(uid)
     copyValues(copied, extra)
   }
 }

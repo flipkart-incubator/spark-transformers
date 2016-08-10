@@ -1,17 +1,17 @@
 package com.flipkart.fdp.ml.transformer;
 
-import com.flipkart.fdp.ml.modelinfo.CustomLogScalerModelInfo;
+import com.flipkart.fdp.ml.modelinfo.Log1PScalerModelInfo;
 
 import java.util.Map;
 
 /**
  * Transforms input/ predicts for a LogScaler model representation
- * captured by  {@link com.flipkart.fdp.ml.modelinfo.CustomLogScalerModelInfo}.
+ * captured by  {@link Log1PScalerModelInfo}.
  */
-public class CustomLogScalerTransformer implements Transformer {
-    private final CustomLogScalerModelInfo modelInfo;
+public class Log1PScalerTransformer implements Transformer {
+    private final Log1PScalerModelInfo modelInfo;
 
-    public CustomLogScalerTransformer(CustomLogScalerModelInfo modelInfo) {
+    public Log1PScalerTransformer(Log1PScalerModelInfo modelInfo) {
         this.modelInfo = modelInfo;
     }
 
@@ -24,7 +24,7 @@ public class CustomLogScalerTransformer implements Transformer {
     private double[] predict(double[] inp) {
         double[] output = new double[inp.length];
         for (int i = 0; i < inp.length; i++) {
-            output[i] = Math.log(inp[i] + modelInfo.getAddValue());
+            output[i] = Math.log1p(inp[i]);
         }
         return output;
     }

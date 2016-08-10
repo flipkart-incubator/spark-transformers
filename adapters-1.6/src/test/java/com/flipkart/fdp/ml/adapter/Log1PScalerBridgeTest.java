@@ -1,6 +1,6 @@
 package com.flipkart.fdp.ml.adapter;
 
-import com.flipkart.fdp.ml.CustomLogScaler;
+import com.flipkart.fdp.ml.Log1PScaler;
 import com.flipkart.fdp.ml.export.ModelExporter;
 import com.flipkart.fdp.ml.importer.ModelImporter;
 import com.flipkart.fdp.ml.transformer.Transformer;
@@ -21,23 +21,20 @@ import static org.junit.Assert.assertArrayEquals;
 /**
  * Created by akshay.us on 3/14/16.
  */
-public class CustomLogScalerBridgeTest extends SparkTestBase {
+public class Log1PScalerBridgeTest extends SparkTestBase {
 
     private final double data[][] = {{10.0, 2.3, 0.6},
-            {0.0, 5.1, 1.0},
+            {0.1, 5.1, 1.0},
             {1.7, 33.6, 3.3}};
-
-    private final double addValues[] = {0, 1, -1};
 
 
     @Test
     public void testCustomScalerDenseVector() {
-        final double precomputedAns[][][] = new double[3][3][3];
+        final double precomputedAns[][] = new double[3][3];
         //precompute answers
-        for (int i = 0; i < 3; i++)
             for (int j = 0; j < 3; j++)
                 for (int k = 0; k < 3; k++)
-                    precomputedAns[i][j][k] = Math.log(addValues[i] + data[j][k]);
+                    precomputedAns[j][k] = Math.log1p(data[j][k]);
 
         //prepare data
         List<LabeledPoint> localTraining = Arrays.asList(
@@ -48,7 +45,7 @@ public class CustomLogScalerBridgeTest extends SparkTestBase {
 
         for (int i = 0; i < 2; i++) {
             //train model in spark
-            CustomLogScaler sparkModel = new CustomLogScaler(addValues[i])
+            Log1PScaler sparkModel = new Log1PScaler()
                     .setInputCol("features")
                     .setOutputCol("scaledOutput");
 
@@ -58,7 +55,7 @@ public class CustomLogScalerBridgeTest extends SparkTestBase {
 
             //compare predictions
             Row[] sparkOutput = sparkModel.transform(df).orderBy("label").select("features", "scaledOutput").collect();
-            assertCorrectness(sparkOutput, precomputedAns[i], transformer);
+            assertCorrectness(sparkOutput, precomputedAns, transformer);
         }
     }
 
@@ -73,7 +70,7 @@ public class CustomLogScalerBridgeTest extends SparkTestBase {
         DataFrame df = sqlContext.createDataFrame(sc.parallelize(localTraining), LabeledPoint.class);
 
         //train model in spark
-        CustomLogScaler sparkModel = new CustomLogScaler(1)
+        Log1PScaler sparkModel = new Log1PScaler()
                 .setInputCol("features")
                 .setOutputCol("scaledOutput");
 
