@@ -5,7 +5,7 @@ import com.flipkart.fdp.ml.transformer.VectorAssemblerTransformer;
 
 /**
  * Represents information for VectorAssembler model
-
+ * <p>
  * Created by rohan.shetty on 28/03/16.
  */
 public class VectorAssemblerModelInfo extends AbstractModelInfo {

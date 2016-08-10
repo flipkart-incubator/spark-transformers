@@ -1,6 +1,5 @@
 package com.flipkart.fdp.ml.transformer;
 
-import com.flipkart.fdp.ml.modelinfo.AbstractModelInfo;
 import com.flipkart.fdp.ml.modelinfo.DecisionTreeModelInfo;
 import com.flipkart.fdp.ml.modelinfo.DecisionTreeModelInfo.DecisionNode;
 import org.slf4j.Logger;

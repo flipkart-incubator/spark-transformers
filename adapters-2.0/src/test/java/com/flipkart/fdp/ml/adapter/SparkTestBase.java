@@ -30,6 +30,7 @@ public class SparkTestBase {
         spark.stop();
         spark = null;
     }
+
     /**
      * An alias for RowFactory.create.
      */

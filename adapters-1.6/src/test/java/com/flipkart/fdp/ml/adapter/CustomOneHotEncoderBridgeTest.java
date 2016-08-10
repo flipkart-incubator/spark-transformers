@@ -29,7 +29,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by shubhranshu.shekhar on 21/06/16.
  */
-public class CustomOneHotEncoderBridgeTest  extends SparkTestBase {
+public class CustomOneHotEncoderBridgeTest extends SparkTestBase {
     @Test
     public void testCustomOneHotEncoding() {
         // prepare data
@@ -79,7 +79,7 @@ public class CustomOneHotEncoderBridgeTest  extends SparkTestBase {
         assertEquals(sparkOutput.length, sparkOneHotOutput.length);
 
         for (int i = 0; i < sparkOutput.length; i++) {
-            Row row= sparkOutput[i];
+            Row row = sparkOutput[i];
             Map<String, Object> data = new HashMap<String, Object>();
             data.put(sparkModel.getInputCol(), row.getDouble(1));
             transformer.transform(data);

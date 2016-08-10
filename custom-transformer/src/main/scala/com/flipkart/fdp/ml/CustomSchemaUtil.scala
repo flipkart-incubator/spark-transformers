@@ -1,23 +1,25 @@
 package com.flipkart.fdp.ml
 
 /**
- * Created by shubhranshu.shekhar on 21/06/16.
- */
+  * Created by shubhranshu.shekhar on 21/06/16.
+  */
+
 import org.apache.spark.sql.types.{DataType, StructField, StructType}
 
 
 /**
- * Utils for handling schemas.
- */
+  * Utils for handling schemas.
+  */
 object CustomSchemaUtil {
 
   // TODO: Move the utility methods to SQL.
 
   /**
-   * Check whether the given schema contains a column of the required data type.
-   * @param colName  column name
-   * @param dataType  required column data type
-   */
+    * Check whether the given schema contains a column of the required data type.
+    *
+    * @param colName  column name
+    * @param dataType required column data type
+    */
   def checkColumnType(
                        schema: StructType,
                        colName: String,
@@ -30,10 +32,11 @@ object CustomSchemaUtil {
   }
 
   /**
-   * Check whether the given schema contains a column of one of the require data types.
-   * @param colName  column name
-   * @param dataTypes  required column data types
-   */
+    * Check whether the given schema contains a column of one of the require data types.
+    *
+    * @param colName   column name
+    * @param dataTypes required column data types
+    */
   def checkColumnTypes(
                         schema: StructType,
                         colName: String,
@@ -48,13 +51,14 @@ object CustomSchemaUtil {
 
 
   /**
-   * Appends a new column to the input schema. This fails if the given output column already exists.
-   * @param schema input schema
-   * @param colName new column name. If this column name is an empty string "", this method returns
-   *                the input schema unchanged. This allows users to disable output columns.
-   * @param dataType new column data type
-   * @return new schema with the input column appended
-   */
+    * Appends a new column to the input schema. This fails if the given output column already exists.
+    *
+    * @param schema   input schema
+    * @param colName  new column name. If this column name is an empty string "", this method returns
+    *                 the input schema unchanged. This allows users to disable output columns.
+    * @param dataType new column data type
+    * @return new schema with the input column appended
+    */
   def appendColumn(
                     schema: StructType,
                     colName: String,
@@ -67,11 +71,12 @@ object CustomSchemaUtil {
   }
 
   /**
-   * Appends a new column to the input schema. This fails if the given output column already exists.
-   * @param schema input schema
-   * @param col New column schema
-   * @return new schema with the input column appended
-   */
+    * Appends a new column to the input schema. This fails if the given output column already exists.
+    *
+    * @param schema input schema
+    * @param col    New column schema
+    * @return new schema with the input column appended
+    */
   def appendColumn(schema: StructType, col: StructField): StructType = {
     require(!schema.fieldNames.contains(col.name), s"Column ${col.name} already exists.")
     StructType(schema.fields :+ col)

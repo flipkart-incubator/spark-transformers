@@ -7,7 +7,7 @@ public abstract class AbstractModelInfoAdapter<F, T extends ModelInfo> implement
 
     @Override
     public T adapt(F from) {
-        return  getModelInfo(from);
+        return getModelInfo(from);
     }
 
     /**

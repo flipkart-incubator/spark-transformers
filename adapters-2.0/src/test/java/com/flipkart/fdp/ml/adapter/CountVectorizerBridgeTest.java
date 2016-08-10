@@ -25,9 +25,9 @@ public class CountVectorizerBridgeTest extends SparkTestBase {
     @Test
     public void testCountVectorizer() {
 
-        final List<String []> input = new ArrayList<>();
-        input.add(new String[] {"a", "b", "c"});
-        input.add(new String[] {"a", "b", "b", "c", "a"});
+        final List<String[]> input = new ArrayList<>();
+        input.add(new String[]{"a", "b", "c"});
+        input.add(new String[]{"a", "b", "b", "c", "a"});
 
         //prepare data
         JavaRDD<Row> jrdd = jsc.parallelize(Arrays.asList(

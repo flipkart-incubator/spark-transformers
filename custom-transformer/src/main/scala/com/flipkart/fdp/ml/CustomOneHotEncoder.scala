@@ -1,40 +1,35 @@
 package com.flipkart.fdp.ml
 
 /**
- * Created by shubhranshu.shekhar on 21/06/16.
- */
-import org.apache.spark.annotation.{Experimental}
-import org.apache.spark.ml.attribute.Attribute
-import org.apache.spark.ml.attribute.AttributeGroup
-import org.apache.spark.ml.attribute.BinaryAttribute
-import org.apache.spark.ml.param.BooleanParam
-import org.apache.spark.ml.param.Param
-import org.apache.spark.ml.param.ParamMap
-import org.apache.spark.ml.param.Params
+  * Created by shubhranshu.shekhar on 21/06/16.
+  */
+
+import org.apache.spark.annotation.Experimental
+import org.apache.spark.ml.attribute.{Attribute, AttributeGroup, BinaryAttribute, _}
+import org.apache.spark.ml.param.{BooleanParam, Param, ParamMap, Params}
 import org.apache.spark.ml.util.Identifiable
 import org.apache.spark.ml.{Estimator, Model}
-import org.apache.spark.ml.attribute._
 import org.apache.spark.mllib.linalg.{VectorUDT, Vectors}
-import org.apache.spark.sql.types.DoubleType
-import org.apache.spark.sql.types.StructType
-import org.apache.spark.sql.{DataFrame}
+import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.functions.{col, udf}
-import org.apache.spark.sql.types._
+import org.apache.spark.sql.types.{DoubleType, StructType, _}
 
 //import scala.collection.mutable
 
 /**
- * Created by shubhranshu.shekhar on 20/06/16.
- */
+  * Created by shubhranshu.shekhar on 20/06/16.
+  */
 
 trait CustomOneHotParams extends Params {
-  /** Define input and output column parameters*/
+  /** Define input and output column parameters */
   final val inputCol: Param[String] = new Param[String](this, "inputCol", "input column name")
-  final def getInputCol: String = $(inputCol)
+  final val outputCol: Param[String] = new Param[String](this, "outputCol", "output column name")
+
   setDefault(inputCol, uid + "__input")
 
-  final val outputCol: Param[String] = new Param[String](this, "outputCol", "output column name")
+  final def getInputCol: String = $(inputCol)
   setDefault(outputCol, uid + "__output")
+
   final def getOutputCol: String = $(outputCol)
 
   /** Validates and transforms the input schema. */
@@ -45,25 +40,61 @@ trait CustomOneHotParams extends Params {
 
 @Experimental
 class CustomOneHotEncoder(override val uid: String)
-  extends Estimator[CustomOneHotEncoderModel] with CustomOneHotParams
-{
-
-  def this() = this(Identifiable.randomUID("customOneHot"))
+  extends Estimator[CustomOneHotEncoderModel] with CustomOneHotParams {
 
   /**
-   * Whether to drop the last category in the encoded vector (default: true)
-   * @group param
-   */
+    * Whether to drop the last category in the encoded vector (default: true)
+    *
+    * @group param
+    */
   final val dropLast: BooleanParam =
-    new BooleanParam(this, "dropLast", "whether to drop the last category")
+  new BooleanParam(this, "dropLast", "whether to drop the last category")
+
+  def this() = this(Identifiable.randomUID("customOneHot"))
   setDefault(dropLast -> true)
 
   def setInputCol(value: String): this.type = set(inputCol, value)
+
   def setOutputCol(value: String): this.type = set(outputCol, value)
 
 
   /** @group setParam */
   def setDropLast(value: Boolean): this.type = set(dropLast, value)
+
+  override def fit(dataFrame: DataFrame): CustomOneHotEncoderModel = {
+    // schema transformation
+    val inputColName: String = $(inputCol)
+    val outputColName: String = $(outputCol)
+    val shouldDropLast = $(dropLast)
+    var outputAttrGroup = AttributeGroup.fromStructField(
+      transformSchema(dataFrame.schema)(outputColName))
+    if (outputAttrGroup.size < 0) {
+      // If the number of attributes is unknown, we check the values from the input column.
+      val numAttrs = dataFrame.select(col(inputColName).cast(DoubleType)).rdd.map(_.getDouble(0))
+        .aggregate(0.0)(
+          (m, x) => {
+            assert(x <= Int.MaxValue,
+              s"OneHotEncoder only supports up to ${Int.MaxValue} indices, but got $x")
+            assert(x >= 0.0 && x == x.toInt,
+              s"Values from column $inputColName must be indices, but got $x.")
+            math.max(m, x)
+          },
+          (m0, m1) => {
+            math.max(m0, m1)
+          }
+        ).toInt + 1
+      val outputAttrNames = Array.tabulate(numAttrs)(_.toString)
+      val filtered = if (shouldDropLast) outputAttrNames.dropRight(1) else outputAttrNames
+      val outputAttrs: Array[Attribute] =
+        filtered.map(name => BinaryAttribute.defaultAttr.withName(name))
+      outputAttrGroup = new AttributeGroup(outputColName, outputAttrs)
+    }
+    // data transformation
+    val size = outputAttrGroup.size
+    require(size > 0, "The vector size should be > 0")
+
+    return new CustomOneHotEncoderModel(uid, size).setInputCol(inputColName).setOutputCol(outputColName)
+  }
 
   override def transformSchema(schema: StructType): StructType = {
     val inputColName = $(inputCol)
@@ -119,42 +150,6 @@ class CustomOneHotEncoder(override val uid: String)
 
     val outputFields = inputFields :+ outputAttrGroup.toStructField()
     StructType(outputFields)
-  }
-
-
-  override def fit(dataFrame: DataFrame): CustomOneHotEncoderModel = {
-  // schema transformation
-  val inputColName: String = $(inputCol)
-    val outputColName: String = $(outputCol)
-    val shouldDropLast = $(dropLast)
-    var outputAttrGroup = AttributeGroup.fromStructField(
-      transformSchema(dataFrame.schema)(outputColName))
-    if (outputAttrGroup.size < 0) {
-      // If the number of attributes is unknown, we check the values from the input column.
-      val numAttrs = dataFrame.select( col(inputColName).cast(DoubleType) ).rdd.map(_.getDouble(0))
-        .aggregate(0.0)(
-          (m, x) => {
-            assert(x <= Int.MaxValue,
-              s"OneHotEncoder only supports up to ${Int.MaxValue} indices, but got $x")
-            assert(x >= 0.0 && x == x.toInt,
-              s"Values from column $inputColName must be indices, but got $x.")
-            math.max(m, x)
-          },
-          (m0, m1) => {
-            math.max(m0, m1)
-          }
-        ).toInt + 1
-      val outputAttrNames = Array.tabulate(numAttrs)(_.toString)
-      val filtered = if (shouldDropLast) outputAttrNames.dropRight(1) else outputAttrNames
-      val outputAttrs: Array[Attribute] =
-        filtered.map(name => BinaryAttribute.defaultAttr.withName(name))
-      outputAttrGroup = new AttributeGroup(outputColName, outputAttrs)
-    }
-    // data transformation
-    val size = outputAttrGroup.size
-    require(size > 0, "The vector size should be > 0")
-
-    return new CustomOneHotEncoderModel(uid, size).setInputCol(inputColName).setOutputCol(outputColName)
   }
 
   override def copy(extra: ParamMap): CustomOneHotEncoder = defaultCopy(extra)

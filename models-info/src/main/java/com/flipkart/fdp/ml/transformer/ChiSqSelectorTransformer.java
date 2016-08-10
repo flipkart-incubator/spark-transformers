@@ -17,9 +17,9 @@ public class ChiSqSelectorTransformer implements Transformer {
     }
 
     public double[] predict(double[] inp) {
-        double [] output = new double[modelInfo.getSelectedFeatures().length];
+        double[] output = new double[modelInfo.getSelectedFeatures().length];
         int count = 0;
-        for(int featureIndex : modelInfo.getSelectedFeatures()) {
+        for (int featureIndex : modelInfo.getSelectedFeatures()) {
             output[count++] = inp[featureIndex];
         }
         return output;

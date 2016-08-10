@@ -1,28 +1,30 @@
 package com.flipkart.fdp.ml
 
-import org.apache.spark.ml.{Model, Transformer}
-import org.apache.spark.ml.param.{Param, ParamMap, Params}
+import org.apache.spark.ml.Transformer
+import org.apache.spark.ml.param.{Param, ParamMap}
 import org.apache.spark.ml.util.Identifiable
-import org.apache.spark.mllib.linalg.{DenseVector, SparseVector, VectorUDT, Vector, Vectors}
+import org.apache.spark.mllib.linalg.{DenseVector, SparseVector, Vector, VectorUDT, Vectors}
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.functions._
-import org.apache.spark.sql.types.{StructField, StructType}
-
+import org.apache.spark.sql.types.StructType
 
 
 class CustomLogScaler(override val uid: String, val addValue: Double)
   extends Transformer {
 
+  final val inputCol: Param[String] = new Param[String](this, "inputCol", "input column name")
+  final val outputCol: Param[String] = new Param[String](this, "outputCol", "output column name")
+
   def this(addValue: Double) {
     this(Identifiable.randomUID("customLogScaler"), addValue)
   }
 
-  final val inputCol: Param[String] = new Param[String](this, "inputCol", "input column name")
   final def getInputCol: String = $(inputCol)
+
   def setInputCol(value: String): this.type = set(inputCol, value)
 
-  final val outputCol: Param[String] = new Param[String](this, "outputCol", "output column name")
   final def getOutputCol: String = $(outputCol)
+
   def setOutputCol(value: String): this.type = set(outputCol, value)
 
   override def transform(dataFrame: DataFrame): DataFrame = {
@@ -34,7 +36,7 @@ class CustomLogScaler(override val uid: String, val addValue: Double)
           val values = vs.clone()
           val size = values.size
           var i = 0
-          while(i < size) {
+          while (i < size) {
             values(i) = Math.log(addValue + values(i));
             i += 1
           }

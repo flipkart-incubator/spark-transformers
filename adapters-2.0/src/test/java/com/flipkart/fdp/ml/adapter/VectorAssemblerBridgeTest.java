@@ -34,11 +34,11 @@ public class VectorAssemblerBridgeTest extends SparkTestBase {
         // prepare data
 
         JavaRDD<Row> jrdd = jsc.parallelize(Arrays.asList(
-                RowFactory.create(0d, 1d, new DenseVector(new double[] {2d,3d})),
-                RowFactory.create(1d, 2d, new DenseVector(new double[] {3d,4d})),
-                RowFactory.create(2d, 3d, new DenseVector(new double[] {4d,5d})),
-                RowFactory.create(3d, 4d, new DenseVector(new double[] {5d,6d})),
-                RowFactory.create(4d, 5d, new DenseVector(new double[] {6d,7d}))
+                RowFactory.create(0d, 1d, new DenseVector(new double[]{2d, 3d})),
+                RowFactory.create(1d, 2d, new DenseVector(new double[]{3d, 4d})),
+                RowFactory.create(2d, 3d, new DenseVector(new double[]{4d, 5d})),
+                RowFactory.create(3d, 4d, new DenseVector(new double[]{5d, 6d})),
+                RowFactory.create(4d, 5d, new DenseVector(new double[]{6d, 7d}))
         ));
 
         StructType schema = new StructType(new StructField[]{
@@ -49,18 +49,18 @@ public class VectorAssemblerBridgeTest extends SparkTestBase {
 
         Dataset<Row> df = spark.createDataFrame(jrdd, schema);
         VectorAssembler vectorAssembler = new VectorAssembler()
-                .setInputCols(new String[]{"value1","vector1"})
+                .setInputCols(new String[]{"value1", "vector1"})
                 .setOutputCol("feature");
 
 
         //Export this model
         byte[] exportedModel = ModelExporter.export(vectorAssembler);
 
-        String exportedModelJson = new String (exportedModel);
+        String exportedModelJson = new String(exportedModel);
         //Import and get Transformer
         Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);
         //compare predictions
-        List<Row> sparkOutput = vectorAssembler.transform(df).orderBy("id").select("id", "value1", "vector1","feature").collectAsList();
+        List<Row> sparkOutput = vectorAssembler.transform(df).orderBy("id").select("id", "value1", "vector1", "feature").collectAsList();
         for (Row row : sparkOutput) {
 
             Map<String, Object> data = new HashMap<>();
@@ -68,7 +68,7 @@ public class VectorAssemblerBridgeTest extends SparkTestBase {
             data.put(vectorAssembler.getInputCols()[1], ((DenseVector) row.get(2)).toArray());
             transformer.transform(data);
             double[] output = (double[]) data.get(vectorAssembler.getOutputCol());
-            assertArrayEquals(output,((DenseVector) row.get(3)).toArray(),0d);
+            assertArrayEquals(output, ((DenseVector) row.get(3)).toArray(), 0d);
         }
     }
 }

@@ -9,7 +9,7 @@ import java.util.LinkedHashSet;
 /**
  * Transforms Spark's {@link VectorAssembler} in MlLib to  {@link VectorAssemblerModelInfo} object
  * that can be exported through {@link com.flipkart.fdp.ml.export.ModelExporter}
-
+ * <p>
  * Created by rohan.shetty on 28/03/16.
  */
 public class VectorAssemblerModelAdapter extends AbstractModelInfoAdapter<VectorAssembler, VectorAssemblerModelInfo> {

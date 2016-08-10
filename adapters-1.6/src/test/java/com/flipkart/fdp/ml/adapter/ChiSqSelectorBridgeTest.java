@@ -34,13 +34,13 @@ public class ChiSqSelectorBridgeTest extends SparkTestBase {
         // prepare data
 
         JavaRDD<Row> jrdd = sc.parallelize(Arrays.asList(
-                RowFactory.create(0d, 0d, new DenseVector(new double[] {8d,7d,0d})),
-                RowFactory.create(1d, 1d, new DenseVector(new double[] {0d,9d, 6d})),
-                RowFactory.create(2d, 1d, new DenseVector(new double[] {0.0d, 9.0d, 8.0d})),
-                RowFactory.create(3d, 2d, new DenseVector(new double[] {8.0d, 9.0d, 5.0d}))
+                RowFactory.create(0d, 0d, new DenseVector(new double[]{8d, 7d, 0d})),
+                RowFactory.create(1d, 1d, new DenseVector(new double[]{0d, 9d, 6d})),
+                RowFactory.create(2d, 1d, new DenseVector(new double[]{0.0d, 9.0d, 8.0d})),
+                RowFactory.create(3d, 2d, new DenseVector(new double[]{8.0d, 9.0d, 5.0d}))
         ));
 
-        double[] preFilteredData = { 0.0d, 6.0d, 8.0d, 5.0d };
+        double[] preFilteredData = {0.0d, 6.0d, 8.0d, 5.0d};
 
         StructType schema = new StructType(new StructField[]{
                 new StructField("id", DataTypes.DoubleType, false, Metadata.empty()),
@@ -60,20 +60,20 @@ public class ChiSqSelectorBridgeTest extends SparkTestBase {
         //Export this model
         byte[] exportedModel = ModelExporter.export(chiSqSelectorModel, null);
 
-        String exportedModelJson = new String (exportedModel);
+        String exportedModelJson = new String(exportedModel);
 
         //Import and get Transformer
         Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);
 
         //compare predictions
-        Row[] sparkOutput = chiSqSelectorModel.transform(df).orderBy("id").select("id", "label", "features","output").collect();
+        Row[] sparkOutput = chiSqSelectorModel.transform(df).orderBy("id").select("id", "label", "features", "output").collect();
         for (Row row : sparkOutput) {
             Map<String, Object> data = new HashMap<>();
             data.put(chiSqSelectorModel.getFeaturesCol(), ((DenseVector) row.get(2)).toArray());
             transformer.transform(data);
             double[] output = (double[]) data.get(chiSqSelectorModel.getOutputCol());
             System.out.println(Arrays.toString(output));
-            assertArrayEquals(output,((DenseVector) row.get(3)).toArray(), 0d);
+            assertArrayEquals(output, ((DenseVector) row.get(3)).toArray(), 0d);
         }
     }
 }

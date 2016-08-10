@@ -21,10 +21,10 @@ public class CustomLogScalerTransformer implements Transformer {
         input.put(modelInfo.getOutputKey(), predict(inp));
     }
 
-    private double[] predict(double [] inp) {
-        double [] output = new double[inp.length];
-        for(int i =0 ; i < inp.length; i++) {
-            output[i] = Math.log( inp[i] + modelInfo.getAddValue() );
+    private double[] predict(double[] inp) {
+        double[] output = new double[inp.length];
+        for (int i = 0; i < inp.length; i++) {
+            output[i] = Math.log(inp[i] + modelInfo.getAddValue());
         }
         return output;
     }
