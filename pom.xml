@@ -37,6 +37,28 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
         </license>
     </licenses>
 
+    <profiles>
+        <profile>
+            <id>scala-2.11</id>
+            <properties>
+                <scala.version>2.11.7</scala.version>
+                <scala.tools.version>2.11.7</scala.tools.version>
+                <scala.binary.version>2.11</scala.binary.version>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>scala-2.10</id>
+            <properties>
+                <scala.version>2.10.5</scala.version>
+                <scala.tools.version>2.10.5</scala.tools.version>
+                <scala.binary.version>2.10</scala.binary.version>
+            </properties>
+        </profile>
+    </profiles>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <slf4j.version>1.7.10</slf4j.version>
