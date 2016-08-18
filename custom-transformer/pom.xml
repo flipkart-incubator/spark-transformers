@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>custom-transformer</artifactId>
-    <version>${project.parent.version}-${scala.version}</version>
+    <version>${spark.artifact.suffix}-${project.parent.version}</version>
 
     <properties>
             <spark.version>1.6.2</spark.version>
@@ -45,13 +45,13 @@
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>${spark.core.artifact}</artifactId>
+            <artifactId>spark-core_${spark.artifact.suffix}</artifactId>
             <version>${spark.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>${mllib.artifact}</artifactId>
+            <artifactId>spark-mllib_${spark.artifact.suffix}</artifactId>
             <version>${spark.version}</version>
             <scope>provided</scope>
         </dependency>
