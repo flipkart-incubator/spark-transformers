@@ -67,4 +67,10 @@ class AlgebraicTransform(override val uid: String) extends Transformer with Alge
   }
 
   override def copy(extra: ParamMap): AlgebraicTransform = defaultCopy(extra)
+
+  /*override def copy(extra: ParamMap): ProbabilityTransformModel = {
+    val copied = new ProbabilityTransformModel(uid, actualProportionOfClicks, underSampledProportionOfClicks, probIndex)
+      .setParent(parent)
+    copyValues(copied, extra)
+  }*/
 }

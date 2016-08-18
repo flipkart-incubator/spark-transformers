@@ -40,7 +40,7 @@
         </dependency>
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
-            <artifactId>fk-custom-transformer</artifactId>
+            <artifactId>custom-transformer</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
