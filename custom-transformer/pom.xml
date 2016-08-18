@@ -18,7 +18,7 @@
         <encoding>UTF-8</encoding>
         <scala.tools.version>2.11.6</scala.tools.version>
         <!-- Put the Scala version of the cluster -->
-        <scala.version>2.11.6</scala.version>
+        <scala.version>2.11.7</scala.version>
     </properties>
     <build>
         <sourceDirectory>src/main/scala</sourceDirectory>
