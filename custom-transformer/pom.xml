@@ -10,19 +10,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>custom-transformer</artifactId>
+    <version>${project.parent.version}-${scala.version}</version>
 
-    <url>http://maven.apache.org</url>
     <properties>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
-        <encoding>UTF-8</encoding>
-        <scala.tools.version>2.11.6</scala.tools.version>
-        <!-- Put the Scala version of the cluster -->
-        <scala.version>2.11.7</scala.version>
+            <spark.version>1.6.2</spark.version>
     </properties>
     <build>
-        <sourceDirectory>src/main/scala</sourceDirectory>
-        <!--<testSourceDirectory>src/test/scala</testSourceDirectory> -->
         <plugins>
             <plugin>
                 <!-- see http://davidb.github.com/scala-maven-plugin -->
@@ -36,15 +29,6 @@
                             <goal>testCompile</goal>
                             <goal>doc-jar</goal>
                         </goals>
-                        <!--
-                                                <configuration>
-                                                    <args>
-                                                        <arg>-make:transitive</arg>
-                                                        <arg>-dependencyfile</arg>
-                                                        <arg>${project.build.directory}/.scala_dependencies</arg>
-                                                    </args>
-                                                </configuration>
-                        -->
                     </execution>
                 </executions>
             </plugin>
@@ -61,14 +45,14 @@
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>spark-core_2.11</artifactId>
-            <version>1.6.2</version>
+            <artifactId>${spark.core.artifact}</artifactId>
+            <version>${spark.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>spark-mllib_2.11</artifactId>
-            <version>1.6.2</version>
+            <artifactId>${mllib.artifact}</artifactId>
+            <version>${spark.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

@@ -37,6 +37,30 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
         </license>
     </licenses>
 
+    <profiles>
+        <profile>
+            <id>scala11</id>
+            <properties>
+                <scala.version>2.11.7</scala.version>
+                <scala.tools.version>2.11.7</scala.tools.version>
+                <mllib.artifact>spark-mllib_2.11</mllib.artifact>
+                <spark.core.artifact>spark-core_2.11</spark.core.artifact>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>scala10</id>
+            <properties>
+                <scala.version>2.10.5</scala.version>
+                <scala.tools.version>2.10.5</scala.tools.version>
+                <mllib.artifact>spark-mllib_2.10</mllib.artifact>
+                <spark.core.artifact>spark-core_2.10</spark.core.artifact>
+            </properties>
+        </profile>
+    </profiles>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <slf4j.version>1.7.10</slf4j.version>
