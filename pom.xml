@@ -43,7 +43,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
             <properties>
                 <scala.version>2.11.7</scala.version>
                 <scala.tools.version>2.11.7</scala.tools.version>
-                <spark.artifact.suffix>2.11</spark.artifact.suffix>
+                <scala.binary.version>2.11</scala.binary.version>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -54,7 +54,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
             <properties>
                 <scala.version>2.10.5</scala.version>
                 <scala.tools.version>2.10.5</scala.tools.version>
-                <spark.artifact.suffix>2.10</spark.artifact.suffix>
+                <scala.binary.version>2.10</scala.binary.version>
             </properties>
         </profile>
     </profiles>
