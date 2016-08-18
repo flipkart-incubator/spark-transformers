@@ -39,7 +39,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <profiles>
         <profile>
-            <id>scala11</id>
+            <id>scala-2.11</id>
             <properties>
                 <scala.version>2.11.7</scala.version>
                 <scala.tools.version>2.11.7</scala.tools.version>
@@ -50,7 +50,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
             </activation>
         </profile>
         <profile>
-            <id>scala10</id>
+            <id>scala-2.10</id>
             <properties>
                 <scala.version>2.10.5</scala.version>
                 <scala.tools.version>2.10.5</scala.tools.version>
