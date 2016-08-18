@@ -25,7 +25,7 @@ trait AlgebraicTransformParams extends Params {
   final def getCoefficients: Array[Double] = $(coefficients)
 
   /** Validates and transforms the input schema. */
-  protected def transformSchema(schema: StructType): StructType = {
+  protected def validateAndTransformSchema(schema: StructType): StructType = {
     //val typeCandidates = List(new ArrayType(StringType, true), new ArrayType(StringType, false))
     //CustomSchemaUtil.checkColumnTypes(schema, $(inputCol), typeCandidates)
     CustomSchemaUtil.appendColumn(schema, $(outputCol), new VectorUDT)
@@ -45,12 +45,13 @@ class AlgebraicTransform(override val uid: String) extends Transformer with Alge
   def setCoefficients(value: Array[Double]): this.type = set(coefficients, value)
 
   override def transformSchema(schema: StructType): StructType = {
-    transformSchema(schema)
+    validateAndTransformSchema(schema)
   }
 
   override def transform(dataset: DataFrame): DataFrame = {
     transformSchema(dataset.schema)
-    val encode = udf {(value: Double, coeff: Array[Double]) =>
+    val coeff = $(coefficients)
+    val encode = udf {(value: Double) =>
       if(coeff.length == 0){
         0.0
       }
@@ -63,7 +64,7 @@ class AlgebraicTransform(override val uid: String) extends Transformer with Alge
       }
     }
     //In our version of spark Transformer treats DataFrame === Dataset
-    dataset.withColumn($(outputCol), encode(col($(inputCol)), lit($(coefficients))))
+    dataset.withColumn($(outputCol), encode(col($(inputCol))))
   }
 
   override def copy(extra: ParamMap): AlgebraicTransform = defaultCopy(extra)
