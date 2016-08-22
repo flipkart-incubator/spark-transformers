@@ -1,0 +1,47 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+
+    <parent>
+        <groupId>com.flipkart.fdp.ml</groupId>
+        <artifactId>spark-transformers</artifactId>
+        <version>0.1.5</version>
+        <relativePath>..</relativePath>
+    </parent>
+
+    <properties>
+        <spark.version>1.6.2</spark.version>
+    </properties>
+
+    <artifactId>adapters-1.6</artifactId>
+    <packaging>jar</packaging>
+    <version>${project.parent.version}_${scala.binary.version}</version>
+    <name>Spark 1.6 Model Adapters</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>${project.parent.groupId}</groupId>
+            <artifactId>models-info</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-core_${scala.binary.version}</artifactId>
+            <version>${spark.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-mllib_${scala.binary.version}</artifactId>
+            <version>${spark.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.parent.groupId}</groupId>
+            <artifactId>custom-transformer</artifactId>
+            <version>${project.parent.version}_${scala.binary.version}</version>
+        </dependency>
+    </dependencies>
+</project>

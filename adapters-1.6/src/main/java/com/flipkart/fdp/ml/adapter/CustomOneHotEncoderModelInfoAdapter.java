@@ -4,7 +4,6 @@ import com.flipkart.fdp.ml.CustomOneHotEncoderModel;
 import com.flipkart.fdp.ml.modelinfo.OneHotEncoderModelInfo;
 import org.apache.spark.sql.DataFrame;
 
-
 import java.util.LinkedHashSet;
 import java.util.Set;
 

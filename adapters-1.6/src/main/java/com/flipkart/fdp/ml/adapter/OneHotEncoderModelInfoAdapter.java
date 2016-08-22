@@ -6,7 +6,6 @@ import org.apache.spark.ml.attribute.AttributeType;
 import org.apache.spark.ml.attribute.BinaryAttribute;
 import org.apache.spark.ml.attribute.NominalAttribute;
 import org.apache.spark.ml.feature.OneHotEncoder;
-import org.apache.spark.ml.param.ParamPair;
 import org.apache.spark.sql.DataFrame;
 
 import java.util.LinkedHashSet;

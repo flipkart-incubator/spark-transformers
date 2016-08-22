@@ -7,18 +7,18 @@
     <parent>
         <groupId>com.flipkart.fdp.ml</groupId>
         <artifactId>spark-transformers</artifactId>
-        <version>0.1.1</version>
+        <version>0.1.5</version>
         <relativePath>..</relativePath>
     </parent>
 
     <properties>
-        <spark.version>1.6.0</spark.version>
+        <spark.version>2.0.0</spark.version>
     </properties>
 
-    <artifactId>adapters</artifactId>
+    <artifactId>adapters-2.0</artifactId>
     <packaging>jar</packaging>
-    <version>0.1.1</version>
-    <name>Spark Model Adapters</name>
+    <version>${project.parent.version}_${scala.binary.version}</version>
+    <name>Spark 2.0 Model Adapters</name>
 
     <dependencies>
         <dependency>
@@ -28,20 +28,20 @@
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>spark-core_2.10</artifactId>
+            <artifactId>spark-core_${scala.binary.version}</artifactId>
             <version>${spark.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>spark-mllib_2.10</artifactId>
+            <artifactId>spark-mllib_${scala.binary.version}</artifactId>
             <version>${spark.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
             <artifactId>custom-transformer</artifactId>
-            <version>${project.parent.version}</version>
+            <version>${project.parent.version}_${scala.binary.version}</version>
         </dependency>
     </dependencies>
 </project>

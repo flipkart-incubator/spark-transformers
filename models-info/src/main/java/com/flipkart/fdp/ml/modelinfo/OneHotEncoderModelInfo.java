@@ -11,6 +11,7 @@ import lombok.Data;
 public class OneHotEncoderModelInfo extends AbstractModelInfo {
 
     private int numTypes;
+
     /**
      * @return an corresponding {@link OneHotEncoderTransformer} for this model info
      */

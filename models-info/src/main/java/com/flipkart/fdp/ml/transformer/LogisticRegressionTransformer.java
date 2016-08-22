@@ -36,7 +36,7 @@ public class LogisticRegressionTransformer implements Transformer {
     public void transform(Map<String, Object> input) {
         double[] inp = (double[]) input.get(modelInfo.getInputKeys().iterator().next());
         input.put(modelInfo.getProbabilityKey(), getProbability(inp));
-        input.put(modelInfo.getOutputKey(), predict((double)input.get(modelInfo.getProbabilityKey())));
+        input.put(modelInfo.getOutputKey(), predict((double) input.get(modelInfo.getProbabilityKey())));
     }
 
 }

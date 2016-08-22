@@ -7,7 +7,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <groupId>com.flipkart.fdp.ml</groupId>
     <artifactId>spark-transformers</artifactId>
-    <version>0.1.1</version>
+    <version>0.1.5</version>
     <packaging>pom</packaging>
     <name>Transformers for spark</name>
     <description>Java Library for exporting spark models in Java ecosystem</description>
@@ -37,18 +37,40 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
         </license>
     </licenses>
 
+    <profiles>
+        <profile>
+            <id>scala-2.11</id>
+            <properties>
+                <scala.version>2.11.7</scala.version>
+                <scala.tools.version>2.11.7</scala.tools.version>
+                <scala.binary.version>2.11</scala.binary.version>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>scala-2.10</id>
+            <properties>
+                <scala.version>2.10.5</scala.version>
+                <scala.tools.version>2.10.5</scala.tools.version>
+                <scala.binary.version>2.10</scala.binary.version>
+            </properties>
+        </profile>
+    </profiles>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <slf4j.version>1.7.10</slf4j.version>
         <junit.version>4.12</junit.version>
         <logback.version>1.0.13</logback.version>
-        <spark.version>1.6.0</spark.version>
     </properties>
 
     <modules>
         <module>models-info</module>
-        <module>adapters</module>
         <module>custom-transformer</module>
+        <module>adapters-2.0</module>
+        <module>adapters-1.6</module>
     </modules>
 
     <dependencies>
@@ -90,8 +112,8 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.2</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -131,7 +153,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
-	        <plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.6</version>
@@ -144,7 +166,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
                         </goals>
                     </execution>
                 </executions>
-	        </plugin>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>

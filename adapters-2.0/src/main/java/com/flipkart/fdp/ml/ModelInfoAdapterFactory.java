@@ -15,14 +15,12 @@ public class ModelInfoAdapterFactory {
     private static final Map<String, ModelInfoAdapter> registry = new java.util.HashMap<>();
 
     static {
-        register(new CustomOneHotEncoderModelInfoAdapter());
         register(new LogisticRegressionModelInfoAdapter());
         register(new LogisticRegressionModelInfoAdapter1());
         register(new DecisionTreeModelInfoAdapter());
         register(new RandomForestModelInfoAdapter());
         register(new StringIndexerModelInfoAdapter());
         register(new HashingTFModelInfoAdapter());
-        register(new OneHotEncoderModelInfoAdapter());
         register(new RegexTokenizerModelInfoAdapter());
         register(new CountVectorizerModelInfoAdapter());
         register(new StandardScalerModelInfoAdapter());
@@ -30,8 +28,7 @@ public class ModelInfoAdapterFactory {
         register(new BucketizerModelInfoAdapter());
         register(new PipelineModelInfoAdapter());
         register(new VectorAssemblerModelAdapter());
-        register(new ProbabilityTransformModelInfoAdapter());
-        register(new AlgebraicTransformModelInfoAdapter());
+        register(new ChiSqSelectorModelInfoAdapter());
 
     }
 

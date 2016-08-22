@@ -1,12 +1,12 @@
 package com.flipkart.fdp.ml.transformer;
 
-import com.flipkart.fdp.ml.modelinfo.AbstractModelInfo;
 import com.flipkart.fdp.ml.modelinfo.RegexTokenizerModelInfo;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,7 +36,12 @@ public class RegexTokenizerTransformer implements Transformer {
             }
             tokens = allMatches;
         }
-        tokens.removeIf(p -> p.length() < modelInfo.getMinTokenLength());
+        tokens.removeIf(new Predicate<String>() {
+            @Override
+            public boolean test(String p) {
+                return p.length() < modelInfo.getMinTokenLength();
+            }
+        });
         final String[] filteredTokens = new String[tokens.size()];
         for (int i = 0; i < filteredTokens.length; i++) {
             filteredTokens[i] = tokens.get(i);
