@@ -39,6 +39,9 @@ trait ProbabilityTransformParams extends Params {
   }
 }
 
+/**
+ * ProbabilityTransform: Removing the effects of under-sampling, and yields true probability.
+ */
 class ProbabilityTransform(override val uid: String) extends Estimator[ProbabilityTransformModel]
   with ProbabilityTransformParams{
   def this() = this(Identifiable.randomUID("probabilityTransform"))
