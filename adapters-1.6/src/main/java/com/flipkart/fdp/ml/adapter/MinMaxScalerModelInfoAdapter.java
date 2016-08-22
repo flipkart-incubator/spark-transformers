@@ -19,10 +19,15 @@ public class MinMaxScalerModelInfoAdapter extends AbstractModelInfoAdapter<MinMa
         modelInfo.setOriginalMin(from.originalMin().toArray());
         modelInfo.setMax(from.getMax());
         modelInfo.setMin(from.getMin());
+
         Set<String> inputKeys = new LinkedHashSet<String>();
         inputKeys.add(from.getInputCol());
         modelInfo.setInputKeys(inputKeys);
-        modelInfo.setOutputKey(from.getOutputCol());
+
+        Set<String> outputKeys = new LinkedHashSet<String>();
+        outputKeys.add(from.getOutputCol());
+        modelInfo.setOutputKeys(outputKeys);
+
         return modelInfo;
     }
 

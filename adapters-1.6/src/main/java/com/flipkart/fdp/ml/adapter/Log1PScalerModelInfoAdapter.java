@@ -16,10 +16,15 @@ public class Log1PScalerModelInfoAdapter extends AbstractModelInfoAdapter<Log1PS
     @Override
     public Log1PScalerModelInfo getModelInfo(final Log1PScaler from, DataFrame df) {
         Log1PScalerModelInfo modelInfo = new Log1PScalerModelInfo();
+
         Set<String> inputKeys = new LinkedHashSet<String>();
         inputKeys.add(from.getInputCol());
         modelInfo.setInputKeys(inputKeys);
-        modelInfo.setOutputKey(from.getOutputCol());
+
+        Set<String> outputKeys = new LinkedHashSet<String>();
+        outputKeys.add(from.getOutputCol());
+        modelInfo.setOutputKeys(outputKeys);
+
         return modelInfo;
     }
 

@@ -3,6 +3,7 @@ package com.flipkart.fdp.ml.transformer;
 import com.flipkart.fdp.ml.modelinfo.MinMaxScalerModelInfo;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Transforms input/ predicts for a MinMaxScaler model representation
@@ -43,6 +44,16 @@ public class MinMaxScalerTransformer implements Transformer {
     @Override
     public void transform(Map<String, Object> input) {
         double inp[] = (double[]) input.get(modelInfo.getInputKeys().iterator().next());
-        input.put(modelInfo.getOutputKey(), predict(inp));
+        input.put(modelInfo.getOutputKeys().iterator().next(), predict(inp));
+    }
+
+    @Override
+    public Set<String> getInputKeys() {
+        return modelInfo.getInputKeys();
+    }
+
+    @Override
+    public Set<String> getOutputKeys() {
+        return modelInfo.getOutputKeys();
     }
 }

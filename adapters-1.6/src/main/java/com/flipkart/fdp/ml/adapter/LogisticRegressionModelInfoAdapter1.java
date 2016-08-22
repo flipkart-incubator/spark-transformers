@@ -24,11 +24,17 @@ public class LogisticRegressionModelInfoAdapter1
         logisticRegressionModelInfo.setNumClasses(sparkLRModel.numClasses());
         logisticRegressionModelInfo.setNumFeatures(sparkLRModel.numFeatures());
         logisticRegressionModelInfo.setThreshold(sparkLRModel.getThreshold());
+        logisticRegressionModelInfo.setProbabilityKey(sparkLRModel.getProbabilityCol());
+
         Set<String> inputKeys = new LinkedHashSet<String>();
         inputKeys.add(sparkLRModel.getFeaturesCol());
         logisticRegressionModelInfo.setInputKeys(inputKeys);
-        logisticRegressionModelInfo.setOutputKey(sparkLRModel.getPredictionCol());
-        logisticRegressionModelInfo.setProbabilityKey(sparkLRModel.getProbabilityCol());
+
+        Set<String> outputKeys = new LinkedHashSet<String>();
+        outputKeys.add(sparkLRModel.getPredictionCol());
+        outputKeys.add(sparkLRModel.getProbabilityCol());
+        logisticRegressionModelInfo.setOutputKeys(outputKeys);
+
         return logisticRegressionModelInfo;
     }
 

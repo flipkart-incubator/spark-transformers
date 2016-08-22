@@ -17,10 +17,15 @@ public class CustomOneHotEncoderModelInfoAdapter extends AbstractModelInfoAdapte
         OneHotEncoderModelInfo modelInfo = new OneHotEncoderModelInfo();
 
         modelInfo.setNumTypes(from.vectorSize());
+
         Set<String> inputKeys = new LinkedHashSet<String>();
         inputKeys.add(from.getInputCol());
         modelInfo.setInputKeys(inputKeys);
-        modelInfo.setOutputKey(from.getOutputCol());
+
+        Set<String> outputKeys = new LinkedHashSet<String>();
+        outputKeys.add(from.getOutputCol());
+        modelInfo.setOutputKeys(outputKeys);
+
         return modelInfo;
     }
 

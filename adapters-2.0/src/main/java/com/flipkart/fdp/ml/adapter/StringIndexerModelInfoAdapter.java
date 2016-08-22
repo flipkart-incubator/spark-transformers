@@ -23,10 +23,15 @@ public class StringIndexerModelInfoAdapter extends AbstractModelInfoAdapter<Stri
         }
         final StringIndexerModelInfo modelInfo = new StringIndexerModelInfo();
         modelInfo.setLabelToIndex(labelToIndex);
+
         Set<String> inputKeys = new LinkedHashSet<String>();
         inputKeys.add(from.getInputCol());
         modelInfo.setInputKeys(inputKeys);
-        modelInfo.setOutputKey(from.getOutputCol());
+
+        Set<String> outputKeys = new LinkedHashSet<String>();
+        outputKeys.add(from.getOutputCol());
+        modelInfo.setOutputKeys(outputKeys);
+
         return modelInfo;
     }
 

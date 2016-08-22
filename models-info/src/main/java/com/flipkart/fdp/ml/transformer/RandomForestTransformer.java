@@ -5,10 +5,7 @@ import com.flipkart.fdp.ml.modelinfo.RandomForestModelInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Transforms input/ predicts for a Random Forest model representation
@@ -36,7 +33,7 @@ public class RandomForestTransformer implements Transformer {
     @Override
     public void transform(Map<String, Object> input) {
         double[] inp = (double[]) input.get(forest.getInputKeys().iterator().next());
-        input.put(forest.getOutputKey(), predict(inp));
+        input.put(forest.getOutputKeys().iterator().next(), predict(inp));
     }
 
 
@@ -83,4 +80,15 @@ public class RandomForestTransformer implements Transformer {
         }
         return maxVotesCandidate;
     }
+
+    @Override
+    public Set<String> getInputKeys() {
+        return forest.getInputKeys();
+    }
+
+    @Override
+    public Set<String> getOutputKeys() {
+        return forest.getOutputKeys();
+    }
+
 }

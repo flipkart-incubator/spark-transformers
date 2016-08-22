@@ -5,6 +5,9 @@ import com.flipkart.fdp.ml.modelinfo.RandomForestModelInfo;
 import org.apache.spark.mllib.tree.model.DecisionTreeModel;
 import org.apache.spark.mllib.tree.model.RandomForestModel;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 /**
  * Transforms Spark's {@link RandomForestModel} in MlLib to  {@link RandomForestModelInfo} object
  * that can be exported through {@link com.flipkart.fdp.ml.export.ModelExporter}
@@ -16,6 +19,14 @@ public class RandomForestModelInfoAdapter
 
     private RandomForestModelInfo visitForest(final RandomForestModel randomForestModel) {
         final RandomForestModelInfo randomForestModelInfo = new RandomForestModelInfo();
+
+        Set<String> inputKeys = new LinkedHashSet<String>();
+        inputKeys.add("features");
+        randomForestModelInfo.setInputKeys(inputKeys);
+
+        Set<String> outputKeys = new LinkedHashSet<String>();
+        outputKeys.add("prediction");
+        randomForestModelInfo.setOutputKeys(outputKeys);
 
         randomForestModelInfo.setAlgorithm(randomForestModel.algo().toString());
 

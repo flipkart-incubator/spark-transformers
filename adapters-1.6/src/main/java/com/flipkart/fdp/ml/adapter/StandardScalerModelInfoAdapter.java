@@ -19,10 +19,15 @@ public class StandardScalerModelInfoAdapter extends AbstractModelInfoAdapter<Sta
         modelInfo.setStd(from.std().toArray());
         modelInfo.setWithMean(from.getWithMean());
         modelInfo.setWithStd(from.getWithStd());
+
         Set<String> inputKeys = new LinkedHashSet<String>();
         inputKeys.add(from.getInputCol());
         modelInfo.setInputKeys(inputKeys);
-        modelInfo.setOutputKey(from.getOutputCol());
+
+        Set<String> outputKeys = new LinkedHashSet<String>();
+        outputKeys.add(from.getOutputCol());
+        modelInfo.setOutputKeys(outputKeys);
+
         return modelInfo;
     }
 

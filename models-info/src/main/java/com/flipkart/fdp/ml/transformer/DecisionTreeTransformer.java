@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Transforms input/ predicts for a Decision Tree model representation
@@ -49,7 +50,17 @@ public class DecisionTreeTransformer implements Transformer {
     @Override
     public void transform(Map<String, Object> input) {
         double[] inp = (double[]) input.get(tree.getInputKeys().iterator().next());
-        input.put(tree.getOutputKey(), predict(inp));
+        input.put(tree.getOutputKeys().iterator().next(), predict(inp));
+    }
+
+    @Override
+    public Set<String> getInputKeys() {
+        return tree.getInputKeys();
+    }
+
+    @Override
+    public Set<String> getOutputKeys() {
+        return tree.getOutputKeys();
     }
 
 }

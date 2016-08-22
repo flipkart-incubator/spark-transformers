@@ -1,6 +1,7 @@
 package com.flipkart.fdp.ml.transformer;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * This interface represents a capability of a class to transform the input using a suitable model
@@ -14,4 +15,7 @@ public interface Transformer {
      */
     public void transform(Map<String, Object> input);
 
+    public Set<String> getInputKeys();
+
+    public Set<String> getOutputKeys();
 }

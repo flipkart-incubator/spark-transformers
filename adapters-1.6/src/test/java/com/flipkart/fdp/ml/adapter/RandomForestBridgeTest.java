@@ -52,9 +52,9 @@ public class RandomForestBridgeTest extends SparkTestBase {
             double actual = sparkModel.predict(v);
 
             Map<String, Object> data = new HashMap<String, Object>();
-            data.put("input", v.toArray());
+            data.put("features", v.toArray());
             transformer.transform(data);
-            double predicted = (double) data.get("output");
+            double predicted = (double) data.get("prediction");
 
             assertEquals(actual, predicted, 0.01);
         }
@@ -91,9 +91,9 @@ public class RandomForestBridgeTest extends SparkTestBase {
             double actual = sparkModel.predict(v);
 
             Map<String, Object> data = new HashMap<String, Object>();
-            data.put("input", v.toArray());
+            data.put("features", v.toArray());
             transformer.transform(data);
-            double predicted = (double) data.get("output");
+            double predicted = (double) data.get("prediction");
 
             assertEquals(actual, predicted, 0.01);
         }
