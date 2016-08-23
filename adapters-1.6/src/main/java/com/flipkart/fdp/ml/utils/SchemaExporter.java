@@ -6,6 +6,7 @@ import org.apache.spark.sql.types.*;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by akshay.us on 8/10/16.
@@ -19,7 +20,42 @@ public class SchemaExporter {
 
     private static final Gson gson = new Gson();
 
-    public static String exportToJson(StructType dfSchema) {
+
+    public static String exportToJson(Set<String> columns, StructType dfSchema) {
+        //This would contain column name along with type of a dataframe
+
+        Map<String, String> schema = new LinkedHashMap<>();
+
+        for (String column : columns) {
+            StructField field = dfSchema.fields()[ dfSchema.fieldIndex(column) ];
+
+            if (field.dataType() instanceof StringType) {
+                schema.put(field.name(), STRING);
+            } else if (field.dataType() instanceof BooleanType) {
+                schema.put(field.name(), BOOLEAN);
+            } else if (field.dataType() instanceof VectorUDT) {
+                schema.put(field.name(), DOUBLE_ARRAY);
+            } else if (field.dataType() instanceof DoubleType || field.dataType() instanceof DecimalType || field.dataType() instanceof FloatType ||
+                    field.dataType() instanceof IntegerType || field.dataType() instanceof LongType || field.dataType() instanceof ShortType) {
+                schema.put(field.name(), DOUBLE);
+            } else if (field.dataType() instanceof ArrayType) {
+                if(((ArrayType)field.dataType()).elementType() instanceof StringType) {
+                    schema.put(field.name(), STRING_ARRAY);
+                }else if(((ArrayType)field.dataType()).elementType() instanceof DoubleType) {
+                    schema.put(field.name(), DOUBLE_ARRAY);
+                }else {
+                    throw new UnsupportedOperationException("Cannot support data of type " + field.dataType());
+                }
+            }
+            else {
+                throw new UnsupportedOperationException("Cannot support data of type " + field.dataType());
+            }
+        }
+        return gson.toJson(schema);
+    }
+
+
+    public static String exportSchemaToJson(StructType dfSchema) {
         //This would contain column name along with type of a dataframe
 
         Map<String, String> schema = new LinkedHashMap<>();
