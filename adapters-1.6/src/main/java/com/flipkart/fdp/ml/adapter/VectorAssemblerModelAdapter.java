@@ -6,6 +6,7 @@ import org.apache.spark.sql.DataFrame;
 
 import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Transforms Spark's {@link VectorAssembler} in MlLib to  {@link com.flipkart.fdp.ml.modelinfo.VectorAssemblerModelInfo} object
@@ -18,8 +19,13 @@ public class VectorAssemblerModelAdapter extends AbstractModelInfoAdapter<Vector
     @Override
     VectorAssemblerModelInfo getModelInfo(VectorAssembler from, DataFrame df) {
         VectorAssemblerModelInfo vectorAssemblerModelInfo = new VectorAssemblerModelInfo();
+
         vectorAssemblerModelInfo.setInputKeys(new LinkedHashSet<>(Arrays.asList(from.getInputCols())));
-        vectorAssemblerModelInfo.setOutputKey(from.getOutputCol());
+
+        Set<String> outputKeys = new LinkedHashSet<String>();
+        outputKeys.add(from.getOutputCol());
+        vectorAssemblerModelInfo.setOutputKeys(outputKeys);
+
         return vectorAssemblerModelInfo;
     }
 

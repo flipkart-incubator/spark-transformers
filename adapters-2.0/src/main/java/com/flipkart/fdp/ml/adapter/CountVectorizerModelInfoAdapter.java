@@ -16,10 +16,15 @@ public class CountVectorizerModelInfoAdapter extends AbstractModelInfoAdapter<Co
         final CountVectorizerModelInfo modelInfo = new CountVectorizerModelInfo();
         modelInfo.setMinTF(from.getMinTF());
         modelInfo.setVocabulary(from.vocabulary());
+
         Set<String> inputKeys = new LinkedHashSet<String>();
         inputKeys.add(from.getInputCol());
         modelInfo.setInputKeys(inputKeys);
-        modelInfo.setOutputKey(from.getOutputCol());
+
+        Set<String> outputKeys = new LinkedHashSet<String>();
+        outputKeys.add(from.getOutputCol());
+        modelInfo.setOutputKeys(outputKeys);
+
         return modelInfo;
     }
 

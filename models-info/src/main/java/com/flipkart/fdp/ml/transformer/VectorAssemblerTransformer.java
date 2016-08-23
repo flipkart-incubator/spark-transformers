@@ -4,6 +4,7 @@ import com.flipkart.fdp.ml.modelinfo.VectorAssemblerModelInfo;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Transforms input/ predicts for a Vector assembler model representation
@@ -61,6 +62,17 @@ public class VectorAssemblerTransformer implements Transformer {
         for (String inputKey : modelInfo.getInputKeys()) {
             inputs[i++] = input.get(inputKey);
         }
-        input.put(modelInfo.getOutputKey(), predict(inputs));
+        input.put(modelInfo.getOutputKeys().iterator().next(), predict(inputs));
     }
+
+    @Override
+    public Set<String> getInputKeys() {
+        return modelInfo.getInputKeys();
+    }
+
+    @Override
+    public Set<String> getOutputKeys() {
+        return modelInfo.getOutputKeys();
+    }
+
 }

@@ -17,10 +17,14 @@ public class BucketizerModelInfoAdapter extends AbstractModelInfoAdapter<Bucketi
     public BucketizerModelInfo getModelInfo(final Bucketizer from, final DataFrame df) {
         final BucketizerModelInfo modelInfo = new BucketizerModelInfo();
         modelInfo.setSplits(from.getSplits());
+
         Set<String> inputKeys = new LinkedHashSet<String>();
         inputKeys.add(from.getInputCol());
         modelInfo.setInputKeys(inputKeys);
-        modelInfo.setOutputKey(from.getOutputCol());
+
+        Set<String> outputKeys = new LinkedHashSet<String>();
+        outputKeys.add(from.getOutputCol());
+        modelInfo.setOutputKeys(outputKeys);
         return modelInfo;
     }
 

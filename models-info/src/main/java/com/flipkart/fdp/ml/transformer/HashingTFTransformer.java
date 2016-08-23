@@ -4,6 +4,7 @@ import com.flipkart.fdp.ml.modelinfo.HashingTFModelInfo;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Transforms input/ predicts for a HashingTF model representation
@@ -35,7 +36,17 @@ public class HashingTFTransformer implements Transformer {
     @Override
     public void transform(Map<String, Object> input) {
         String[] inp = (String[]) input.get(modelInfo.getInputKeys().iterator().next());
-        input.put(modelInfo.getOutputKey(), predict(inp));
+        input.put(modelInfo.getOutputKeys().iterator().next(), predict(inp));
+    }
+
+    @Override
+    public Set<String> getInputKeys() {
+        return modelInfo.getInputKeys();
+    }
+
+    @Override
+    public Set<String> getOutputKeys() {
+        return modelInfo.getOutputKeys();
     }
 
 }

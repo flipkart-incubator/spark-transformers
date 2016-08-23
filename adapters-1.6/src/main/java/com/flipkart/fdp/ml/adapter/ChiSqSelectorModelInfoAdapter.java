@@ -17,10 +17,15 @@ public class ChiSqSelectorModelInfoAdapter extends AbstractModelInfoAdapter<ChiS
     public ChiSqSelectorModelInfo getModelInfo(final ChiSqSelectorModel from, DataFrame df) {
         ChiSqSelectorModelInfo modelInfo = new ChiSqSelectorModelInfo();
         modelInfo.setSelectedFeatures(from.selectedFeatures());
+
         Set<String> inputKeys = new LinkedHashSet<String>();
         inputKeys.add(from.getFeaturesCol());
         modelInfo.setInputKeys(inputKeys);
-        modelInfo.setOutputKey(from.getOutputCol());
+
+        Set<String> outputKeys = new LinkedHashSet<String>();
+        outputKeys.add(from.getOutputCol());
+        modelInfo.setOutputKeys(outputKeys);
+
         return modelInfo;
     }
 

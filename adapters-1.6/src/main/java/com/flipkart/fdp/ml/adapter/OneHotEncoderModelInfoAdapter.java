@@ -14,7 +14,12 @@ import java.util.Set;
 /**
  * Transforms Spark's {@link OneHotEncoder} in MlLib to  {@link com.flipkart.fdp.ml.modelinfo.OneHotEncoderModelInfo} object
  * that can be exported through {@link com.flipkart.fdp.ml.export.ModelExporter}
+
+ Exporting Spark's OHE is ugly.
+@See {@link com.flipkart.fdp.ml.CustomOneHotEncoder}
  */
+
+
 public class OneHotEncoderModelInfoAdapter extends AbstractModelInfoAdapter<OneHotEncoder, OneHotEncoderModelInfo> {
 
     @Override
@@ -33,10 +38,15 @@ public class OneHotEncoderModelInfoAdapter extends AbstractModelInfoAdapter<OneH
 
         //TODO: Since dropLast is not accesible here, We are deliberately setting numTypes. This is the reason, we should use CustomOneHotEncoder
         modelInfo.setNumTypes(numTypes - 1);
+
         Set<String> inputKeys = new LinkedHashSet<String>();
         inputKeys.add(from.getInputCol());
         modelInfo.setInputKeys(inputKeys);
-        modelInfo.setOutputKey(from.getOutputCol());
+
+        Set<String> outputKeys = new LinkedHashSet<String>();
+        outputKeys.add(from.getOutputCol());
+        modelInfo.setOutputKeys(outputKeys);
+
         return modelInfo;
     }
 

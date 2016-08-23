@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Transforms input/ predicts for a Logistic Regression modelInfo representation
@@ -36,7 +37,17 @@ public class LogisticRegressionTransformer implements Transformer {
     public void transform(Map<String, Object> input) {
         double[] inp = (double[]) input.get(modelInfo.getInputKeys().iterator().next());
         input.put(modelInfo.getProbabilityKey(), getProbability(inp));
-        input.put(modelInfo.getOutputKey(), predict((double) input.get(modelInfo.getProbabilityKey())));
+        input.put(modelInfo.getOutputKeys().iterator().next(), predict((double) input.get(modelInfo.getProbabilityKey())));
+    }
+
+    @Override
+    public Set<String> getInputKeys() {
+        return modelInfo.getInputKeys();
+    }
+
+    @Override
+    public Set<String> getOutputKeys() {
+        return modelInfo.getOutputKeys();
     }
 
 }
