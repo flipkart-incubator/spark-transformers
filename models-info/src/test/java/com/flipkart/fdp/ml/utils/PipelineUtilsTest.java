@@ -130,8 +130,8 @@ public class PipelineUtilsTest {
         Transformer t2 = createTransformer(Arrays.asList("a1", "c", "f"), Arrays.asList("a2", "c1"));
         Transformer t3 = createTransformer(Arrays.asList("a", "a1", "a2"), Arrays.asList("a2"));
         Set<String> outputs = PipelineUtils.extractRequiredOutputColumns(new Transformer[] {t1, t2, t3});
-        assertEquals(outputs.size(), 4);
-        assertTrue(outputs.containsAll(Arrays.asList("b1","a2","c1","f")));
+        assertEquals(outputs.size(), 3);
+        assertTrue(outputs.containsAll(Arrays.asList("b1","a2","c1")));
         assertFalse(outputs.contains("a"));
         assertFalse(outputs.contains("b"));
         assertFalse(outputs.contains("c"));
