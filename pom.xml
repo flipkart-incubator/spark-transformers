@@ -7,7 +7,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <groupId>com.flipkart.fdp.ml</groupId>
     <artifactId>spark-transformers</artifactId>
-    <version>0.1.5</version>
+    <version>0.2.0</version>
     <packaging>pom</packaging>
     <name>Transformers for spark</name>
     <description>Java Library for exporting spark models in Java ecosystem</description>
