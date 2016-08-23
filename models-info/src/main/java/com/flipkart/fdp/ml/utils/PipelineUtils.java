@@ -29,4 +29,26 @@ public class PipelineUtils {
         //Not handled cases where a transformer replaces/modifies any column that is not its input column.
         return inputColumns;
     }
+
+    public static Set<String> extractRequiredOutputColumns(Transformer[] transformers) {
+        Set<String> outputColumns = new HashSet<>();
+
+        //Add outputs for each transformer in the output set
+        //traversing in reverse
+        for(int i = transformers.length-1; i>=0; i--) {
+            outputColumns.addAll(transformers[i].getOutputKeys());
+        }
+
+        //remove non modifying columns of each transformer
+        for(int i = transformers.length-1; i>=0; i--) {
+            //calculate set difference Set(inputs) - Set(outputs)
+            Set<String> setDifference = new HashSet<>(transformers[i].getInputKeys());
+            setDifference.removeAll(transformers[i].getOutputKeys());
+
+            outputColumns.removeAll(setDifference);
+        }
+
+        //Not handled cases where a transformer replaces/modifies any column that is not its input column.
+        return outputColumns;
+    }
 }

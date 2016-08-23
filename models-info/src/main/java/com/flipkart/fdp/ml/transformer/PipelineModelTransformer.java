@@ -14,6 +14,7 @@ public class PipelineModelTransformer implements Transformer {
 
     private final Transformer transformers[];
     private Set<String> extractedInputColumns;
+    private Set<String> extractedOutputColumns;
 
     public PipelineModelTransformer(final PipelineModelInfo modelInfo) {
         transformers = new Transformer[modelInfo.getStages().length];
@@ -21,6 +22,7 @@ public class PipelineModelTransformer implements Transformer {
             transformers[i] = modelInfo.getStages()[i].getTransformer();
         }
         extractedInputColumns = PipelineUtils.extractRequiredInputColumns(transformers);
+        extractedOutputColumns = PipelineUtils.extractRequiredOutputColumns(transformers);
     }
 
     @Override
@@ -36,10 +38,8 @@ public class PipelineModelTransformer implements Transformer {
     }
 
     @Override
-    public Set<String> getOutputKeys()
-    {
-        //using the output of last stage as output of pipeline.
-        return transformers[transformers.length - 1].getOutputKeys();
+    public Set<String> getOutputKeys() {
+        return extractedOutputColumns;
     }
 
 }
