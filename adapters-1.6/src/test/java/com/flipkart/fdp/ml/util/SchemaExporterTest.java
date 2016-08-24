@@ -15,7 +15,7 @@ public class SchemaExporterTest {
 
     /**
      * Output :
-     {"id":"double","feature":"double"}
+     [{"name":"id","datatype":"double"},{"name":"feature","datatype":"double"}]
      * */
     @Test
     public void testSchema() {
@@ -28,7 +28,7 @@ public class SchemaExporterTest {
 
     /**
      * Output :
-     {"id":"double","label":"double","features":"double []"}
+     [{"name":"id","datatype":"double"},{"name":"label","datatype":"double"},{"name":"features","datatype":"double []"}]
      * */
     @Test
     public void testSchema1() {
@@ -42,7 +42,7 @@ public class SchemaExporterTest {
 
     /**
      * Output :
-     {"id":"double","text":"String []"}
+     [{"name":"id","datatype":"double"},{"name":"text","datatype":"String []"}]
      * */
     @Test
     public void testSchema2() {
@@ -55,7 +55,7 @@ public class SchemaExporterTest {
 
     /**
      * Output :
-     {"id":"double","value1":"double","vector1":"double []"}
+     [{"name":"id","datatype":"double"},{"name":"value1","datatype":"double"},{"name":"vector1","datatype":"double []"}]
      * */
     @Test
     public void testSchema3() {
@@ -69,7 +69,7 @@ public class SchemaExporterTest {
 
     /**
      * Output :
-     {"id":"double","feature":"double"}
+     [{"name":"feature","datatype":"double"},{"name":"id","datatype":"double"}]
      * */
     @Test
     public void testColumnExport() {
@@ -82,7 +82,7 @@ public class SchemaExporterTest {
 
     /**
      * Output :
-     {"id":"double","features":"double []"}
+     [{"name":"features","datatype":"double []"},{"name":"id","datatype":"double"}]
      * */
     @Test
     public void testColumnExport1() {
@@ -96,7 +96,7 @@ public class SchemaExporterTest {
 
     /**
      * Output :
-     {"id":"double","text":"String []"}
+     [{"name":"id","datatype":"double"},{"name":"text","datatype":"String []"}]
      * */
     @Test
     public void testColumnExport2() {
@@ -109,7 +109,7 @@ public class SchemaExporterTest {
 
     /**
      * Output :
-     {"id":"double","vector1":"double []"}
+     [{"name":"id","datatype":"double"},{"name":"vector1","datatype":"double []"}]
      * */
     @Test
     public void testColumnExport3() {
