@@ -79,9 +79,9 @@ public class AlgebraicTransformBridgeTest extends SparkTestBase {
         for (int i = 0; i < customSparkOutput.length; i++) {
             Row row= customSparkOutput[i];
             Map<String, Object> mapData = new HashMap<String, Object>();
-            mapData.put(customSparkModel.getInputCol(), row.getDouble(0));
+            mapData.put(transformer.getInputKeys().iterator().next(), row.getDouble(0));
             transformer.transform(mapData);
-            double transformedOp = (double) mapData.get(customSparkModel.getOutputCol());
+            double transformedOp = (double) mapData.get(transformer.getOutputKeys().iterator().next());
 
             double sparkOp = ((double) row.getDouble(1));
             //Check if imported model produces same result as spark output

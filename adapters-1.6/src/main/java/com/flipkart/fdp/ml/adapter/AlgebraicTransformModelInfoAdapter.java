@@ -15,10 +15,14 @@ public class AlgebraicTransformModelInfoAdapter extends AbstractModelInfoAdapter
     public AlgebraicTransformModelInfo getModelInfo(final AlgebraicTransform from, DataFrame df) {
         AlgebraicTransformModelInfo modelInfo = new AlgebraicTransformModelInfo();
         modelInfo.setCoefficients(from.getCoefficients());
+
         Set<String> inputKeys = new LinkedHashSet<String>();
         inputKeys.add(from.getInputCol());
         modelInfo.setInputKeys(inputKeys);
-        modelInfo.setOutputKey(from.getOutputCol());
+
+        Set<String> outputKeys = new LinkedHashSet<String>();
+        outputKeys.add(from.getOutputCol());
+        modelInfo.setOutputKeys(outputKeys);
         return modelInfo;
     }
 

@@ -6,20 +6,19 @@ import com.flipkart.fdp.ml.export.ModelExporter;
 import com.flipkart.fdp.ml.importer.ModelImporter;
 import com.flipkart.fdp.ml.transformer.Transformer;
 import org.apache.spark.api.java.JavaRDD;
-import org.apache.spark.mllib.linalg.Vector;
-import org.apache.spark.mllib.linalg.VectorUDT;
-import org.apache.spark.mllib.linalg.Vectors;
 import org.apache.spark.sql.DataFrame;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.RowFactory;
-import org.apache.spark.sql.types.*;
+import org.apache.spark.sql.types.DataTypes;
+import org.apache.spark.sql.types.Metadata;
+import org.apache.spark.sql.types.StructField;
+import org.apache.spark.sql.types.StructType;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -79,9 +78,9 @@ public class ProbabilityTransformBridgeTest extends SparkTestBase {
         for (int i = 0; i < customSparkOutput.length; i++) {
             Row row= customSparkOutput[i];
             Map<String, Object> mapData = new HashMap<String, Object>();
-            mapData.put(customSparkModel.getInputCol(), row.getDouble(0));
+            mapData.put(transformer.getInputKeys().iterator().next(), row.getDouble(0));
             transformer.transform(mapData);
-            double transformedOp = (double) mapData.get(customSparkModel.getOutputCol());
+            double transformedOp = (double) mapData.get(transformer.getOutputKeys().iterator().next());
 
             double sparkOp = ((double) row.getDouble(1));
             //Check if imported model produces same result as spark output
