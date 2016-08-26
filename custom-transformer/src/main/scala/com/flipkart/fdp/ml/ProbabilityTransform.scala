@@ -66,6 +66,9 @@ class ProbabilityTransform(override val uid: String) extends Estimator[Probabili
     val outputColName = $(outputCol)
     val p1 = $(actualClickProportion)
     val r1 = $(underSampledClickProportion)
+    require(p1 > 0 && p1 < 1, "Actual positive class proportion must be between 0 and 1")
+    require(r1 > 0 && r1 < 1, "Under-sampled positive class proportion must be between 0 and 1")
+    require(p1 < r1, "After under-sampling proportion of positive class should be greater compared to actual proportion.")
     //testing for a Vector column
     val dataType = new VectorUDT
     val inputSchema = dataset.schema
@@ -98,6 +101,7 @@ class ProbabilityTransformModel(override val uid: String, val actualProportionOf
     val p1 = actualProportionOfClicks
     val r1 = underSampledProportionOfClicks
     val i = probFieldIndex
+
     val scale = if(i < 0) {
       udf{ ppctr: Double =>
         (ppctr *p1/r1) / ((ppctr *p1/r1) + ((1-ppctr) *(1-p1)/(1-r1)))

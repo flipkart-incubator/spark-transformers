@@ -21,8 +21,10 @@ public class AlgebraicTransformTransformer implements Transformer {
         }
         else{
             double sum = coeff[0];
+            double mul = input;
             for(int i = 1; i < coeff.length; i++){
-                sum = sum + coeff[i] * Math.pow(input, i);
+                sum = sum + (coeff[i] * mul);
+                mul = mul * input;
             }
             return sum;
         }
