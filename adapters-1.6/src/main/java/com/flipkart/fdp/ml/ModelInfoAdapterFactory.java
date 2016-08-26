@@ -30,6 +30,8 @@ public class ModelInfoAdapterFactory {
         register(new BucketizerModelInfoAdapter());
         register(new PipelineModelInfoAdapter());
         register(new VectorAssemblerModelAdapter());
+        register(new ProbabilityTransformModelInfoAdapter());
+        register(new AlgebraicTransformModelInfoAdapter());
         register(new ChiSqSelectorModelInfoAdapter());
         register(new Log1PScalerModelInfoAdapter());
 
