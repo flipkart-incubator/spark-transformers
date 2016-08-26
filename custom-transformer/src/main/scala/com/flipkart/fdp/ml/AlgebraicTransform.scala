@@ -57,8 +57,10 @@ class AlgebraicTransform(override val uid: String) extends Transformer with Alge
       }
       else{
         var sum = coeff(0)
+        var mul = value
         for(i <- 1 until coeff.length){
-          sum = sum + coeff(i) * math.pow(value, i)
+          sum = sum + coeff(i) * mul
+          mul = mul * value;
         }
         sum
       }
