@@ -2,8 +2,6 @@ package com.flipkart.fdp.ml.transformer;
 
 import com.flipkart.fdp.ml.modelinfo.DecisionTreeModelInfo;
 import com.flipkart.fdp.ml.modelinfo.RandomForestModelInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -12,9 +10,6 @@ import java.util.*;
  * captured by  {@link com.flipkart.fdp.ml.modelinfo.RandomForestModelInfo}.
  */
 public class RandomForestTransformer implements Transformer {
-    private static final Logger LOG = LoggerFactory.getLogger(RandomForestTransformer.class);
-    private static final String ALGO_CLASSIFICATION = "Classification";
-    private static final String ALGO_REGRESSION = "Regression";
     private final RandomForestModelInfo forest;
     private final List<DecisionTreeTransformer> subTransformers;
 
@@ -22,7 +17,7 @@ public class RandomForestTransformer implements Transformer {
         this.forest = forest;
         this.subTransformers = new ArrayList<>(forest.getTrees().size());
         for (DecisionTreeModelInfo tree : forest.getTrees()) {
-            subTransformers.add(new DecisionTreeTransformer(tree));
+            subTransformers.add((DecisionTreeTransformer) tree.getTransformer());
         }
     }
 
@@ -38,17 +33,15 @@ public class RandomForestTransformer implements Transformer {
 
 
     private double predictForest(final double[] input) {
-        if (ALGO_CLASSIFICATION.equals(forest.getAlgorithm())) {
+        if (forest.isClassification()) {
             return classify(input);
-        } else if (ALGO_REGRESSION.equals(forest.getAlgorithm())) {
-            return regression(input);
         } else {
-            throw new UnsupportedOperationException("operation not supported for algo:" + forest.getAlgorithm());
+            return regression(input);
         }
     }
 
     private double regression(final double[] input) {
-        double total = 0;
+        double total = 0.0;
         for (DecisionTreeTransformer i : subTransformers) {
             total += i.predict(input);
         }
@@ -59,21 +52,18 @@ public class RandomForestTransformer implements Transformer {
         Map<Double, Integer> votes = new HashMap<Double, Integer>();
         for (DecisionTreeTransformer i : subTransformers) {
             double label = i.predict(input);
-            ;
 
-            Integer existingCount = votes.get(label);
-            if (existingCount == null) {
-                existingCount = 0;
+            if(votes.containsKey(label)) {
+                votes.put(label, votes.get(label)+1);
+            }else{
+                votes.put(label, 0);
             }
-
-            int newCount = existingCount + 1;
-            votes.put(label, newCount);
         }
 
         int maxVotes = 0;
         double maxVotesCandidate = 0;
         for (Map.Entry<Double, Integer> entry : votes.entrySet()) {
-            if (entry.getValue() >= maxVotes) {
+            if (entry.getValue() > maxVotes) {
                 maxVotes = entry.getValue();
                 maxVotesCandidate = entry.getKey();
             }
