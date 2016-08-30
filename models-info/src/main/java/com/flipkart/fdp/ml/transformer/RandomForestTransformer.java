@@ -16,7 +16,7 @@ public class RandomForestTransformer implements Transformer {
     public RandomForestTransformer(final RandomForestModelInfo forest) {
         this.forest = forest;
         this.subTransformers = new ArrayList<>(forest.getTrees().size());
-        for (DecisionTreeModelInfo tree : forest.getTrees()) {
+        for (final DecisionTreeModelInfo tree : forest.getTrees()) {
             subTransformers.add((DecisionTreeTransformer) tree.getTransformer());
         }
     }
@@ -29,7 +29,7 @@ public class RandomForestTransformer implements Transformer {
     public void transform(Map<String, Object> input) {
         double[] inp = (double[]) input.get(forest.getInputKeys().iterator().next());
         input.put(forest.getOutputKeys().iterator().next(), predict(inp));
-        if(forest.isClassification()) {
+        if (forest.isClassification()) {
             //TODO: Optimize for double computation
             input.put(forest.getRawPredictionKey(), predictRaw(inp));
         }
@@ -46,30 +46,30 @@ public class RandomForestTransformer implements Transformer {
 
     private double regression(final double[] input) {
         double total = 0.0;
-        for (DecisionTreeTransformer i : subTransformers) {
-            total += i.predict(input);
+        for (final DecisionTreeTransformer treeTransformer : subTransformers) {
+            total += treeTransformer.predict(input);
         }
         return total / subTransformers.size();
     }
 
     private double classify(final double[] input) {
-        return predictionFromProbabilities ( normalizeToProbability( predictRaw( input ) ) );
+        return predictionFromProbabilities(normalizeToProbability(predictRaw(input)));
     }
 
     private double[] predictRaw(final double[] features) {
-        double[] votes = new double[forest.getNumClasses()];
+        final double[] votes = new double[forest.getNumClasses()];
         Arrays.fill(votes, 0.0);
 
-        for (DecisionTreeTransformer treeTransformer : subTransformers) {
+        for (final DecisionTreeTransformer treeTransformer : subTransformers) {
 
-            double [] classCounts = treeTransformer.predictRaw(features);
+            final double[] classCounts = treeTransformer.predictRaw(features);
 
             double total = 0.0;
-            for( double val : classCounts) {
-                    total += val;
+            for (double val : classCounts) {
+                total += val;
             }
-            if(total != 0.0) {
-                for( int i=0; i < classCounts.length; i++) {
+            if (total != 0.0) {
+                for (int i = 0; i < classCounts.length; i++) {
                     votes[i] += (classCounts[i] / total);
                 }
             }
@@ -79,11 +79,11 @@ public class RandomForestTransformer implements Transformer {
 
     private double[] normalizeToProbability(final double[] rawPrediction) {
         double total = 0.0;
-        for( double val : rawPrediction) {
+        for (double val : rawPrediction) {
             total += val;
         }
-        if(total != 0.0) {
-            for( int i=0; i < rawPrediction.length; i++) {
+        if (total != 0.0) {
+            for (int i = 0; i < rawPrediction.length; i++) {
                 rawPrediction[i] /= total;
             }
         }
@@ -94,12 +94,12 @@ public class RandomForestTransformer implements Transformer {
     private double predictionFromProbabilities(final double[] probabilities) {
         int max = 0;
 
-        for( int i = 0; i < probabilities.length; i++){
-            if(probabilities[i] > probabilities[max]) {
-                max =i;
+        for (int i = 0; i < probabilities.length; i++) {
+            if (probabilities[i] > probabilities[max]) {
+                max = i;
             }
         }
-        return (double)max;
+        return (double) max;
     }
 
     @Override

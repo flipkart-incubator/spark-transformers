@@ -19,7 +19,7 @@ import java.util.Set;
 public class DecisionTreeRegressionModelInfoAdapter
         extends AbstractModelInfoAdapter<DecisionTreeRegressionModel, DecisionTreeModelInfo> {
 
-    public DecisionTreeModelInfo getModelInfo(final DecisionTreeRegressionModel decisionTreeModel, DataFrame df) {
+    public DecisionTreeModelInfo getModelInfo(final DecisionTreeRegressionModel decisionTreeModel, final DataFrame df) {
         final DecisionTreeModelInfo treeInfo = new DecisionTreeModelInfo();
 
         //TODO: verify this is correct. Extracting split type for entire decision tree from root node
@@ -28,12 +28,12 @@ public class DecisionTreeRegressionModelInfoAdapter
         Node rootNode = decisionTreeModel.rootNode();
         treeInfo.setRoot( DecisionNodeAdapterUtils.adaptNode(rootNode));
 
-        Set<String> inputKeys = new LinkedHashSet<String>();
+        final Set<String> inputKeys = new LinkedHashSet<String>();
         inputKeys.add(decisionTreeModel.getFeaturesCol());
         inputKeys.add(decisionTreeModel.getLabelCol());
         treeInfo.setInputKeys(inputKeys);
 
-        Set<String> outputKeys = new LinkedHashSet<String>();
+        final Set<String> outputKeys = new LinkedHashSet<String>();
         outputKeys.add(decisionTreeModel.getPredictionCol());
         treeInfo.setOutputKeys(outputKeys);
 

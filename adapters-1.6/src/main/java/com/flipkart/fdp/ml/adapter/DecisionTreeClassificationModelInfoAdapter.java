@@ -19,21 +19,21 @@ import java.util.Set;
 public class DecisionTreeClassificationModelInfoAdapter
         extends AbstractModelInfoAdapter<DecisionTreeClassificationModel, DecisionTreeModelInfo> {
 
-    public DecisionTreeModelInfo getModelInfo(final DecisionTreeClassificationModel decisionTreeModel, DataFrame df) {
+    public DecisionTreeModelInfo getModelInfo(final DecisionTreeClassificationModel decisionTreeModel,final DataFrame df) {
         final DecisionTreeModelInfo treeInfo = new DecisionTreeModelInfo();
 
         //TODO: verify this is correct. Extracting split type for entire decision tree from root node
         treeInfo.setContinuousSplit( DecisionNodeAdapterUtils.isContinuousSplit(decisionTreeModel.rootNode()));
 
         Node rootNode = decisionTreeModel.rootNode();
-        treeInfo.setRoot( DecisionNodeAdapterUtils.adaptNode(rootNode));
+        treeInfo.setRoot(DecisionNodeAdapterUtils.adaptNode(rootNode));
 
-        Set<String> inputKeys = new LinkedHashSet<String>();
+        final Set<String> inputKeys = new LinkedHashSet<String>();
         inputKeys.add(decisionTreeModel.getFeaturesCol());
         inputKeys.add(decisionTreeModel.getLabelCol());
         treeInfo.setInputKeys(inputKeys);
 
-        Set<String> outputKeys = new LinkedHashSet<String>();
+        final Set<String> outputKeys = new LinkedHashSet<String>();
         outputKeys.add(decisionTreeModel.getPredictionCol());
         outputKeys.add(decisionTreeModel.getProbabilityCol());
         outputKeys.add(decisionTreeModel.getRawPredictionCol());

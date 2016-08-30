@@ -63,7 +63,7 @@ public class DecisionTreeClassificationModelBridgeTest extends SparkTestBase {
         for (Row row : sparkOutput) {
             Vector inp = (Vector) row.get(0);
             double actual = row.getDouble(1);
-            double[] actualRaw = ((Vector)row.get(2)).toArray();
+            double[] actualRaw = ((Vector) row.get(2)).toArray();
 
             Map<String, Object> inputData = new HashMap<>();
             inputData.put(transformer.getInputKeys().iterator().next(), inp.toArray());

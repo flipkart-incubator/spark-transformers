@@ -18,12 +18,9 @@ public class DecisionTreeTransformer implements Transformer {
         this.tree = tree;
     }
 
-    private boolean shouldGoLeft(final DecisionNode node, final double val) {
-        if(tree.isContinuousSplit()) {
-            return val <= node.getThreshold();
-        } else {
-            return node.getLeftCategories().contains(val);
-        }
+    public double predict(final double[] input) {
+        final DecisionNode node = tree.getRoot();
+        return predict(node, input);
     }
 
     private double predict(final DecisionNode node, final double[] input) {
@@ -41,11 +38,6 @@ public class DecisionTreeTransformer implements Transformer {
         }
     }
 
-    public double predict(final double[] input) {
-        final DecisionNode node = tree.getRoot();
-        return predict(node, input);
-    }
-
     public double[] predictRaw(final double[] input) {
         final DecisionNode node = tree.getRoot();
         return predictRaw(node, input);
@@ -54,19 +46,27 @@ public class DecisionTreeTransformer implements Transformer {
     private double[] predictRaw(final DecisionNode node, final double[] input) {
         if (node.isLeaf()) {
             double[] rawPrediction = new double[node.getImpurityStats().size()];
-            for(int i = 0; i< rawPrediction.length; i++) {
+            for (int i = 0; i < rawPrediction.length; i++) {
                 rawPrediction[i] = node.getImpurityStats().get(i);
             }
             return rawPrediction;
         } else {
             final boolean shouldGoLeft = shouldGoLeft(node, input[node.getFeature()]);
             if (shouldGoLeft) {
-                DecisionNode leftChild = node.getLeftNode();
+                final DecisionNode leftChild = node.getLeftNode();
                 return predictRaw(leftChild, input);
             } else {
-                DecisionNode rightChild = node.getRightNode();
+                final DecisionNode rightChild = node.getRightNode();
                 return predictRaw(rightChild, input);
             }
+        }
+    }
+
+    private boolean shouldGoLeft(final DecisionNode node, final double val) {
+        if (tree.isContinuousSplit()) {
+            return val <= node.getThreshold();
+        } else {
+            return node.getLeftCategories().contains(val);
         }
     }
 

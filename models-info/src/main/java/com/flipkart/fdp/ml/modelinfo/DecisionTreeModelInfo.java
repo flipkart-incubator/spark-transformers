@@ -10,7 +10,10 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Represents information for a Decision Tree model
+ * Represents information for a Decision Tree model. This class has been specifically designed to not contain and type heirarchy
+ * for internal node/ leaf node , continuous/categorical split, regression/classification.
+ * This has been done to keep serialization and deserialization of these objects simple.
+ * Most of the json serializers (jackson, gson) do not handle type hierarchies well during deserialization.
  */
 @Data
 public class DecisionTreeModelInfo extends AbstractModelInfo {
@@ -18,6 +21,7 @@ public class DecisionTreeModelInfo extends AbstractModelInfo {
     private boolean continuousSplit;
     private String probabilityKey = "probability";
     private String rawPredictionKey = "rawPrediction";
+
     /**
      * @return an corresponding {@link DecisionTreeTransformer} for this model info
      */
@@ -38,5 +42,4 @@ public class DecisionTreeModelInfo extends AbstractModelInfo {
         DecisionNode leftNode;
         DecisionNode rightNode;
     }
-
 }

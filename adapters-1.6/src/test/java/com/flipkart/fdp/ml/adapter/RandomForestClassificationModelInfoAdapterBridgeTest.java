@@ -62,7 +62,7 @@ public class RandomForestClassificationModelInfoAdapterBridgeTest extends SparkT
         for (Row row : sparkOutput) {
             Vector v = (Vector) row.get(0);
             double actual = row.getDouble(1);
-            double[] actualRaw = ((Vector)row.get(2)).toArray();
+            double[] actualRaw = ((Vector) row.get(2)).toArray();
 
             Map<String, Object> inputData = new HashMap<String, Object>();
             inputData.put(transformer.getInputKeys().iterator().next(), v.toArray());
