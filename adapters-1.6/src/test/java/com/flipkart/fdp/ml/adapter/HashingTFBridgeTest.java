@@ -70,7 +70,7 @@ public class HashingTFBridgeTest extends SparkTestBase {
             double[] transformedOp = (double[]) data.get(sparkModel.getOutputCol());
 
             double[] sparkOp = ((Vector) row.get(3)).toArray();
-            assertArrayEquals(transformedOp, sparkOp, 0.01);
+            assertArrayEquals(transformedOp, sparkOp, EPSILON);
         }
     }
 }

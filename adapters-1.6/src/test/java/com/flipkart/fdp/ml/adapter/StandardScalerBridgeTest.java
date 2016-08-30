@@ -119,8 +119,8 @@ public class StandardScalerBridgeTest extends SparkTestBase {
             double[] transformedOp = (double[]) data.get("scaledOutput");
 
             double[] sparkOp = ((Vector) sparkOutput[i].get(1)).toArray();
-            assertArrayEquals(transformedOp, sparkOp, 0.01);
-            assertArrayEquals(transformedOp, expected[i], 0.01);
+            assertArrayEquals(transformedOp, sparkOp, EPSILON);
+            assertArrayEquals(transformedOp, expected[i], EPSILON);
         }
     }
 }

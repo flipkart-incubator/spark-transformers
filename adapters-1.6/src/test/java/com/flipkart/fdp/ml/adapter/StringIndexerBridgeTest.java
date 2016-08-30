@@ -57,7 +57,7 @@ public class StringIndexerBridgeTest extends SparkTestBase {
             double output = (double) data.get(model.getOutputCol());
 
             double indexerOutput = (output);
-            assertEquals(indexerOutput, (double) row.get(2), 0.01);
+            assertEquals(indexerOutput, (double) row.get(2), EPSILON);
         }
 
     }

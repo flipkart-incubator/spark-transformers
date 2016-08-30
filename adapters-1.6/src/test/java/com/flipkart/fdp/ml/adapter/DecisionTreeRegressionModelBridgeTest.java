@@ -55,7 +55,7 @@ public class DecisionTreeRegressionModelBridgeTest extends SparkTestBase {
             double predicted = (double) inputData.get(transformer.getOutputKeys().iterator().next());
 
             System.out.println(actual + ", " + predicted);
-            assertEquals(actual, predicted, 0.01);
+            assertEquals(actual, predicted, EPSILON);
         }
     }
 
@@ -98,7 +98,7 @@ public class DecisionTreeRegressionModelBridgeTest extends SparkTestBase {
             transformer.transform(inputData);
             double predicted = (double) inputData.get(transformer.getOutputKeys().iterator().next());
 
-            assertEquals(actual, predicted, 0.01);
+            assertEquals(actual, predicted, EPSILON);
         }
     }
 

@@ -71,8 +71,8 @@ public class DecisionTreeClassificationModelBridgeTest extends SparkTestBase {
             double predicted = (double) inputData.get(transformer.getOutputKeys().iterator().next());
             double[] rawPrediction = (double[]) inputData.get("rawPrediction");
 
-            assertEquals(actual, predicted, 0.01);
-            assertArrayEquals(actualRaw, rawPrediction, 0.01);
+            assertEquals(actual, predicted, EPSILON);
+            assertArrayEquals(actualRaw, rawPrediction, EPSILON);
         }
     }
 
@@ -120,7 +120,7 @@ public class DecisionTreeClassificationModelBridgeTest extends SparkTestBase {
             transformer.transform(inputData);
             double predicted = (double) inputData.get("prediction");
 
-            assertEquals(actual, predicted, 0.01);
+            assertEquals(actual, predicted, EPSILON);
         }
     }
 

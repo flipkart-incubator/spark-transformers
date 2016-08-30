@@ -93,7 +93,7 @@ public class PipelineBridgeTest extends SparkTestBase {
             transformer.transform(data);
             double exportedPipelineOp = (double) data.get("prediction");
             double exportedPipelineProb = (double) data.get("probability");
-            assertEquals(sparkPipelineOp, exportedPipelineOp, 0.01);
+            assertEquals(sparkPipelineOp, exportedPipelineOp, EPSILON);
         }
     }
 }

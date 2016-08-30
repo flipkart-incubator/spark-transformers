@@ -70,8 +70,8 @@ public class RandomForestClassificationModelInfoAdapterBridgeTest extends SparkT
             double predicted = (double) inputData.get("prediction");
             double[] rawPrediction = (double[]) inputData.get("rawPrediction");
 
-            assertEquals(actual, predicted, 0.01);
-            assertArrayEquals(actualRaw, rawPrediction, 0.01);
+            assertEquals(actual, predicted, EPSILON);
+            assertArrayEquals(actualRaw, rawPrediction, EPSILON);
 
         }
 
@@ -122,7 +122,7 @@ public class RandomForestClassificationModelInfoAdapterBridgeTest extends SparkT
             transformer.transform(inputData);
             double predicted = (double) inputData.get("prediction");
 
-            assertEquals(actual, predicted, 0.01);
+            assertEquals(actual, predicted, EPSILON);
         }
     }
 

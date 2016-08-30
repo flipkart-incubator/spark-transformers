@@ -69,7 +69,7 @@ public class OneHotEncoderBridgeTest extends SparkTestBase {
             double[] transformedOp = (double[]) data.get(sparkModel.getOutputCol());
 
             double[] sparkOp = ((Vector) row.get(2)).toArray();
-            assertArrayEquals(transformedOp, sparkOp, 0.01);
+            assertArrayEquals(transformedOp, sparkOp, EPSILON);
         }
     }
 }
