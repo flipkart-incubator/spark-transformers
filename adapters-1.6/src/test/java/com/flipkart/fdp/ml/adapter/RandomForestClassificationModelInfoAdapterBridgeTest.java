@@ -18,6 +18,7 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -47,26 +48,31 @@ public class RandomForestClassificationModelInfoAdapterBridgeTest extends SparkT
         RandomForestClassificationModel classificationModel = new RandomForestClassifier()
                 .setLabelCol("labelIndex")
                 .setFeaturesCol("features")
+                .setPredictionCol("prediction")
+                .setRawPredictionCol("rawPrediction")
                 .fit(trainingData);
 
         byte[] exportedModel = ModelExporter.export(classificationModel, null);
 
         Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);
 
-        Row[] sparkOutput = classificationModel.transform(testData).select("features", "prediction").collect();
+        Row[] sparkOutput = classificationModel.transform(testData).select("features", "prediction", "rawPrediction").collect();
 
         //compare predictions
         for (Row row : sparkOutput) {
             Vector v = (Vector) row.get(0);
             double actual = row.getDouble(1);
+            double[] actualRaw = ((Vector)row.get(2)).toArray();
 
             Map<String, Object> inputData = new HashMap<String, Object>();
             inputData.put(transformer.getInputKeys().iterator().next(), v.toArray());
             transformer.transform(inputData);
-            double predicted = (double) inputData.get(transformer.getOutputKeys().iterator().next());
+            double predicted = (double) inputData.get("prediction");
+            double[] rawPrediction = (double[]) inputData.get("rawPrediction");
 
-            System.out.println(actual + ", "+predicted);
             assertEquals(actual, predicted, 0.01);
+            assertArrayEquals(actualRaw, rawPrediction, 0.01);
+
         }
 
     }
@@ -114,7 +120,7 @@ public class RandomForestClassificationModelInfoAdapterBridgeTest extends SparkT
             inputData.put("features", v.toArray());
             inputData.put("label", row.get(0).toString());
             transformer.transform(inputData);
-            double predicted = (double) inputData.get(transformer.getOutputKeys().iterator().next());
+            double predicted = (double) inputData.get("prediction");
 
             assertEquals(actual, predicted, 0.01);
         }

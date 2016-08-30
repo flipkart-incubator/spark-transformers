@@ -4,7 +4,9 @@ import com.flipkart.fdp.ml.transformer.DecisionTreeTransformer;
 import com.flipkart.fdp.ml.transformer.Transformer;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -14,7 +16,8 @@ import java.util.Set;
 public class DecisionTreeModelInfo extends AbstractModelInfo {
     private DecisionNode root;
     private boolean continuousSplit;
-
+    private String probabilityKey = "probability";
+    private String rawPredictionKey = "rawPrediction";
     /**
      * @return an corresponding {@link DecisionTreeTransformer} for this model info
      */
@@ -29,6 +32,7 @@ public class DecisionTreeModelInfo extends AbstractModelInfo {
         private boolean leaf;
         private double threshold;
         private double prediction;
+        private List<Double> impurityStats = new ArrayList<>();
         private Set<Double> leftCategories = new HashSet<>();
 
         DecisionNode leftNode;

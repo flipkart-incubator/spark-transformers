@@ -86,7 +86,7 @@ public class RandomForestRegressionModelInfoAdapterBridgeTest extends SparkTestB
         //Import and get Transformer
         Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);
 
-        Row[] sparkOutput = sparkPipeline.transform(testData).select("features", "predictionCol").collect();
+        Row[] sparkOutput = sparkPipeline.transform(testData).select("features", "prediction").collect();
 
         //compare predictions
         for (Row row : sparkOutput) {

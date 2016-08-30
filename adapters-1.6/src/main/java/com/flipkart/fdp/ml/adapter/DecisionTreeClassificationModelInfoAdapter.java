@@ -35,6 +35,10 @@ public class DecisionTreeClassificationModelInfoAdapter
 
         Set<String> outputKeys = new LinkedHashSet<String>();
         outputKeys.add(decisionTreeModel.getPredictionCol());
+        outputKeys.add(decisionTreeModel.getProbabilityCol());
+        outputKeys.add(decisionTreeModel.getRawPredictionCol());
+        treeInfo.setProbabilityKey(decisionTreeModel.getProbabilityCol());
+        treeInfo.setRawPredictionKey(decisionTreeModel.getRawPredictionCol());
         treeInfo.setOutputKeys(outputKeys);
 
         return treeInfo;

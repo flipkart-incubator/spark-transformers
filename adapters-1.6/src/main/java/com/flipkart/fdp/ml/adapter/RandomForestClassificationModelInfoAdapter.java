@@ -33,6 +33,7 @@ public class RandomForestClassificationModelInfoAdapter extends AbstractModelInf
     RandomForestModelInfo getModelInfo(RandomForestClassificationModel sparkRfModel, DataFrame df) {
         RandomForestModelInfo modelInfo = new RandomForestModelInfo();
 
+        modelInfo.setNumClasses(sparkRfModel.numClasses());
         modelInfo.setNumFeatures(sparkRfModel.numFeatures());
         modelInfo.setRegression(false); //false for classification
 
@@ -55,7 +56,12 @@ public class RandomForestClassificationModelInfoAdapter extends AbstractModelInf
 
         Set<String> outputKeys = new LinkedHashSet<String>();
         outputKeys.add(sparkRfModel.getPredictionCol());
+        outputKeys.add(sparkRfModel.getProbabilityCol());
+        outputKeys.add(sparkRfModel.getRawPredictionCol());
+        modelInfo.setProbabilityKey(sparkRfModel.getProbabilityCol());
+        modelInfo.setRawPredictionKey(sparkRfModel.getRawPredictionCol());
         modelInfo.setOutputKeys(outputKeys);
+
         return modelInfo;
     }
 }

@@ -46,10 +46,36 @@ public class DecisionTreeTransformer implements Transformer {
         return predict(node, input);
     }
 
+    public double[] predictRaw(final double[] input) {
+        final DecisionNode node = tree.getRoot();
+        return predictRaw(node, input);
+    }
+
+    private double[] predictRaw(final DecisionNode node, final double[] input) {
+        if (node.isLeaf()) {
+            double[] rawPrediction = new double[node.getImpurityStats().size()];
+            for(int i = 0; i< rawPrediction.length; i++) {
+                rawPrediction[i] = node.getImpurityStats().get(i);
+            }
+            return rawPrediction;
+        } else {
+            final boolean shouldGoLeft = shouldGoLeft(node, input[node.getFeature()]);
+            if (shouldGoLeft) {
+                DecisionNode leftChild = node.getLeftNode();
+                return predictRaw(leftChild, input);
+            } else {
+                DecisionNode rightChild = node.getRightNode();
+                return predictRaw(rightChild, input);
+            }
+        }
+    }
+
     @Override
     public void transform(Map<String, Object> input) {
         double[] inp = (double[]) input.get(tree.getInputKeys().iterator().next());
         input.put(tree.getOutputKeys().iterator().next(), predict(inp));
+        //TODO: optimise for double computation
+        input.put(tree.getRawPredictionKey(), predictRaw(inp));
     }
 
     @Override

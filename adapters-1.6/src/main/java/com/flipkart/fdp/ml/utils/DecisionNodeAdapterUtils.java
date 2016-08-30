@@ -3,7 +3,9 @@ package com.flipkart.fdp.ml.utils;
 import com.flipkart.fdp.ml.modelinfo.DecisionTreeModelInfo;
 import org.apache.spark.ml.tree.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -15,14 +17,18 @@ public class DecisionNodeAdapterUtils {
 
         final DecisionTreeModelInfo.DecisionNode nodeInfo = new DecisionTreeModelInfo.DecisionNode();
 
+        List<Double> impurityStats = new ArrayList<>();
+        for (double stat : node.impurityStats().stats()) {
+            impurityStats.add(stat);
+        }
+        nodeInfo.setImpurityStats(impurityStats);
+        nodeInfo.setPrediction(node.prediction());
+
         if (node instanceof LeafNode) {
             nodeInfo.setLeaf(true);
-            LeafNode leafNode = (LeafNode) node;
-            nodeInfo.setPrediction(leafNode.prediction());
         } else {
             nodeInfo.setLeaf(false);
             InternalNode internalNode = (InternalNode) node;
-            nodeInfo.setPrediction(internalNode.prediction());
             nodeInfo.setFeature(internalNode.split().featureIndex());
 
             adaptIfCategoricalSplit(internalNode, nodeInfo);

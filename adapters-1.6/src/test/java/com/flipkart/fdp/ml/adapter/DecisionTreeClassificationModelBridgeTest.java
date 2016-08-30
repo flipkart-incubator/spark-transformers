@@ -2,7 +2,7 @@ package com.flipkart.fdp.ml.adapter;
 
 import com.flipkart.fdp.ml.export.ModelExporter;
 import com.flipkart.fdp.ml.importer.ModelImporter;
-import com.flipkart.fdp.ml.modelinfo.ModelInfo;
+import com.flipkart.fdp.ml.transformer.DecisionTreeTransformer;
 import com.flipkart.fdp.ml.transformer.Transformer;
 import org.apache.spark.ml.Pipeline;
 import org.apache.spark.ml.PipelineModel;
@@ -19,6 +19,7 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -28,7 +29,7 @@ public class DecisionTreeClassificationModelBridgeTest extends SparkTestBase {
 
 
     @Test
-    public void testDecisionTreeClassification() {
+    public void testDecisionTreeClassificationRawPrediction() {
         // Load the data stored in LIBSVM format as a DataFrame.
         DataFrame data = sqlContext.read().format("libsvm").load("src/test/resources/classification_test.libsvm");
 
@@ -48,31 +49,32 @@ public class DecisionTreeClassificationModelBridgeTest extends SparkTestBase {
         DecisionTreeClassificationModel classificationModel = new DecisionTreeClassifier()
                 .setLabelCol("labelIndex")
                 .setFeaturesCol("features")
+                .setRawPredictionCol("rawPrediction")
+                .setPredictionCol("prediction")
                 .fit(trainingData);
 
         byte[] exportedModel = ModelExporter.export(classificationModel, null);
 
-        ModelInfo importModelInfo = ModelImporter.importModelInfo(exportedModel);
+        Transformer transformer = (DecisionTreeTransformer) ModelImporter.importAndGetTransformer(exportedModel);
 
-        Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);
-
-        Row[] sparkOutput = classificationModel.transform(testData).select("features", "prediction").collect();
+        Row[] sparkOutput = classificationModel.transform(testData).select("features", "prediction", "rawPrediction").collect();
 
         //compare predictions
         for (Row row : sparkOutput) {
-            Vector v = (Vector) row.get(0);
+            Vector inp = (Vector) row.get(0);
             double actual = row.getDouble(1);
+            double[] actualRaw = ((Vector)row.get(2)).toArray();
 
-            Map<String, Object> inputData = new HashMap<String, Object>();
-            inputData.put(transformer.getInputKeys().iterator().next(), v.toArray());
+            Map<String, Object> inputData = new HashMap<>();
+            inputData.put(transformer.getInputKeys().iterator().next(), inp.toArray());
             transformer.transform(inputData);
             double predicted = (double) inputData.get(transformer.getOutputKeys().iterator().next());
+            double[] rawPrediction = (double[]) inputData.get("rawPrediction");
 
-            System.out.println(actual + ", "+predicted);
             assertEquals(actual, predicted, 0.01);
+            assertArrayEquals(actualRaw, rawPrediction, 0.01);
         }
     }
-
 
     @Test
     public void testDecisionTreeClassificationWithPipeline() {
@@ -116,7 +118,7 @@ public class DecisionTreeClassificationModelBridgeTest extends SparkTestBase {
             inputData.put("features", v.toArray());
             inputData.put("label", row.get(0).toString());
             transformer.transform(inputData);
-            double predicted = (double) inputData.get(transformer.getOutputKeys().iterator().next());
+            double predicted = (double) inputData.get("prediction");
 
             assertEquals(actual, predicted, 0.01);
         }

@@ -29,6 +29,10 @@ public class RandomForestTransformer implements Transformer {
     public void transform(Map<String, Object> input) {
         double[] inp = (double[]) input.get(forest.getInputKeys().iterator().next());
         input.put(forest.getOutputKeys().iterator().next(), predict(inp));
+        if(forest.isClassification()) {
+            //TODO: Optimize for double computation
+            input.put(forest.getRawPredictionKey(), predictRaw(inp));
+        }
     }
 
 
@@ -49,26 +53,53 @@ public class RandomForestTransformer implements Transformer {
     }
 
     private double classify(final double[] input) {
-        Map<Double, Integer> votes = new HashMap<Double, Integer>();
-        for (DecisionTreeTransformer i : subTransformers) {
-            double label = i.predict(input);
+        return predictionFromProbabilities ( normalizeToProbability( predictRaw( input ) ) );
+    }
 
-            if(votes.containsKey(label)) {
-                votes.put(label, votes.get(label)+1);
-            }else{
-                votes.put(label, 0);
+    private double[] predictRaw(final double[] features) {
+        double[] votes = new double[forest.getNumClasses()];
+        Arrays.fill(votes, 0.0);
+
+        for (DecisionTreeTransformer treeTransformer : subTransformers) {
+
+            double [] classCounts = treeTransformer.predictRaw(features);
+
+            double total = 0.0;
+            for( double val : classCounts) {
+                    total += val;
+            }
+            if(total != 0.0) {
+                for( int i=0; i < classCounts.length; i++) {
+                    votes[i] += (classCounts[i] / total);
+                }
+            }
+        }
+        return votes;
+    }
+
+    private double[] normalizeToProbability(final double[] rawPrediction) {
+        double total = 0.0;
+        for( double val : rawPrediction) {
+            total += val;
+        }
+        if(total != 0.0) {
+            for( int i=0; i < rawPrediction.length; i++) {
+                rawPrediction[i] /= total;
             }
         }
 
-        int maxVotes = 0;
-        double maxVotesCandidate = 0;
-        for (Map.Entry<Double, Integer> entry : votes.entrySet()) {
-            if (entry.getValue() > maxVotes) {
-                maxVotes = entry.getValue();
-                maxVotesCandidate = entry.getKey();
+        return rawPrediction;
+    }
+
+    private double predictionFromProbabilities(final double[] probabilities) {
+        int max = 0;
+
+        for( int i = 0; i < probabilities.length; i++){
+            if(probabilities[i] > probabilities[max]) {
+                max =i;
             }
         }
-        return maxVotesCandidate;
+        return (double)max;
     }
 
     @Override
