@@ -17,8 +17,6 @@ public class ModelInfoAdapterFactory {
     static {
         register(new LogisticRegressionModelInfoAdapter());
         register(new LogisticRegressionModelInfoAdapter1());
-        register(new DecisionTreeModelInfoAdapter());
-        register(new RandomForestModelInfoAdapter());
         register(new StringIndexerModelInfoAdapter());
         register(new HashingTFModelInfoAdapter());
         register(new RegexTokenizerModelInfoAdapter());

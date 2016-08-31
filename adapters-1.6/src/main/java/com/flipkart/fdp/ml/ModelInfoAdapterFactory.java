@@ -18,8 +18,10 @@ public class ModelInfoAdapterFactory {
         register(new CustomOneHotEncoderModelInfoAdapter());
         register(new LogisticRegressionModelInfoAdapter());
         register(new LogisticRegressionModelInfoAdapter1());
-        register(new DecisionTreeModelInfoAdapter());
-        register(new RandomForestModelInfoAdapter());
+        register(new DecisionTreeRegressionModelInfoAdapter());
+        register(new DecisionTreeClassificationModelInfoAdapter());
+        register(new RandomForestRegressionModelInfoAdapter());
+        register(new RandomForestClassificationModelInfoAdapter());
         register(new StringIndexerModelInfoAdapter());
         register(new HashingTFModelInfoAdapter());
         register(new OneHotEncoderModelInfoAdapter());

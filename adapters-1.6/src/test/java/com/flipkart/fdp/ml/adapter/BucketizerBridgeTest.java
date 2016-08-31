@@ -65,8 +65,8 @@ public class BucketizerBridgeTest extends SparkTestBase {
             double transformedInput = (double) data.get(sparkModel.getOutputCol());
 
             assertTrue((transformedInput >= 0) && (transformedInput <= 1));
-            assertEquals(transformedInput, sparkOp, 0.01);
-            assertEquals(transformedInput, expectedBuckets[r.getInt(0)], 0.01);
+            assertEquals(transformedInput, sparkOp, EPSILON);
+            assertEquals(transformedInput, expectedBuckets[r.getInt(0)], EPSILON);
         }
     }
 }

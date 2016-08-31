@@ -18,6 +18,7 @@ public class SparkTestBase {
     private static final Logger LOG = LoggerFactory.getLogger(SparkTestBase.class);
     protected JavaSparkContext sc;
     protected SQLContext sqlContext;
+    public static final double EPSILON = 1.0e-6;
 
     @Before
     public void setup() {

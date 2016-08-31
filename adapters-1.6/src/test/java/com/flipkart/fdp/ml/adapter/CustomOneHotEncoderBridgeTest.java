@@ -88,8 +88,8 @@ public class CustomOneHotEncoderBridgeTest extends SparkTestBase {
             double[] sparkOp = ((Vector) row.get(2)).toArray();
             //get spark's OneHotEncoder output
             double[] sparkOneHotOp = ((Vector) sparkOneHotOutput[i].get(2)).toArray();
-            assertArrayEquals(transformedOp, sparkOp, 0.01);
-            assertArrayEquals(sparkOneHotOp, sparkOp, 0.01);
+            assertArrayEquals(transformedOp, sparkOp, EPSILON);
+            assertArrayEquals(sparkOneHotOp, sparkOp, EPSILON);
         }
     }
 }

@@ -32,12 +32,12 @@ public class LogisticRegressionExporterTest extends SparkTestBase {
 
         //check if they are exactly equal with respect to their fields
         //it maybe edge cases eg. order of elements in the list is changed
-        assertEquals(lrmodel.intercept(), importedModel.getIntercept(), 0.01);
-        assertEquals(lrmodel.numClasses(), importedModel.getNumClasses(), 0.01);
-        assertEquals(lrmodel.numFeatures(), importedModel.getNumFeatures(), 0.01);
-        assertEquals((double) lrmodel.getThreshold().get(), importedModel.getThreshold(), 0.01);
+        assertEquals(lrmodel.intercept(), importedModel.getIntercept(), EPSILON);
+        assertEquals(lrmodel.numClasses(), importedModel.getNumClasses(), EPSILON);
+        assertEquals(lrmodel.numFeatures(), importedModel.getNumFeatures(), EPSILON);
+        assertEquals((double) lrmodel.getThreshold().get(), importedModel.getThreshold(), EPSILON);
         for (int i = 0; i < importedModel.getNumFeatures(); i++)
-            assertEquals(lrmodel.weights().toArray()[i], importedModel.getWeights()[i], 0.01);
+            assertEquals(lrmodel.weights().toArray()[i], importedModel.getWeights()[i], EPSILON);
 
     }
 }

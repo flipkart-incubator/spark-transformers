@@ -5,17 +5,22 @@ import com.flipkart.fdp.ml.transformer.Transformer;
 import lombok.Data;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
- * Represents information for a Decision Tree model
+ * Represents information for a Decision Tree model. This class has been specifically designed to not contain and type heirarchy
+ * for internal node/ leaf node , continuous/categorical split, regression/classification.
+ * This has been done to keep serialization and deserialization of these objects simple.
+ * Most of the json serializers (jackson, gson) do not handle type hierarchies well during deserialization.
  */
 @Data
 public class DecisionTreeModelInfo extends AbstractModelInfo {
-    private int root;
-    private HashMap<Integer, Integer> leftChildMap = new HashMap<Integer, Integer>();
-    private HashMap<Integer, Integer> rightChildMap = new HashMap<Integer, Integer>();
-    private HashMap<Integer, DecisionNode> nodeInfo = new HashMap<Integer, DecisionNode>();
+    private DecisionNode root;
+    private boolean continuousSplit;
+    private String probabilityKey = "probability";
+    private String rawPredictionKey = "rawPrediction";
 
     /**
      * @return an corresponding {@link DecisionTreeTransformer} for this model info
@@ -27,14 +32,14 @@ public class DecisionTreeModelInfo extends AbstractModelInfo {
 
     @Data
     public static class DecisionNode {
-        private int id;
         private int feature;
-        private boolean isLeaf;
-        private String featureType;
+        private boolean leaf;
         private double threshold;
-        private double predict;
-        private double probability;
-        private ArrayList<Double> categories;
-    }
+        private double prediction;
+        private List<Double> impurityStats = new ArrayList<>();
+        private Set<Double> leftCategories = new HashSet<>();
 
+        DecisionNode leftNode;
+        DecisionNode rightNode;
+    }
 }

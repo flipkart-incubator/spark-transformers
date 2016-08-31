@@ -46,7 +46,7 @@ public class LogisticRegression1BridgeTest extends SparkTestBase {
             transformer.transform(data);
             double predicted = (double) data.get("prediction");
 
-            assertEquals(actual, predicted, 0.01);
+            assertEquals(actual, predicted, EPSILON);
         }
     }
 }
