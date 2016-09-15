@@ -36,6 +36,8 @@ public class ModelInfoAdapterFactory {
         register(new AlgebraicTransformModelInfoAdapter());
         register(new ChiSqSelectorModelInfoAdapter());
         register(new Log1PScalerModelInfoAdapter());
+        register(new FillNAValuesTransformerModelInfoAdapter());
+
 
     }
 
