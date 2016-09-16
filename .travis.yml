@@ -1,5 +1,5 @@
 language: java
 jdk:
   - oraclejdk8
-install: mvn clean compile
-script: mvn test
+install: mvn -q clean compile
+script: mvn -q test
