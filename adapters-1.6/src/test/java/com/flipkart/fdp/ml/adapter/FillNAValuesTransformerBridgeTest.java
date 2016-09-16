@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Double.NaN;
 import static org.apache.spark.sql.types.DataTypes.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -140,7 +141,7 @@ public class FillNAValuesTransformerBridgeTest extends SparkTestBase {
                 cr(1, null, null, null, null),
                 cr(2, "test", 1.2, null, null),
                 cr(3, null, 1.1, null, false),
-                cr(4, "faffa", null, 45.0, true)
+                cr(4, "faffa", NaN, 45.0, true)
         );
 
         DataFrame df = sqlContext.createDataFrame(trainingData, schema);
