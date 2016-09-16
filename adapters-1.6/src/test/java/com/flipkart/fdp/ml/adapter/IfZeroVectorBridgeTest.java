@@ -34,9 +34,6 @@ import java.util.stream.Stream;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by akshay.us on 3/14/16.
- */
 public class IfZeroVectorBridgeTest extends SparkTestBase implements Serializable {
 
     transient DataFrame denseOrderDF = null;
@@ -133,9 +130,11 @@ public class IfZeroVectorBridgeTest extends SparkTestBase implements Serializabl
                 .setOutputCol("product_title_filtered")
                 .setThenSetValue("others")
                 .setElseSetCol("product_title");
-
+        System.out.println(sparseOrderDF.schema());
+        DataFrame transformed = sparkModel.transform(sparseOrderDF).orderBy("product_title");
+        System.out.println(transformed.schema());
         //compare predictions
-        Row[] sparkOutput = sparkModel.transform(sparseOrderDF).orderBy("product_title").select("product_title_filtered").collect();
+        Row[] sparkOutput = transformed.select("product_title_filtered").collect();
         assertEquals("others", sparkOutput[0].get(0));
         assertEquals("Nike Airmax 2015", sparkOutput[1].get(0));
         assertEquals("Xiaomi Redmi Note", sparkOutput[2].get(0));

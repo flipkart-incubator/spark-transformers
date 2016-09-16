@@ -8,7 +8,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * Transforms {@link IfZeroVector} in MlLib to  {@link IfZeroVectorModelInfo} object
+ * Transforms {@link IfZeroVector} to {@link IfZeroVectorModelInfo} object
  * that can be exported through {@link com.flipkart.fdp.ml.export.ModelExporter}
  */
 public class IfZeroVectorModelInfoAdapter extends AbstractModelInfoAdapter<IfZeroVector, IfZeroVectorModelInfo> {

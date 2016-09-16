@@ -6,7 +6,7 @@ import org.apache.spark.ml.util.Identifiable
 import org.apache.spark.mllib.linalg.{DenseVector, SparseVector, Vector, VectorUDT, Vectors}
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.functions._
-import org.apache.spark.sql.types.StructType
+import org.apache.spark.sql.types.{DataTypes, StructType}
 
 
 trait IfZeroVectorParams extends Params {
@@ -14,7 +14,6 @@ trait IfZeroVectorParams extends Params {
   final def getInputCol: String = $(inputCol)
 
   final val outputCol: Param[String] = new Param[String](this, "outputCol", "output column name")
-  setDefault(outputCol, uid + "__output")
   final def getOutputCol: String = $(outputCol)
 
   final val thenSetValue: Param[String] = new Param[String](this, "string constant", "a string constant")
@@ -22,13 +21,6 @@ trait IfZeroVectorParams extends Params {
 
   final val elseSetCol: Param[String] = new Param[String](this, "column", "a column name that exists in the dataframe")
   final def getElseSetCol: String = $(elseSetCol)
-
-  /** Validates and transforms the input schema. */
-  protected def validateAndTransformSchema(schema: StructType): StructType = {
-    //val typeCandidates = List(new ArrayType(StringType, true), new ArrayType(StringType, false))
-    //CustomSchemaUtil.checkColumnTypes(schema, $(inputCol), typeCandidates)
-    CustomSchemaUtil.appendColumn(schema, $(outputCol), new VectorUDT)
-  }
 }
 
 class IfZeroVector(override val uid: String)
@@ -65,9 +57,10 @@ class IfZeroVector(override val uid: String)
     val inputType = schema($(inputCol)).dataType
     require(inputType.isInstanceOf[VectorUDT],
       s"Input column ${$(inputCol)} must be a vector column")
-    require(!schema.fieldNames.contains($(outputCol)),
-      s"Output column ${$(outputCol)} already exists.")
-    return CustomSchemaUtil.appendColumn(schema, $(outputCol), new VectorUDT)
+    val elseSetColType = schema($(elseSetCol)).dataType
+    require(elseSetColType.equals(DataTypes.StringType),
+      s"elseSetCol column ${$(elseSetCol)} must be a string column")
+    return CustomSchemaUtil.appendColumn(schema, $(outputCol), DataTypes.StringType)
   }
 
   override def copy(extra: ParamMap): IfZeroVector = {
