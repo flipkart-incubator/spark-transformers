@@ -32,7 +32,7 @@ For bugs, questions and discussions please use the [Github Issues](https://githu
 Spark-Transformers is licensed under : The Apache Software License, Version 2.0. Here is a copy of the license (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 [maven]:http://search.maven.org/#search%7Cga%7C1%7Ccom.flipkart.fdp.ml
-[maven img]:https://img.shields.io/badge/maven-0.1-green.svg
+[maven img]:https://img.shields.io/maven-central/v/com.flipkart.fdp.ml/spark-transformers.svg
 
 [travis]:https://travis-ci.org/flipkart-incubator/spark-transformers
 [travis img]:https://img.shields.io/travis/flipkart-incubator/spark-transformers.svg
