@@ -54,10 +54,45 @@ public class StringIndexerBridgeTest extends SparkTestBase {
             Map<String, Object> data = new HashMap<String, Object>();
             data.put(model.getInputCol(), (String) row.get(1));
             transformer.transform(data);
-            double output = (double) data.get(model.getOutputCol());
+            double indexerOutput = (double) data.get(model.getOutputCol());
 
-            double indexerOutput = (output);
             assertEquals(indexerOutput, (double) row.get(2), EPSILON);
+        }
+
+    }
+
+    @Test
+    public void testStringIndexerForDoubleColumn() {
+
+        //prepare data
+        StructType schema = createStructType(new StructField[]{
+                createStructField("id", IntegerType, false),
+                createStructField("label", DoubleType, false)
+        });
+        List<Row> trainingData = Arrays.asList(
+                cr(0, 1.0), cr(1, 2.0), cr(2, 3.0), cr(3, 1.0), cr(4, 1.0), cr(5, 3.0));
+        DataFrame dataset = sqlContext.createDataFrame(trainingData, schema);
+
+        //train model in spark
+        StringIndexerModel model = new StringIndexer()
+                .setInputCol("label")
+                .setOutputCol("labelIndex").fit(dataset);
+
+        //Export this model
+        byte[] exportedModel = ModelExporter.export(model, dataset);
+
+        //Import and get Transformer
+        Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);
+
+        //compare predictions
+        Row[] sparkOutput = model.transform(dataset).orderBy("id").select("id", "label", "labelIndex").collect();
+        for (Row row : sparkOutput) {
+
+            Map<String, Object> data = new HashMap<String, Object>();
+            data.put(model.getInputCol(), row.getDouble(1));
+            transformer.transform(data);
+            double indexerOutput = (double) data.get(model.getOutputCol());
+            assertEquals(indexerOutput, row.getDouble(2), EPSILON);
         }
 
     }

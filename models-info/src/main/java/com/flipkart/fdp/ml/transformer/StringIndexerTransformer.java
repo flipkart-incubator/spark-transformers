@@ -27,8 +27,9 @@ public class StringIndexerTransformer implements Transformer {
 
     @Override
     public void transform(Map<String, Object> input) {
-        String inp = (String) input.get(modelInfo.getInputKeys().iterator().next());
-        input.put(modelInfo.getOutputKeys().iterator().next(), predict(inp));
+        Object inp = input.get(modelInfo.getInputKeys().iterator().next());
+        String stringInput = (null != inp)?inp.toString() : "";
+        input.put(modelInfo.getOutputKeys().iterator().next(), predict(stringInput));
     }
 
     @Override
