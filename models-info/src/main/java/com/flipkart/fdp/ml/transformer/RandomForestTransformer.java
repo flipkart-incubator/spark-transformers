@@ -32,6 +32,7 @@ public class RandomForestTransformer implements Transformer {
         if (forest.isClassification()) {
             //TODO: Optimize for double computation
             input.put(forest.getRawPredictionKey(), predictRaw(inp));
+            input.put(forest.getProbabilityKey(), normalizeToProbability(predictRaw(inp)));
         }
     }
 

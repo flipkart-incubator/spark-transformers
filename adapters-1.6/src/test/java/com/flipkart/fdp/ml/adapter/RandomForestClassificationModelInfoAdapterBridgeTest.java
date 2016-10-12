@@ -50,28 +50,34 @@ public class RandomForestClassificationModelInfoAdapterBridgeTest extends SparkT
                 .setFeaturesCol("features")
                 .setPredictionCol("prediction")
                 .setRawPredictionCol("rawPrediction")
+                .setProbabilityCol("probability")
                 .fit(trainingData);
+
 
         byte[] exportedModel = ModelExporter.export(classificationModel, null);
 
         Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);
 
-        Row[] sparkOutput = classificationModel.transform(testData).select("features", "prediction", "rawPrediction").collect();
+        Row[] sparkOutput = classificationModel.transform(testData).select("features", "prediction", "rawPrediction", "probability").collect();
 
         //compare predictions
         for (Row row : sparkOutput) {
             Vector v = (Vector) row.get(0);
             double actual = row.getDouble(1);
+            double [] actualProbability = ((Vector) row.get(3)).toArray();
             double[] actualRaw = ((Vector) row.get(2)).toArray();
 
             Map<String, Object> inputData = new HashMap<String, Object>();
             inputData.put(transformer.getInputKeys().iterator().next(), v.toArray());
             transformer.transform(inputData);
             double predicted = (double) inputData.get("prediction");
+            double[] probability = (double[]) inputData.get("probability");
             double[] rawPrediction = (double[]) inputData.get("rawPrediction");
 
             assertEquals(actual, predicted, EPSILON);
+            assertArrayEquals(actualProbability, probability, EPSILON);
             assertArrayEquals(actualRaw, rawPrediction, EPSILON);
+
 
         }
 
@@ -95,7 +101,11 @@ public class RandomForestClassificationModelInfoAdapterBridgeTest extends SparkT
         // Train a DecisionTree model.
         RandomForestClassifier classifier = new RandomForestClassifier()
                 .setLabelCol("labelIndex")
-                .setFeaturesCol("features");
+                .setFeaturesCol("features")
+                .setPredictionCol("prediction")
+                .setRawPredictionCol("rawPrediction")
+                .setProbabilityCol("probability");
+
 
         Pipeline pipeline = new Pipeline()
                 .setStages(new PipelineStage[]{indexer, classifier});
@@ -109,20 +119,26 @@ public class RandomForestClassificationModelInfoAdapterBridgeTest extends SparkT
         //Import and get Transformer
         Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);
 
-        Row[] sparkOutput = sparkPipeline.transform(testData).select("label", "features", "prediction").collect();
+        Row[] sparkOutput = sparkPipeline.transform(testData).select("label", "features", "prediction", "rawPrediction", "probability").collect();
 
         //compare predictions
         for (Row row : sparkOutput) {
             Vector v = (Vector) row.get(1);
             double actual = row.getDouble(2);
+            double [] actualProbability = ((Vector) row.get(4)).toArray();
+            double[] actualRaw = ((Vector) row.get(3)).toArray();
 
             Map<String, Object> inputData = new HashMap<String, Object>();
             inputData.put("features", v.toArray());
             inputData.put("label", row.get(0).toString());
             transformer.transform(inputData);
             double predicted = (double) inputData.get("prediction");
+            double[] probability = (double[]) inputData.get("probability");
+            double[] rawPrediction = (double[]) inputData.get("rawPrediction");
 
             assertEquals(actual, predicted, EPSILON);
+            assertArrayEquals(actualProbability, probability, EPSILON);
+            assertArrayEquals(actualRaw, rawPrediction, EPSILON);
         }
     }
 
