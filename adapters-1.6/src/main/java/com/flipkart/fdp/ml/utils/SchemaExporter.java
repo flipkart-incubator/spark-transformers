@@ -6,12 +6,13 @@ import lombok.Data;
 import org.apache.spark.mllib.linalg.VectorUDT;
 import org.apache.spark.sql.types.*;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Created by akshay.us on 8/10/16.
  */
-public class SchemaExporter {
+public class SchemaExporter  implements Serializable {
     private static final String DOUBLE = "double";
     private static final String DOUBLE_ARRAY = "double []";
     private static final String BOOLEAN = "boolean";

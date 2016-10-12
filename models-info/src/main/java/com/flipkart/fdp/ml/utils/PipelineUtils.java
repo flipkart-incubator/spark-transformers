@@ -2,13 +2,14 @@ package com.flipkart.fdp.ml.utils;
 
 import com.flipkart.fdp.ml.transformer.Transformer;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Utility to extract input columns for a pipeline
  */
-public class PipelineUtils {
+public class PipelineUtils  implements Serializable {
     public static Set<String> extractRequiredInputColumns(Transformer[] transformers) {
         Set<String> inputColumns = new HashSet<>();
 

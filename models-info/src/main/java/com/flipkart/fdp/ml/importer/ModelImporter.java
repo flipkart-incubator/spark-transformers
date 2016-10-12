@@ -6,13 +6,14 @@ import com.flipkart.fdp.ml.transformer.Transformer;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
  * Imports byte[] representing a model into corresponding {@link ModelInfo} object.
  * The serialization format currently being used is json
  */
-public class ModelImporter {
+public class ModelImporter implements Serializable {
     private static final Gson gson = new Gson();
 
 

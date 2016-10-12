@@ -3,6 +3,7 @@ package com.flipkart.fdp.ml;
 import com.flipkart.fdp.ml.adapter.*;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Map;
  * The purpose of the class is to abstract away that logic of identifying which adapter to use.
  */
 @Slf4j
-public class ModelInfoAdapterFactory {
+public class ModelInfoAdapterFactory  implements Serializable {
 
     private static final Map<String, ModelInfoAdapter> registry = new java.util.HashMap<>();
 

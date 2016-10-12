@@ -8,6 +8,7 @@ import com.flipkart.fdp.ml.utils.Constants;
 import com.google.gson.Gson;
 import org.apache.spark.sql.DataFrame;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,7 +16,7 @@ import java.util.Map;
  * Exports a {@link ModelInfo} object into byte[].
  * The serialization format currently being used is json
  */
-public class ModelExporter {
+public class ModelExporter  implements Serializable {
     private static final Gson gson = new Gson();
 
     /**

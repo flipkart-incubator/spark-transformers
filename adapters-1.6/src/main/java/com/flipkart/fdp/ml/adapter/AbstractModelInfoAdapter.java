@@ -5,8 +5,10 @@ import com.flipkart.fdp.ml.utils.Constants;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.spark.sql.DataFrame;
 
+import java.io.Serializable;
 
-public abstract class AbstractModelInfoAdapter<F, T extends ModelInfo> implements ModelInfoAdapter<F, T> {
+
+public abstract class AbstractModelInfoAdapter<F, T extends ModelInfo> implements ModelInfoAdapter<F, T>, Serializable {
 
     private void preConditions(DataFrame df) {
         if (null != df) {
