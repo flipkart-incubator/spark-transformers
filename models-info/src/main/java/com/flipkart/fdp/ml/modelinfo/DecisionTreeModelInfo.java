@@ -4,6 +4,7 @@ import com.flipkart.fdp.ml.transformer.DecisionTreeTransformer;
 import com.flipkart.fdp.ml.transformer.Transformer;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -31,7 +32,7 @@ public class DecisionTreeModelInfo extends AbstractModelInfo {
     }
 
     @Data
-    public static class DecisionNode {
+    public static class DecisionNode implements Serializable {
         private int feature;
         private boolean leaf;
         private double threshold;
