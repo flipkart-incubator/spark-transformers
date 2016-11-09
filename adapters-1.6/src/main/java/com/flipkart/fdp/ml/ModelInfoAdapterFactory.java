@@ -39,6 +39,7 @@ public class ModelInfoAdapterFactory  implements Serializable {
         register(new Log1PScalerModelInfoAdapter());
         register(new IfZeroVectorModelInfoAdapter());
         register(new FillNAValuesTransformerModelInfoAdapter());
+        register(new VectorBinarizerModelAdapter());
 
     }
 

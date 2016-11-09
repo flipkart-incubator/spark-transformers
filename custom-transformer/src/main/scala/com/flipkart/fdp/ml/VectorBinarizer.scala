@@ -66,9 +66,9 @@ class VectorBinarizer(override val uid: String)
         }
       }
       data match {
-        case DenseVector =>
+        case _:DenseVector =>
           Vectors.sparse(data.size, indices.result(), values.result()).toDense
-        case SparseVector =>
+        case _:SparseVector =>
           Vectors.sparse(data.size, indices.result(), values.result()).compressed
         case v => throw new IllegalArgumentException("Do not support vector type " + v.getClass)
       }
@@ -100,11 +100,11 @@ class VectorBinarizer(override val uid: String)
     StructType(schema.fields :+ outCol)
   }
 
-  override def copy(extra: ParamMap): Binarizer = defaultCopy(extra)
+  override def copy(extra: ParamMap): VectorBinarizer = defaultCopy(extra)
 }
 
-object Binarizer extends DefaultParamsReadable[Binarizer] {
+object Binarizer extends DefaultParamsReadable[VectorBinarizer] {
 
-  override def load(path: String): Binarizer = super.load(path)
+  override def load(path: String): VectorBinarizer = super.load(path)
 }
 
