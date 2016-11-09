@@ -11,9 +11,14 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+
 /**
- * Created by karan.verma on 09/11/16.
+ * Transforms  {@link org.apache.spark.ml.feature.VectorBinarizer} in MlLib to  {@link com.flipkart.fdp.ml.modelinfo.VectorBinarizerModelInfo} object
+ * that can be exported through {@link com.flipkart.fdp.ml.export.ModelExporter}
+ * <p>
+ * Created by karan.verma on 9/11/16.
  */
+
 public class VectorBinarizerModelAdapter extends AbstractModelInfoAdapter<VectorBinarizer, VectorBinarizerModelInfo>  {
     @Override
     VectorBinarizerModelInfo getModelInfo(VectorBinarizer from, DataFrame df) {
