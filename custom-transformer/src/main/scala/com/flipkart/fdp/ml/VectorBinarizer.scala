@@ -68,10 +68,6 @@ class VectorBinarizer(override val uid: String)
           values +=  1.0
           indices += index
         }
-        else {
-          values += 0.0
-          indices += index
-        }
       }
 
       data match {
