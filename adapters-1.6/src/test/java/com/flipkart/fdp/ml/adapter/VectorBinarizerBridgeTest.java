@@ -31,20 +31,6 @@ public class VectorBinarizerBridgeTest extends SparkTestBase{
     @Test(expected=IllegalArgumentException.class)
     public void testVectorBinarizerNegativeThresholdValue() {
         // prepare data
-
-        JavaRDD<Row> jrdd = sc.parallelize(Arrays.asList(
-                RowFactory.create(0d, 1d, new DenseVector(new double[]{-2d, -3d, -4d, -1d, 6d, -7d, 8d, 0d, 0d, 0d, 0d, 0d})),
-                RowFactory.create(1d, 2d, new DenseVector(new double[]{4d, -5d, 6d, 7d, -8d, 9d, -10d, 0d, 0d, 0d, 0d, 0d})),
-                RowFactory.create(2d, 3d, new DenseVector(new double[]{-5d, 6d, -8d, 9d, 10d, 11d, 12d, 0d, 0d, 0d, 0d, 0d}))
-        ));
-
-        StructType schema = new StructType(new StructField[]{
-                new StructField("id", DataTypes.DoubleType, false, Metadata.empty()),
-                new StructField("value1", DataTypes.DoubleType, false, Metadata.empty()),
-                new StructField("vector1", new VectorUDT(), false, Metadata.empty())
-        });
-
-        DataFrame df = sqlContext.createDataFrame(jrdd, schema);
         VectorBinarizer vectorBinarizer = new VectorBinarizer()
                 .setInputCol("vector1")
                 .setOutputCol("binarized")
