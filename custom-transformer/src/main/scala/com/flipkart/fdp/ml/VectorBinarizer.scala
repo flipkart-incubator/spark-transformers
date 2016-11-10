@@ -35,7 +35,12 @@ class VectorBinarizer(override val uid: String)
   def getThreshold: Double = $(threshold)
 
   /** @group setParam */
-  def setThreshold(value: Double): this.type = set(threshold, value)
+  def setThreshold(value: Double): this.type = {
+    if (value < 0.0)
+      throw new IllegalArgumentException("Do not support negative value")
+    else
+      set(threshold, value)
+  }
 
   setDefault(threshold -> 0.0)
 
@@ -52,24 +57,28 @@ class VectorBinarizer(override val uid: String)
     val td = $(threshold)
 
     val binarizerVector = udf { (data: Vector) =>
+
       val indices = ArrayBuilder.make[Int]
       val values = ArrayBuilder.make[Double]
 
+
+
       data.foreachActive { (index, value) =>
         if (value > td) {
-          indices += index
           values +=  1.0
+          indices += index
         }
         else {
-          indices += index
           values += 0.0
+          indices += index
         }
       }
+
       data match {
         case _:DenseVector =>
           Vectors.sparse(data.size, indices.result(), values.result()).toDense
         case _:SparseVector =>
-          Vectors.sparse(data.size, indices.result(), values.result()).compressed
+          Vectors.sparse(data.size, indices.result(), values.result())
         case v => throw new IllegalArgumentException("Do not support vector type " + v.getClass)
       }
 
@@ -103,7 +112,7 @@ class VectorBinarizer(override val uid: String)
   override def copy(extra: ParamMap): VectorBinarizer = defaultCopy(extra)
 }
 
-object Binarizer extends DefaultParamsReadable[VectorBinarizer] {
+object VectorBinarizer extends DefaultParamsReadable[VectorBinarizer] {
 
   override def load(path: String): VectorBinarizer = super.load(path)
 }

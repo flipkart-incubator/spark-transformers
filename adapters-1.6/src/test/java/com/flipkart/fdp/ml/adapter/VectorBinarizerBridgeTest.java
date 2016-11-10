@@ -4,7 +4,6 @@ import com.flipkart.fdp.ml.export.ModelExporter;
 import com.flipkart.fdp.ml.importer.ModelImporter;
 import com.flipkart.fdp.ml.transformer.Transformer;
 import org.apache.spark.api.java.JavaRDD;
-import org.apache.spark.ml.feature.VectorAssembler;
 import org.apache.spark.ml.feature.VectorBinarizer;
 import org.apache.spark.mllib.linalg.DenseVector;
 import org.apache.spark.mllib.linalg.SparseVector;
@@ -28,20 +27,15 @@ import static org.junit.Assert.assertArrayEquals;
  * Created by karan.verma on 09/11/16.
  */
 public class VectorBinarizerBridgeTest extends SparkTestBase{
-    @Test
-    public void testVectorBinarizerDense() {
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testVectorBinarizerNegativeThresholdValue() {
         // prepare data
 
-        int[] sparseArray1 = {54, 76, 81};
-        double[] sparseArray1Values = {5d, 7d, 1d};
-
-        int[] sparseArray2 = {24, 66, 61};
-        double[] sparseArray2Values = {1d, 11d, 2d};
-
         JavaRDD<Row> jrdd = sc.parallelize(Arrays.asList(
-                RowFactory.create(0d, 1d, new DenseVector(new double[]{2d, 3d, 4d, 5d, 6d, 7d, 8d, 0d, 0d, 0d, 0d, 0d})),
-                RowFactory.create(1d, 2d, new DenseVector(new double[]{4d, 5d, 6d, 7d, 8d, 9d, 10d, 0d, 0d, 0d, 0d, 0d})),
-                RowFactory.create(2d, 3d, new DenseVector(new double[]{5d, 6d, 8d, 9d, 10d, 11d, 12d, 0d, 0d, 0d, 0d, 0d}))
+                RowFactory.create(0d, 1d, new DenseVector(new double[]{-2d, -3d, -4d, -1d, 6d, -7d, 8d, 0d, 0d, 0d, 0d, 0d})),
+                RowFactory.create(1d, 2d, new DenseVector(new double[]{4d, -5d, 6d, 7d, -8d, 9d, -10d, 0d, 0d, 0d, 0d, 0d})),
+                RowFactory.create(2d, 3d, new DenseVector(new double[]{-5d, 6d, -8d, 9d, 10d, 11d, 12d, 0d, 0d, 0d, 0d, 0d}))
         ));
 
         StructType schema = new StructType(new StructField[]{
@@ -54,13 +48,36 @@ public class VectorBinarizerBridgeTest extends SparkTestBase{
         VectorBinarizer vectorBinarizer = new VectorBinarizer()
                 .setInputCol("vector1")
                 .setOutputCol("binarized")
-                .setThreshold(0.0);
+                .setThreshold(-1d);
+    }
+
+
+    @Test
+    public void testVectorBinarizerDense() {
+        // prepare data
+
+        JavaRDD<Row> jrdd = sc.parallelize(Arrays.asList(
+                RowFactory.create(0d, 1d, new DenseVector(new double[]{-2d, -3d, -4d, -1d, 6d, -7d, 8d, 0d, 0d, 0d, 0d, 0d})),
+                RowFactory.create(1d, 2d, new DenseVector(new double[]{4d, -5d, 6d, 7d, -8d, 9d, -10d, 0d, 0d, 0d, 0d, 0d})),
+                RowFactory.create(2d, 3d, new DenseVector(new double[]{-5d, 6d, -8d, 9d, 10d, 11d, 12d, 0d, 0d, 0d, 0d, 0d}))
+        ));
+
+        StructType schema = new StructType(new StructField[]{
+                new StructField("id", DataTypes.DoubleType, false, Metadata.empty()),
+                new StructField("value1", DataTypes.DoubleType, false, Metadata.empty()),
+                new StructField("vector1", new VectorUDT(), false, Metadata.empty())
+        });
+
+        DataFrame df = sqlContext.createDataFrame(jrdd, schema);
+        VectorBinarizer vectorBinarizer = new VectorBinarizer()
+                .setInputCol("vector1")
+                .setOutputCol("binarized")
+                .setThreshold(2d);
 
 
         //Export this model
         byte[] exportedModel = ModelExporter.export(vectorBinarizer, df);
 
-        String exportedModelJson = new String(exportedModel);
         //Import and get Transformer
         Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);
         //compare predictions
@@ -79,23 +96,23 @@ public class VectorBinarizerBridgeTest extends SparkTestBase{
     public void testVectorBinarizerSparse() {
         // prepare data
 
-        int[] sparseArray1 = {54, 76, 81};
-        double[] sparseArray1Values = {5d, 7d, 1d};
+        int[] sparseArray1 = {5, 6, 11, 4, 7, 9, 8, 14, 13};
+        double[] sparseArray1Values = {-5d, 7d, 1d, -2d, -4d, -1d, 31d, -1d, -3d};
 
-        int[] sparseArray2 = {24, 66, 61};
+        int[] sparseArray2 = {2, 6, 1};
         double[] sparseArray2Values = {1d, 11d, 2d};
 
-        int[] sparseArray3 = {54, 76, 1};
+        int[] sparseArray3 = {4, 6, 1};
         double[] sparseArray3Values = {52d, 71d, 11d};
 
-        int[] sparseArray4 = {4, 1, 21};
+        int[] sparseArray4 = {4, 1, 2};
         double[] sparseArray4Values = {17d, 7d, 9d};
 
         JavaRDD<Row> jrdd = sc.parallelize(Arrays.asList(
-                RowFactory.create(3d, 4d, new SparseVector(100, sparseArray1, sparseArray1Values)),
-                RowFactory.create(4d, 5d, new SparseVector(100, sparseArray2, sparseArray2Values)),
-                RowFactory.create(5d, 5d, new SparseVector(100, sparseArray3, sparseArray3Values)),
-                RowFactory.create(6d, 5d, new SparseVector(100, sparseArray4, sparseArray4Values))
+                RowFactory.create(3d, 4d, new SparseVector(20, sparseArray1, sparseArray1Values)),
+                RowFactory.create(4d, 5d, new SparseVector(20, sparseArray2, sparseArray2Values)),
+                RowFactory.create(5d, 5d, new SparseVector(20, sparseArray3, sparseArray3Values)),
+                RowFactory.create(6d, 5d, new SparseVector(20, sparseArray4, sparseArray4Values))
         ));
 
         StructType schema = new StructType(new StructField[]{
@@ -113,7 +130,6 @@ public class VectorBinarizerBridgeTest extends SparkTestBase{
         //Export this model
         byte[] exportedModel = ModelExporter.export(vectorBinarizer, null);
 
-        String exportedModelJson = new String(exportedModel);
         //Import and get Transformer
         Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);
         //compare predictions
@@ -124,7 +140,7 @@ public class VectorBinarizerBridgeTest extends SparkTestBase{
             data.put(vectorBinarizer.getInputCol(), ((SparseVector) row.get(2)).toArray());
             transformer.transform(data);
             double[] output = (double[]) data.get(vectorBinarizer.getOutputCol());
-            assertArrayEquals(output, ((SparseVector) row.get(3)).toArray(), 0d);
+            assertArrayEquals(output, ((SparseVector)row.get(3)).toArray(), 0d);
         }
     }
 }

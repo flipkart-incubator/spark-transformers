@@ -1,10 +1,8 @@
 package com.flipkart.fdp.ml.adapter;
 
-import com.flipkart.fdp.ml.modelinfo.IfZeroVectorModelInfo;
-import com.flipkart.fdp.ml.modelinfo.VectorAssemblerModelInfo;
 import com.flipkart.fdp.ml.modelinfo.VectorBinarizerModelInfo;
-import org.apache.spark.ml.feature.VectorAssembler;
 import org.apache.spark.ml.feature.VectorBinarizer;
+
 import org.apache.spark.sql.DataFrame;
 
 import java.util.Arrays;
@@ -28,8 +26,10 @@ public class VectorBinarizerModelAdapter extends AbstractModelInfoAdapter<Vector
         vectorBinarizerModelInfo.setInputKeys(new LinkedHashSet<>(Arrays.asList(from.getInputCol())));
 
         Set<String> outputKeys = new LinkedHashSet<String>();
+
         outputKeys.add(from.getOutputCol());
         vectorBinarizerModelInfo.setOutputKeys(outputKeys);
+        vectorBinarizerModelInfo.setThreshold(from.getThreshold());
 
         return vectorBinarizerModelInfo;
     }

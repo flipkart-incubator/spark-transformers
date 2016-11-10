@@ -20,16 +20,15 @@ public class VectorBinarizerTranformer implements Transformer {
     @Override
     public void transform(Map<String, Object> input) {
         Object value = input.get(modelInfo.getInputKeys().iterator().next());
-        double[] inp = (value == null)? null: (double[])value;
+        double[] inp = (double[])value;
         input.put(modelInfo.getOutputKeys().iterator().next(), predict(inp, modelInfo.getThreshold()));
     }
 
-    private double[] predict(double[] inp, Double threshold) {
+    private double[] predict(double[] inp, double threshold) {
 
         if(inp == null || inp.length == 0) {
             return null;
         }
-
         double[] output = new double[inp.length];
 
         for(int i = 0; i < inp.length; i++) {
