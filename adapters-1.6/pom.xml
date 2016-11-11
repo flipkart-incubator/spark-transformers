@@ -15,9 +15,9 @@
         <spark.version>1.6.2</spark.version>
     </properties>
 
-    <artifactId>adapters-1.6</artifactId>
+    <artifactId>adapters-1.6_${scala.binary.version}</artifactId>
     <packaging>jar</packaging>
-    <version>${project.parent.version}_${scala.binary.version}</version>
+    <version>${project.parent.version}</version>
     <name>Spark 1.6 Model Adapters</name>
 
     <dependencies>
@@ -40,8 +40,8 @@
         </dependency>
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
-            <artifactId>custom-transformer</artifactId>
-            <version>${project.parent.version}_${scala.binary.version}</version>
+            <artifactId>custom-transformer_${scala.binary.version}</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
 </project>
