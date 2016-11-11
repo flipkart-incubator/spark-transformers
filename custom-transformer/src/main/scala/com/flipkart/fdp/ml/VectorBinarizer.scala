@@ -75,7 +75,7 @@ class VectorBinarizer(override val uid: String)
           Vectors.sparse(data.size, indices.result(), values.result()).toDense
         case _:SparseVector =>
           Vectors.sparse(data.size, indices.result(), values.result())
-        case v => throw new IllegalArgumentException("Do not support vector type " + v.getClass)
+        case v => throw new IllegalArgumentException("Only support vector type not " + v.getClass)
       }
 
     }
