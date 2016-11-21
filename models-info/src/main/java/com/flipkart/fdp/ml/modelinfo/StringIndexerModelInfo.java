@@ -14,6 +14,7 @@ import java.util.Map;
 public class StringIndexerModelInfo extends AbstractModelInfo {
 
     private Map<String, Double> labelToIndex = new HashMap<String, Double>();
+    private boolean failOnUnseenValues = true;
 
     /**
      * @return an corresponding {@link StringIndexerTransformer} for this model info

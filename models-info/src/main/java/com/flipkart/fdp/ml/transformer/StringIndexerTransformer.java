@@ -12,15 +12,27 @@ import java.util.Set;
 public class StringIndexerTransformer implements Transformer {
 
     private final StringIndexerModelInfo modelInfo;
+    private final double maxIndex;
 
     public StringIndexerTransformer(final StringIndexerModelInfo modelInfo) {
         this.modelInfo = modelInfo;
+        //derive maximum index value to handleUnseen values
+        double max = 0.0;
+        for(Map.Entry<String, Double> entry : modelInfo.getLabelToIndex().entrySet()) {
+            max = Math.max(max, entry.getValue());
+        }
+        maxIndex = max;
     }
 
     public double predict(final String s) {
-        final Double index = modelInfo.getLabelToIndex().get(s);
+        Double index = modelInfo.getLabelToIndex().get(s);
         if (null == index) {
-            throw new RuntimeException("Unseen label :" + s);
+            if(modelInfo.isFailOnUnseenValues()) {
+                throw new RuntimeException("Unseen label :" + s);
+            }else {
+                //handling unseen value. Returning maxIndex+1
+                index = maxIndex+1;
+            }
         }
         return index;
     }
