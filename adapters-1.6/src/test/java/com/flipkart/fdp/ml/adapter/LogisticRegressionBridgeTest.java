@@ -38,14 +38,20 @@ public class LogisticRegressionBridgeTest extends SparkTestBase {
         List<LabeledPoint> testPoints = trainingData.collect();
         for (LabeledPoint i : testPoints) {
             Vector v = i.features();
+            
+            lrmodel.setThreshold(0.5);
             double actual = lrmodel.predict(v);
-
+            
             Map<String, Object> data = new HashMap<String, Object>();
             data.put("features", v.toArray());
             transformer.transform(data);
             double predicted = (double) data.get("prediction");
-
             assertEquals(actual, predicted, EPSILON);
+
+            lrmodel.clearThreshold();
+            double actualScore = lrmodel.predict(v);
+            double score = (double) data.get("probability");
+            assertEquals(actualScore, score, EPSILON);
         }
     }
 }
