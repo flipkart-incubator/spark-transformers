@@ -19,7 +19,6 @@ import java.util.Set;
 @Data
 public class DecisionTreeModelInfo extends AbstractModelInfo {
     private DecisionNode root;
-    private boolean continuousSplit;
     private String probabilityKey = "probability";
     private String rawPredictionKey = "rawPrediction";
 
@@ -39,6 +38,7 @@ public class DecisionTreeModelInfo extends AbstractModelInfo {
         private double prediction;
         private List<Double> impurityStats = new ArrayList<>();
         private Set<Double> leftCategories = new HashSet<>();
+        private boolean continuousSplit;
 
         DecisionNode leftNode;
         DecisionNode rightNode;

@@ -1,0 +1,50 @@
+package com.flipkart.fdp.ml.adapter;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import org.apache.spark.ml.regression.DecisionTreeRegressionModel;
+import org.apache.spark.ml.tree.Node;
+
+import com.flipkart.fdp.ml.modelinfo.DecisionTreeModelInfo;
+import com.flipkart.fdp.ml.utils.DecisionNodeAdapterUtils;
+
+import lombok.extern.slf4j.Slf4j;
+
+
+/**
+ * Transforms Spark's {@link org.apache.spark.ml.regression.DecisionTreeRegressionModel} in MlLib to  {@link com.flipkart.fdp.ml.modelinfo.DecisionTreeModelInfo} object
+ * that can be exported through {@link com.flipkart.fdp.ml.export.ModelExporter}
+ */
+@Slf4j
+public class DecisionTreeRegressionModelInfoAdapter
+        extends AbstractModelInfoAdapter<DecisionTreeRegressionModel, DecisionTreeModelInfo> {
+
+    public DecisionTreeModelInfo getModelInfo(final DecisionTreeRegressionModel decisionTreeModel) {
+        final DecisionTreeModelInfo treeInfo = new DecisionTreeModelInfo();
+
+        Node rootNode = decisionTreeModel.rootNode();
+        treeInfo.setRoot( DecisionNodeAdapterUtils.adaptNode(rootNode));
+
+        final Set<String> inputKeys = new LinkedHashSet<String>();
+        inputKeys.add(decisionTreeModel.getFeaturesCol());
+        inputKeys.add(decisionTreeModel.getLabelCol());
+        treeInfo.setInputKeys(inputKeys);
+
+        final Set<String> outputKeys = new LinkedHashSet<String>();
+        outputKeys.add(decisionTreeModel.getPredictionCol());
+        treeInfo.setOutputKeys(outputKeys);
+
+        return treeInfo;
+    }
+
+    @Override
+    public Class<DecisionTreeRegressionModel> getSource() {
+        return DecisionTreeRegressionModel.class;
+    }
+
+    @Override
+    public Class<DecisionTreeModelInfo> getTarget() {
+        return DecisionTreeModelInfo.class;
+    }
+}
