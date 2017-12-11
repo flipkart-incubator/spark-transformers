@@ -14,10 +14,6 @@ import com.flipkart.fdp.ml.modelinfo.GradientBoostModelInfo;
 
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * Transforms Spark's {@link org.apache.spark.ml.classification.RandomForestClassificationModel} in MlLib to  {@link com.flipkart.fdp.ml.modelinfo.RandomForestModelInfo} object
- * that can be exported through {@link com.flipkart.fdp.ml.export.ModelExporter}
- */
 @Slf4j
 public class GradientBoostClassificationModelInfoAdapter extends AbstractModelInfoAdapter<GBTClassificationModel, GradientBoostModelInfo> {
 
