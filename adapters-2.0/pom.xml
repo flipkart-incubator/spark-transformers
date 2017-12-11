@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.flipkart.fdp.ml</groupId>
         <artifactId>spark-transformers</artifactId>
-        <version>0.3.1</version>
+        <version>0.3.2.1</version>
         <relativePath>..</relativePath>
     </parent>
 
@@ -16,7 +16,7 @@
     </properties>
 
     <artifactId>adapters-2.0_${scala.binary.version}</artifactId>
-    <packaging>jar</packaging>
+    <!--<packaging>jar</packaging>-->
     <version>${project.parent.version}</version>
     <name>Spark 2.0 Model Adapters</name>
 
@@ -40,7 +40,7 @@
         </dependency>
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
-            <artifactId>custom-transformer_${scala.binary.version}</artifactId>
+            <artifactId>custom-transformer-2.0_${scala.binary.version}</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
