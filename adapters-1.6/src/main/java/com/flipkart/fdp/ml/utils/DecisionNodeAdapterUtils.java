@@ -32,7 +32,7 @@ public class DecisionNodeAdapterUtils  implements Serializable {
             nodeInfo.setLeaf(false);
             final InternalNode internalNode = (InternalNode) node;
             nodeInfo.setFeature(internalNode.split().featureIndex());
-
+            nodeInfo.setContinuousSplit(false);
             adaptIfCategoricalSplit(internalNode, nodeInfo);
 
             adaptIfContinuousSplit(internalNode, nodeInfo);
@@ -58,6 +58,7 @@ public class DecisionNodeAdapterUtils  implements Serializable {
                 leftCategories.add(c);
             }
             decisionNodeInfo.setLeftCategories(leftCategories);
+            decisionNodeInfo.setContinuousSplit(false);
         }
     }
 
@@ -65,19 +66,7 @@ public class DecisionNodeAdapterUtils  implements Serializable {
         if (internalNode.split() instanceof ContinuousSplit) {
             final ContinuousSplit continuousSplit = (ContinuousSplit) internalNode.split();
             decisionNodeInfo.setThreshold(continuousSplit.threshold());
+            decisionNodeInfo.setContinuousSplit(true);
         }
     }
-
-    public static boolean isContinuousSplit(final Node node) {
-        if (!(node instanceof InternalNode)) {
-            return false;
-        }
-        final InternalNode internalNode = (InternalNode) node;
-
-        if (!(internalNode.split() instanceof ContinuousSplit)) {
-            return false;
-        }
-        return true;
-    }
-
 }

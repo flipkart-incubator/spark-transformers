@@ -22,9 +22,6 @@ public class DecisionTreeRegressionModelInfoAdapter
     public DecisionTreeModelInfo getModelInfo(final DecisionTreeRegressionModel decisionTreeModel, final DataFrame df) {
         final DecisionTreeModelInfo treeInfo = new DecisionTreeModelInfo();
 
-        //TODO: verify this is correct. Extracting split type for entire decision tree from root node
-        treeInfo.setContinuousSplit( DecisionNodeAdapterUtils.isContinuousSplit(decisionTreeModel.rootNode()));
-
         Node rootNode = decisionTreeModel.rootNode();
         treeInfo.setRoot( DecisionNodeAdapterUtils.adaptNode(rootNode));
 
