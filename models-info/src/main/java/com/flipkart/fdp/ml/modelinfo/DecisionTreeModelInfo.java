@@ -19,6 +19,8 @@ import java.util.Set;
 @Data
 public class DecisionTreeModelInfo extends AbstractModelInfo {
     private DecisionNode root;
+    //1.6 transformers refer this. Not removing for backward compatibility.
+    private boolean continuousSplit;
     private String probabilityKey = "probability";
     private String rawPredictionKey = "rawPrediction";
 
