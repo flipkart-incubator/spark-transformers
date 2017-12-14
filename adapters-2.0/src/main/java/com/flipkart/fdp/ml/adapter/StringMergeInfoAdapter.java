@@ -1,7 +1,7 @@
 package com.flipkart.fdp.ml.adapter;
 
 import com.flipkart.fdp.ml.modelinfo.StringMergeModelInfo;
-import org.apache.spark.ml.StringMerge;
+import com.flipkart.transformer.ml.StringMerge;
 
 import java.util.LinkedHashSet;
 import java.util.Set;

@@ -1,6 +1,8 @@
-package org.apache.spark.ml
+package com.flipkart.transformer.ml
 
+import com.flipkart.transformer.common.{HasInputCol, HasRawInputCol}
 import org.apache.spark.annotation.DeveloperApi
+import org.apache.spark.ml.Transformer
 import org.apache.spark.ml.param.{Param, ParamMap, StringArrayParam}
 import org.apache.spark.ml.util.{DefaultParamsReadable, DefaultParamsWritable, Identifiable}
 import org.apache.spark.sql._
@@ -8,7 +10,13 @@ import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.{DoubleType, StructField, StructType}
 
 /**
-  * Created by vinay.varma on 08/11/16.
+  * CommonAddressFeaturesTransformer: Based on input text, creating features
+  * numWords : Number of words
+  * numCommas: Number of commas
+  * numericPresent : Is number present
+  * addressLength : Length of address
+  * favouredStartColParam: Does it has favourable start word
+  * unfavouredStartColParam: Does it has un-favourable start word
   */
 class CommonAddressFeatures(override val uid: String) extends Transformer with HasInputCol with HasRawInputCol with DefaultParamsWritable {
 

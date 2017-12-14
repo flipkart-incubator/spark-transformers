@@ -1,10 +1,14 @@
-package org.apache.spark.ml
+package com.flipkart.transformer.ml
 
 import org.apache.spark.annotation.DeveloperApi
+import org.apache.spark.ml.UnaryTransformer
 import org.apache.spark.ml.param.ParamMap
 import org.apache.spark.ml.util.{DefaultParamsReadable, DefaultParamsWritable, Identifiable}
 import org.apache.spark.sql.types._
 
+/**
+  * StringSanitizer: Removes non printable character, spaces, sequence of digits etc
+  */
 class StringSanitizer(override val uid: String) extends UnaryTransformer[String, Seq[String], StringSanitizer] with DefaultParamsWritable {
   def this() = this(Identifiable.randomUID("StringSanitizer"))
 

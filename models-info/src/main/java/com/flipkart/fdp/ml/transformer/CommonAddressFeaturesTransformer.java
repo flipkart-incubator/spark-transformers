@@ -8,9 +8,20 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
+/**
+ * Transforms input and generate featues
+ * numWordsParam : Number of words
+ * numCommasParam: Number of commas
+ * numericPresentParam : Is number present
+ * addressLengthParam : Length of address
+ * favouredStartColParam: Does it has favourable start word
+ * unfavouredStartColParam: Does it has un-favourable start word
+ * captured by  {@link com.flipkart.fdp.ml.modelinfo.CommonAddressFeaturesModelInfo}.
+ */
 public class CommonAddressFeaturesTransformer implements Transformer {
 	private CommonAddressFeaturesModelInfo modelInfo;
-	private final Pattern pattern = Pattern.compile("[0-9]");
+	private final Pattern isDigit = Pattern.compile("[0-9]");
 
 	public CommonAddressFeaturesTransformer(CommonAddressFeaturesModelInfo modelInfo) {
 		this.modelInfo = modelInfo;
@@ -45,7 +56,7 @@ public class CommonAddressFeaturesTransformer implements Transformer {
 	private double getNumericPresent(String[] sanitizedAddress) {
 
 		String address = StringUtils.join(sanitizedAddress, " ");
-		Matcher match = pattern.matcher(address);
+		Matcher match = isDigit.matcher(address);
 		return match.find() ? 1 : 0;
 	}
 

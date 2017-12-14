@@ -1,14 +1,15 @@
-package org.apache.spark.ml
+package com.flipkart.transformer.ml
 
 import org.apache.spark.annotation.DeveloperApi
+import org.apache.spark.ml.Transformer
 import org.apache.spark.ml.param.{Param, ParamMap}
 import org.apache.spark.ml.util.{DefaultParamsReadable, DefaultParamsWritable, Identifiable}
-import org.apache.spark.sql.{DataFrame, _}
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
+import org.apache.spark.sql.{DataFrame, _}
 
 /**
-  * Created by gaurav.prasad on 17/11/17.
+  * StringMerge: Merges given two input String
   */
 class StringMerge(override val uid: String) extends Transformer with DefaultParamsWritable {
   final val inputCol1: Param[String] = new Param[String](this, "inputCol1", "input first column name")

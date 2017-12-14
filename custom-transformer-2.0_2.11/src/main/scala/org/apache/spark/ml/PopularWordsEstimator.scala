@@ -1,5 +1,7 @@
 package org.apache.spark.ml
 
+import com.flipkart.transformer.common.{HasInputCol, HasOutputCol}
+import com.flipkart.transformer.common.HasOutputCol
 import org.apache.hadoop.fs.Path
 import org.apache.spark.annotation.DeveloperApi
 import org.apache.spark.ml.param.{Param, ParamMap}
@@ -9,7 +11,7 @@ import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.{DoubleType, StructField, StructType}
 
 /**
-  * Created by vinay.varma on 08/11/16.
+  * Created by gaurav.prasad on 08/11/16.
   */
 class PopularWordsEstimator(override val uid: String) extends Estimator[PopularWordsModel] with HasInputCol
   with HasOutputCol {

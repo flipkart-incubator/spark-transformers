@@ -12,18 +12,17 @@ public class PopularWordsEstimatorTransformer implements Transformer {
 	}
 
 	public double predict(final String[] words) {
-		List<String> matchedWords = getMatchedWords(modelInfo.getPopularWords(), words);
-		return matchedWords.size() * 1.0 / words.length;
+		return getMatchedWordsCount(modelInfo.getPopularWords(), words) / words.length;
 	}
 
-	private List<String> getMatchedWords(HashSet<String> popularWords, String[] words) {
-		List<String> matchedWords = new ArrayList<>();
+	private double getMatchedWordsCount(HashSet<String> popularWords, String[] words) {
+		double count = 0.0;
 		for (String word : words) {
 			if (popularWords.contains(word)) {
-				matchedWords.add(word);
+				count++;
 			}
 		}
-		return matchedWords;
+		return count;
 	}
 
 	@Override

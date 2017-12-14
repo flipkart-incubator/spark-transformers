@@ -16,7 +16,7 @@
     </properties>
 
     <artifactId>adapters-2.0_${scala.binary.version}</artifactId>
-    <!--<packaging>jar</packaging>-->
+    <packaging>jar</packaging>
     <version>${project.parent.version}</version>
     <name>Spark 2.0 Model Adapters</name>
 

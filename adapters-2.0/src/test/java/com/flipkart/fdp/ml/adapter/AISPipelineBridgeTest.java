@@ -17,6 +17,10 @@ import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
 import org.junit.Assert;
 import org.junit.Test;
+import com.flipkart.transformer.ml.CommonAddressFeatures;
+import org.apache.spark.ml.PopularWordsEstimator;
+import com.flipkart.transformer.ml.StringMerge;
+import com.flipkart.transformer.ml.StringSanitizer;
 
 import java.util.*;
 

@@ -1,7 +1,7 @@
 package com.flipkart.fdp.ml.adapter;
 
 import com.flipkart.fdp.ml.modelinfo.StringSanitizerModelInfo;
-import org.apache.spark.ml.StringSanitizer;
+import com.flipkart.transformer.ml.StringSanitizer;
 
 import java.util.LinkedHashSet;
 import java.util.Set;

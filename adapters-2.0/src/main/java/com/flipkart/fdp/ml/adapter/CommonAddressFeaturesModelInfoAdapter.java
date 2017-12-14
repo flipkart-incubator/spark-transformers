@@ -1,7 +1,7 @@
 package com.flipkart.fdp.ml.adapter;
 
 import com.flipkart.fdp.ml.modelinfo.CommonAddressFeaturesModelInfo;
-import org.apache.spark.ml.CommonAddressFeatures;
+import com.flipkart.transformer.ml.CommonAddressFeatures;
 
 import java.util.Arrays;
 import java.util.HashSet;
