@@ -6,8 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.spark.ml.classification.GBTClassificationModel;
+import org.apache.spark.ml.Pipeline;
+import org.apache.spark.ml.PipelineModel;
+import org.apache.spark.ml.PipelineStage;
 import org.apache.spark.ml.classification.GBTClassifier;
+import org.apache.spark.ml.feature.StringIndexer;
 import org.apache.spark.ml.linalg.SparseVector;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
@@ -22,7 +25,7 @@ import com.flipkart.fdp.ml.transformer.Transformer;
  * @author harshit.pandey
  *
  */
-public class GradientBoostClassificationModelTest extends SparkTestBase {
+public class GradientBoostClassificationModelPipelineTest extends SparkTestBase {
 
 	@Test
 	public void testGradientBoostClassification() {
@@ -30,22 +33,32 @@ public class GradientBoostClassificationModelTest extends SparkTestBase {
 		String datapath = "src/test/resources/binary_classification_test.libsvm";
 
 		Dataset<Row> data = spark.read().format("libsvm").load(datapath);
-
+		StringIndexer indexer = new StringIndexer()
+                .setInputCol("label")
+                .setOutputCol("labelIndex");
 		// Split the data into training and test sets (30% held out for testing)
 		Dataset<Row>[] splits = data.randomSplit(new double[]{0.7, 0.3});
 		Dataset<Row> trainingData = splits[0];
 		Dataset<Row> testData = splits[1];
 
 		// Train a RandomForest model.
-		GBTClassificationModel classificationModel = new GBTClassifier().fit(trainingData);
+		GBTClassifier classificationModel = new GBTClassifier().setLabelCol("labelIndex")
+                .setFeaturesCol("features");;
 
-		byte[] exportedModel = ModelExporter.export(classificationModel);
+	        Pipeline pipeline = new Pipeline()
+	                .setStages(new PipelineStage[]{indexer, classificationModel});
 
+
+		 PipelineModel sparkPipeline = pipeline.fit(trainingData);
+
+		// Export this model
+		byte[] exportedModel = ModelExporter.export(sparkPipeline);
+
+		// Import and get Transformer
 		Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);
 
-		List<Row> sparkOutput =
-		        classificationModel.transform(testData).select("features", "prediction","label").collectAsList();
-
+		List<Row> sparkOutput = sparkPipeline.transform(testData).select("features", "prediction", "label").collectAsList();
+		
 		// compare predictions
 		for (Row row : sparkOutput) {
 			Map<String, Object> data_ = new HashMap<>();

@@ -8,6 +8,7 @@ import java.util.Set;
 import org.apache.spark.ml.classification.GBTClassificationModel;
 import org.apache.spark.ml.regression.DecisionTreeRegressionModel;
 import org.apache.spark.ml.tree.DecisionTreeModel;
+import org.apache.spark.sql.DataFrame;
 
 import com.flipkart.fdp.ml.modelinfo.DecisionTreeModelInfo;
 import com.flipkart.fdp.ml.modelinfo.GradientBoostModelInfo;
@@ -25,7 +26,7 @@ public class GradientBoostClassificationModelInfoAdapter extends AbstractModelIn
     private static final DecisionTreeRegressionModelInfoAdapter DECISION_TREE_ADAPTER = new DecisionTreeRegressionModelInfoAdapter();
     
     @Override
-    GradientBoostModelInfo getModelInfo(final GBTClassificationModel sparkGbModel) {
+    GradientBoostModelInfo getModelInfo(final GBTClassificationModel sparkGbModel, final DataFrame df) {
         final GradientBoostModelInfo modelInfo = new GradientBoostModelInfo();
 
         modelInfo.setNumFeatures(sparkGbModel.numFeatures());
@@ -40,7 +41,7 @@ public class GradientBoostClassificationModelInfoAdapter extends AbstractModelIn
 
         final List<DecisionTreeModelInfo> decisionTrees = new ArrayList<>();
         for (DecisionTreeModel decisionTreeModel : sparkGbModel.trees()) {
-            decisionTrees.add(DECISION_TREE_ADAPTER.getModelInfo((DecisionTreeRegressionModel) decisionTreeModel));
+            decisionTrees.add(DECISION_TREE_ADAPTER.getModelInfo((DecisionTreeRegressionModel) decisionTreeModel,df));
         }
         
         modelInfo.setTrees(decisionTrees);

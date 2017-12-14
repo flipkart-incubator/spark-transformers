@@ -6,8 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.spark.ml.Pipeline;
+import org.apache.spark.ml.PipelineModel;
+import org.apache.spark.ml.PipelineStage;
+import org.apache.spark.ml.feature.StringIndexer;
 import org.apache.spark.ml.linalg.SparseVector;
-import org.apache.spark.ml.regression.DecisionTreeRegressionModel;
 import org.apache.spark.ml.regression.DecisionTreeRegressor;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
@@ -15,14 +18,14 @@ import org.junit.Test;
 
 import com.flipkart.fdp.ml.export.ModelExporter;
 import com.flipkart.fdp.ml.importer.ModelImporter;
-import com.flipkart.fdp.ml.transformer.DecisionTreeTransformer;
+import com.flipkart.fdp.ml.transformer.Transformer;
 
 /**
  * 
  * @author harshit.pandey
  *
  */
-public class DecisionTreeRegressionModelBridgeTest extends SparkTestBase {
+public class DecisionTreeRegressionModelBridgePipelineTest extends SparkTestBase {
 
 
     @Test
@@ -38,20 +41,28 @@ public class DecisionTreeRegressionModelBridgeTest extends SparkTestBase {
         Dataset<Row> trainingData = splits[0];
         Dataset<Row> testData = splits[1];
 
-        // Train a DecisionTree model.
-        DecisionTreeRegressionModel regressionModel = new DecisionTreeRegressor().fit(trainingData);
-        trainingData.printSchema();
+        StringIndexer indexer = new StringIndexer()
+                .setInputCol("label")
+                .setOutputCol("labelIndex").setHandleInvalid("skip");
         
-        List<Row> output = regressionModel.transform(testData).select("features", "prediction").collectAsList();
-        byte[] exportedModel = ModelExporter.export(regressionModel);
+		DecisionTreeRegressor regressionModel =
+		        new DecisionTreeRegressor().setLabelCol("labelIndex").setFeaturesCol("features");
+		
+		Pipeline pipeline = new Pipeline()
+                .setStages(new PipelineStage[]{indexer, regressionModel});
 
-        DecisionTreeTransformer transformer = (DecisionTreeTransformer) ModelImporter.importAndGetTransformer(exportedModel);
+		PipelineModel sparkPipeline = pipeline.fit(trainingData);
+		
+        byte[] exportedModel = ModelExporter.export(sparkPipeline);
 
-        System.out.println(transformer);
+        Transformer transformer = ModelImporter.importAndGetTransformer(exportedModel);
+        List<Row> output = sparkPipeline.transform(testData).select("features", "prediction", "label").collectAsList();
+
         //compare predictions
         for (Row row : output) {
         	Map<String, Object> data_ = new HashMap<>();
             data_.put("features", ((SparseVector) row.get(0)).toArray());
+            data_.put("label", (row.get(2)).toString());
             transformer.transform(data_);
             System.out.println(data_);
             System.out.println(data_.get("prediction"));
