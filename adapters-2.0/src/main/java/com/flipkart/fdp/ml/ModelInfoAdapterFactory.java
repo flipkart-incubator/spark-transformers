@@ -29,6 +29,10 @@ public class ModelInfoAdapterFactory {
         register(new PipelineModelInfoAdapter());
         register(new VectorAssemblerModelAdapter());
         register(new ChiSqSelectorModelInfoAdapter());
+        register(new StringMergeInfoAdapter());
+        register(new StringSanitizerModelInfoAdapter());
+        register(new CommonAddressFeaturesModelInfoAdapter());
+        register(new PopularWordsEstimatorModelInfoAdapter());
         register(new GradientBoostClassificationModelInfoAdapter());
 
     }
