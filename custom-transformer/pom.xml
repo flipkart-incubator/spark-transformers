@@ -5,12 +5,11 @@
     <parent>
         <artifactId>spark-transformers</artifactId>
         <groupId>com.flipkart.fdp.ml</groupId>
-        <version>0.3.2.1</version>
+        <version>0.4.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>custom-transformer_${scala.binary.version}</artifactId>
-    <version>${project.parent.version}</version>
 
     <properties>
             <spark.version>1.6.2</spark.version>
