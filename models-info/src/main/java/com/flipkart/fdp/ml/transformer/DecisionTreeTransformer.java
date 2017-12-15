@@ -63,7 +63,8 @@ public class DecisionTreeTransformer implements Transformer {
     }
 
     private boolean shouldGoLeft(final DecisionNode node, final double val) {
-        if (tree.isContinuousSplit()) {
+        //Using the isContinuous property at node, rather thn the root. 
+    	if (node.isContinuousSplit()) {
             return val <= node.getThreshold();
         } else {
             return node.getLeftCategories().contains(val);

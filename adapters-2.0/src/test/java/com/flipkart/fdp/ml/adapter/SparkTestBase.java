@@ -15,6 +15,7 @@ import java.io.IOException;
 public class SparkTestBase {
     protected transient SparkSession spark;
     protected transient JavaSparkContext jsc;
+    protected static final double EPSILON = 1.0e-6;
 
     @Before
     public void setUp() throws IOException {
