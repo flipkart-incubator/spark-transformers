@@ -17,6 +17,8 @@ public class ModelInfoAdapterFactory {
     static {
         register(new LogisticRegressionModelInfoAdapter());
         register(new LogisticRegressionModelInfoAdapter1());
+        register(new DecisionTreeRegressionModelInfoAdapter());
+        register(new DecisionTreeClassificationModelInfoAdapter());
         register(new StringIndexerModelInfoAdapter());
         register(new HashingTFModelInfoAdapter());
         register(new RegexTokenizerModelInfoAdapter());
@@ -31,7 +33,7 @@ public class ModelInfoAdapterFactory {
         register(new StringSanitizerModelInfoAdapter());
         register(new CommonAddressFeaturesModelInfoAdapter());
         register(new PopularWordsEstimatorModelInfoAdapter());
-
+        register(new GradientBoostClassificationModelInfoAdapter());
     }
 
     private static void register(ModelInfoAdapter adapter) {
