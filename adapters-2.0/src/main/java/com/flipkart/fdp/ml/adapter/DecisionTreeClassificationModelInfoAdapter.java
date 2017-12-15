@@ -1,14 +1,15 @@
 package com.flipkart.fdp.ml.adapter;
 
-import com.flipkart.fdp.ml.modelinfo.DecisionTreeModelInfo;
-import com.flipkart.fdp.ml.utils.DecisionNodeAdapterUtils;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.spark.ml.classification.DecisionTreeClassificationModel;
-import org.apache.spark.ml.tree.Node;
-import org.apache.spark.sql.DataFrame;
-
 import java.util.LinkedHashSet;
 import java.util.Set;
+
+import org.apache.spark.ml.classification.DecisionTreeClassificationModel;
+import org.apache.spark.ml.tree.Node;
+
+import com.flipkart.fdp.ml.modelinfo.DecisionTreeModelInfo;
+import com.flipkart.fdp.ml.utils.DecisionNodeAdapterUtils;
+
+import lombok.extern.slf4j.Slf4j;
 
 
 /**
@@ -19,7 +20,7 @@ import java.util.Set;
 public class DecisionTreeClassificationModelInfoAdapter
         extends AbstractModelInfoAdapter<DecisionTreeClassificationModel, DecisionTreeModelInfo> {
 
-    public DecisionTreeModelInfo getModelInfo(final DecisionTreeClassificationModel decisionTreeModel,final DataFrame df) {
+    public DecisionTreeModelInfo getModelInfo(final DecisionTreeClassificationModel decisionTreeModel) {
         final DecisionTreeModelInfo treeInfo = new DecisionTreeModelInfo();
 
         Node rootNode = decisionTreeModel.rootNode();
