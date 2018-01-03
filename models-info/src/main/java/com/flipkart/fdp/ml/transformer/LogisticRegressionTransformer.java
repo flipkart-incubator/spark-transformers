@@ -36,6 +36,9 @@ public class LogisticRegressionTransformer implements Transformer {
     @Override
     public void transform(Map<String, Object> input) {
         double[] inp = (double[]) input.get(modelInfo.getInputKeys().iterator().next());
+        if(inp.length != modelInfo.getWeights().length){
+            throw new RuntimeException("Feature vector's length did not match weight vector's length " + inp.length + " != " + modelInfo.getWeights().length);
+        }
         input.put(modelInfo.getProbabilityKey(), getProbability(inp));
         input.put(modelInfo.getOutputKeys().iterator().next(), predict((double) input.get(modelInfo.getProbabilityKey())));
     }
